@@ -1,4 +1,4 @@
-package avg1a2.modules;
+package avg1a2.examplecode.modules;
 
 import TI.BoeBot;
 import TI.PWM;
