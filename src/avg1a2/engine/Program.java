@@ -17,11 +17,9 @@ class Program {
      */
     void Run() {
         // Initialization of used Parameters.
-        Engine engine = new Engine(14,15);
 
         while (true) { // The actual infinite loop the program uses.
-            engine.TurnDegrees(90,60);
-            BoeBot.wait(2000);
+            
         }
     }
 }
