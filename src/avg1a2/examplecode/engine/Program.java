@@ -1,7 +1,4 @@
-package avg1a2.engine;
-
-import TI.BoeBot;
-import avg1a2.modules.*;
+package avg1a2.examplecode.engine;
 
 
 /**

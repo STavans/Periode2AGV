@@ -1,4 +1,4 @@
-package avg1a2.modules;
+package avg1a2.examplecode.modules;
 
 /**
  * This interface defines what public functions a boebot.modules.Sensor is required to support.
