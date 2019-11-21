@@ -11,6 +11,9 @@ class Program implements IRCallback{
 
     void run() {
         IRSensor test = new IRSensor(1, this);
+        while (true) {
+            test.update();
+        }
     }
 
     @Override
