@@ -1,4 +1,4 @@
-package avg1a2.project.engine;
+package avg1a2.project.engine.led;
 
 import TI.BoeBot;
 import TI.PWM;
@@ -16,37 +16,26 @@ public class IndividualLed implements LED {
     private Timer timer;
     private PWM brightness;
 
-
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param pin The pin the boebot.modules.LED is connected to.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will stay on.
-     * @param offset The amount of delay (in milliseconds) the boebot.modules.LED will stay off.
+     * The constructor only sets the used attributes, but doesn't automatically run the Led.
+     * @param pin The pin the led is connected to.
+     * @param delay The amount of delay (in milliseconds) the led will stay on.
+     * @param offset The amount of delay (in milliseconds) the led will stay off.
      */
     public IndividualLed(int pin, int delay, int offset){
         this.pin = pin;
         this.delay = delay;
         this.offset = offset;
         this.brightness = new PWM(pin,0);
-        setTimer(delay);
     }
 
-    /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param input The pin the boebot.modules.LED is connected to.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will toggle on.
-     */
     public IndividualLed(int input, int delay) {
         this(input,delay,delay);
     }
 
-    /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param input The pin the boebot.modules.LED is connected to.
-     */
     public IndividualLed(int input){
         this(input,0,0);
-    }
+    } //delay default is 0;
 
     /**
      * Turns the led on.
@@ -86,14 +75,14 @@ public class IndividualLed implements LED {
      * @param brightness dutycycle for the brightness.
      */
     public void setBrightness(int brightness) {
-
+        this.brightness.update(brightness);
     }
 
     /**
      * Checks if the led is ready to be updated, if so, toggles the state.
      */
     public void update() {
-        if (timer.timeout()) {
+        if (timer.timeout() || timer == null) {
             toggle();
         }
     }
@@ -103,8 +92,10 @@ public class IndividualLed implements LED {
      * @param delay The amount of delay (in milliseconds) between each toggle.
      */
     private void setTimer(int delay) {
-        this.timer = new Timer(delay);
-        timer.mark();
+        if (delay > 0) {
+            this.timer = new Timer(delay);
+            timer.mark();
+        }
     }
 
     /**
