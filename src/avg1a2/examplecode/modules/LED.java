@@ -1,8 +1,8 @@
 package avg1a2.examplecode.modules;
 
 /**
- * This interface defines what public functions a boebot.modules.LED is required to support.
- * These functions are universally necessary functions needed for basic boebot.modules.LED operations.
+ * This interface defines what public functions a boebot.modules.led is required to support.
+ * These functions are universally necessary functions needed for basic boebot.modules.led operations.
  */
 public interface LED {
     void Run();
