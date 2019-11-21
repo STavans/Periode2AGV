@@ -3,7 +3,6 @@ package avg1a2.project.hardware.sensor.ir;
 import TI.BoeBot;
 import avg1a2.project.hardware.sensor.Sensor;
 
-import java.util.HashMap;
 
 public class IRSensor implements Sensor {
 
@@ -21,7 +20,6 @@ public class IRSensor implements Sensor {
         for (int i = 0; i <12; i++) {
             pulse[i] = BoeBot.pulseIn(8,false,20000);
         }
-        //System.out.println(Integer.toBinaryString(SignalConverter(pulse).get("command")));
         return pulse;
     }
 
