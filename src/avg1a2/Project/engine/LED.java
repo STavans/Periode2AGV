@@ -1,4 +1,4 @@
-package avg1a2.project.engine.led;
+package avg1a2.project.engine;
 
 import avg1a2.project.engine.Component;
 

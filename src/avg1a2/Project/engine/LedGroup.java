@@ -1,56 +1,70 @@
-package avg1a2.project.engine.led;
+package avg1a2.project.engine;
 
-import TI.BoeBot;
-import TI.PWM;
 import TI.Timer;
+import java.util.HashMap;
 
 /**
- * Synchronous Led objects are LEDs which alternate on or off on a asynchronous/alternating timer.
- * eg. it turns on for a different duration as for which it is off.
+ * Class to run several LEDs on the same timer, or manually turn them on or off.
  */
-public class IndividualLed implements LED {
-    private int pin;
-    private int delay;
-    private int offset;
+public class LedGroup implements LED{
+    private HashMap<String,LED> group = new HashMap<>();
     private boolean isOn = false;
     private Timer timer;
-    private PWM brightness;
+    private int delay;
+    private int offset;
 
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the Led.
-     * @param pin The pin the led is connected to.
+     * Constructor sets a delay and offset to use, but does not automatically run.
      * @param delay The amount of delay (in milliseconds) the led will stay on.
      * @param offset The amount of delay (in milliseconds) the led will stay off.
      */
-    public IndividualLed(int pin, int delay, int offset){
-        this.pin = pin;
+    public LedGroup(int delay, int offset){
         this.delay = delay;
-        this.offset = offset;
-        this.brightness = new PWM(pin,0);
+        this.offset = delay;
     }
 
-    public IndividualLed(int input, int delay) {
-        this(input,delay,delay);
+    public LedGroup(int delay){
+        this(delay,delay);
     }
 
-    public IndividualLed(int input){
-        this(input,0,0);
+    public LedGroup() {
+        this(0,0);
     } //delay default is 0;
 
     /**
-     * Turns the led on.
+     * Adds a led to the group.
+     * @param name The name of the led to be added.
+     * @param led The led to be added.
+     */
+    public void addLed(String name, LED led){
+        this.group.put(name,led);
+    }
+
+    /**
+     * Searches and removes the given led from the group.
+     * @param name Name of the led.
+     */
+    public void removeLed(String name){
+        this.group.remove(name);
+    }
+
+    /**
+     * Turns the group on.
      */
     public void on() {
-        BoeBot.digitalWrite(pin, false);
-        this.brightness.start();
+        for (String led : group.keySet()) {
+            group.get(led).on();
+        }
         this.isOn = true;
     }
 
     /**
-     * Turns the led off.
+     * Turns the group off.
      */
     public void off() {
-        BoeBot.digitalWrite(pin, true);
+        for (String led : group.keySet()) {
+            group.get(led).off();
+        }
         this.isOn = false;
     }
 
@@ -58,7 +72,7 @@ public class IndividualLed implements LED {
      * Sets the delay to be used by the boebot.modules.LED (time for it to remain on with each loop).
      * @param delay delay in milliseconds.
      */
-    public void setDelay(int delay) {
+    public void setDelay(int delay){
         this.delay = delay;
     }
 
@@ -66,16 +80,8 @@ public class IndividualLed implements LED {
      * Sets the offset to be used by the boebot.modules.LED (time for it to remain off with each loop).
      * @param offset offset in milliseconds.
      */
-    public void setOffset(int offset) {
+    public void setOffset(int offset){
         this.offset = offset;
-    }
-
-    /**
-     * Sets the brightness of the LEDs.
-     * @param brightness dutycycle for the brightness.
-     */
-    public void setBrightness(int brightness) {
-        this.brightness.update(brightness);
     }
 
     /**
@@ -99,7 +105,7 @@ public class IndividualLed implements LED {
     }
 
     /**
-     * Toggles the current state of the boebot.modules.LED, saved in a boolean attribute.
+     * Toggles the current state of the group, saved in a boolean attribute.
      * Sets the new timer in order for each toggle to be set to a different delay.
      */
     private void toggle() {
