@@ -1,7 +1,7 @@
 package avg1a2.examplecode.engine;
 
 /**
- * Main class which only serves to initialize the boebot.engine.Program class.
+ * Main class which only serves to initialize the boebot.hardware.Program class.
  */
 class Main {
 

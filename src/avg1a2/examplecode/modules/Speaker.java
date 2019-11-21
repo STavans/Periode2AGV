@@ -37,4 +37,8 @@ public class Speaker {
         this.frequency = frequency;
         System.out.println(this.frequency);
     }
+
+    public int getFrequency() {
+        return this.frequency;
+    }
 }
