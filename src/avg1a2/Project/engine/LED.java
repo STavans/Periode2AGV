@@ -4,6 +4,6 @@ public interface LED extends Component {
     void on();
     void off();
     void setDelay(int delay);
-    void setOffSet(int offSet);
+    void setOffset(int offSet);
     void setBrightness(int brightness);
 }
