@@ -15,7 +15,7 @@ public class IRSensor implements Sensor {
         this.irCallback = irCallback;
     }
 
-    public HashMap<String, Integer> Scan(){
+    public HashMap<String, Integer> scan(){
         HashMap<String, Integer> error = new HashMap<>();
         int pulseLen = BoeBot.pulseIn(8,false,30000);
         if (pulseLen > 2000) {
