@@ -17,10 +17,10 @@ public class ProductionLed implements LED {
     private PWM brightness;
 
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param input The pin the boebot.modules.LED is connected to.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will stay on.
-     * @param offset The amount of delay (in milliseconds) the boebot.modules.LED will stay off.
+     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.led.
+     * @param input The pin the boebot.modules.led is connected to.
+     * @param delay The amount of delay (in milliseconds) the boebot.modules.led will stay on.
+     * @param offset The amount of delay (in milliseconds) the boebot.modules.led will stay off.
      */
     public ProductionLed(int input, int delay, int offset) {
         this.led = input;
@@ -31,24 +31,24 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param input The pin the boebot.modules.LED is connected to.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will toggle on.
+     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.led.
+     * @param input The pin the boebot.modules.led is connected to.
+     * @param delay The amount of delay (in milliseconds) the boebot.modules.led will toggle on.
      */
     public ProductionLed(int input, int delay) {
         this(input,delay,delay);
     }
 
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.LED.
-     * @param input The pin the boebot.modules.LED is connected to.
+     * The constructor only sets the used attributes, but doesn't automatically run the boebot.modules.led.
+     * @param input The pin the boebot.modules.led is connected to.
      */
     public ProductionLed(int input){
         this(input,0,0);
     }
 
     /**
-     * Sets the delay to be used by the boebot.modules.LED (time for it to remain on with each loop).
+     * Sets the delay to be used by the boebot.modules.led (time for it to remain on with each loop).
      * @param delay delay in milliseconds.
      */
     public void SetDelay(int delay){
@@ -56,7 +56,7 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * Sets the offset to be used by the boebot.modules.LED (time for it to remain off with each loop).
+     * Sets the offset to be used by the boebot.modules.led (time for it to remain off with each loop).
      * @param offset offset in milliseconds.
      */
     public void SetOffset(int offset){
@@ -72,7 +72,7 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * Turns the boebot.modules.LED on.
+     * Turns the boebot.modules.led on.
      */
     public void On() {
         BoeBot.digitalWrite(led, false);
@@ -81,7 +81,7 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * Turns the boebot.modules.LED off.
+     * Turns the boebot.modules.led off.
      */
     public void Off() {
         BoeBot.digitalWrite(led, true);
@@ -89,7 +89,7 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * Runs the boebot.modules.LED on a asynchronous loop.
+     * Runs the boebot.modules.led on a asynchronous loop.
      */
     public void Run() {
         if (timer.timeout()) {
@@ -107,7 +107,7 @@ public class ProductionLed implements LED {
     }
 
     /**
-     * Toggles the current state of the boebot.modules.LED, saved in a boolean attribute.
+     * Toggles the current state of the boebot.modules.led, saved in a boolean attribute.
      * Sets the new timer in order for each toggle to be set to a different delay.
      */
     private void Toggle() {
