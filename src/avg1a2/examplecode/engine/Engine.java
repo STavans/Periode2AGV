@@ -34,7 +34,7 @@ class Engine {
         int rightPulse = 1500 - currentSpeed;
         targetAcceleration = targetSpeed - this.currentSpeed;
         if (targetAcceleration != 0) {
-            steps = Math.abs(targetAcceleration / 5); //Decided to default accelerate in steps of 5 during tests, may change later.
+            steps = Math.abs(targetAcceleration / 20); //Decided to default accelerate in steps of 5 during tests, may change later.
             accellStep = targetAcceleration / steps;
             for (int i  = steps; i > 0; i--) {
                 leftPulse += accellStep;
@@ -77,9 +77,24 @@ class Engine {
      * @param turnSpeed The speed with which to turn the boebot.
      */
     void TurnDegrees(int degrees, int turnSpeed){
+        boolean reverse = false;
         int prevSpeed = this.currentSpeed;
-        double turnTime = ((double)degrees / turnSpeed) * 425; //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
-        int pulse = 1500 + turnSpeed;
+        double turnTime;
+        int pulse;
+
+        if (degrees < 0) {
+            reverse = true;
+        }
+
+        turnSpeed = Math.abs(turnSpeed);
+        degrees = Math.abs(degrees);
+        turnTime = (double)degrees / turnSpeed * 425; //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
+
+        if (reverse) {
+            pulse = 1500 - turnSpeed;
+        } else {
+            pulse = 1500 + turnSpeed;
+        }
 
         Accelerate(0);
         Wheels(pulse,pulse);
@@ -94,9 +109,11 @@ class Engine {
      * @param rightPulse Pulse to send to the right wheel.
      */
     private void Wheels(int leftPulse, int rightPulse){
-        if (leftPulse <= 2500 && leftPulse >= 1500 && rightPulse <= 2500 && rightPulse >= 1500) {
-            this.leftWheel.update(leftPulse);
-            this.rightWheel.update(rightPulse);
-        }
+        this.leftWheel.update(leftPulse);
+        this.rightWheel.update(rightPulse);
+    }
+
+    int getCurrentSpeed() {
+        return this.currentSpeed;
     }
 }
