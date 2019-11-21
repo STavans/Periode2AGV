@@ -16,8 +16,8 @@ public class LedGroup implements LED{
 
     /**
      * Constructor sets a delay and offset to use, but does not automatically run.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will stay on.
-     * @param offset The amount of delay (in milliseconds) the boebot.modules.LED will stay off.
+     * @param delay The amount of delay (in milliseconds) the boebot.modules.led will stay on.
+     * @param offset The amount of delay (in milliseconds) the boebot.modules.led will stay off.
      */
     public LedGroup(int delay, int offset){
         this.delay = delay;
@@ -27,7 +27,7 @@ public class LedGroup implements LED{
 
     /**
      * Constructor sets a default delay to use, but doesn't automatically run.
-     * @param delay The amount of delay (in milliseconds) the boebot.modules.LED will stay on.
+     * @param delay The amount of delay (in milliseconds) the boebot.modules.led will stay on.
      */
     public LedGroup(int delay){
         this(delay,delay);
@@ -42,7 +42,7 @@ public class LedGroup implements LED{
 
     /**
      * Adds a led to the group.
-     * @param led The boebot.modules.LED to be added.
+     * @param led The boebot.modules.led to be added.
      */
     public void AddLed(LED led){
         this.group.add(led);
@@ -50,7 +50,7 @@ public class LedGroup implements LED{
 
     /**
      * Searches and removes the given led from the group.
-     * @param led The boebot.modules.LED to be removed.
+     * @param led The boebot.modules.led to be removed.
      */
     public void RemoveLed(LED led){
         for (LED search : group) {
@@ -61,7 +61,7 @@ public class LedGroup implements LED{
     }
 
     /**
-     * Sets the delay to be used by the boebot.modules.LED (time for it to remain on with each loop).
+     * Sets the delay to be used by the boebot.modules.led (time for it to remain on with each loop).
      * @param delay delay in milliseconds.
      */
     public void SetDelay(int delay){
@@ -69,7 +69,7 @@ public class LedGroup implements LED{
     }
 
     /**
-     * Sets the offset to be used by the boebot.modules.LED (time for it to remain off with each loop).
+     * Sets the offset to be used by the boebot.modules.led (time for it to remain off with each loop).
      * @param offset offset in milliseconds.
      */
     public void SetOffset(int offset){
@@ -125,7 +125,7 @@ public class LedGroup implements LED{
     }
 
     /**
-     * Toggles the current state of the boebot.modules.LED, saved in a boolean attribute.
+     * Toggles the current state of the boebot.modules.led, saved in a boolean attribute.
      */
     private void Toggle() {
         if (isOn) {
