@@ -5,21 +5,44 @@ import TI.Timer;
 import avg1a2.project.hardware.sensor.Sensor;
 import avg1a2.project.modules.UltraSonicCallback;
 
+import java.util.function.BinaryOperator;
+
 public class UltrasonicSensor{
     private int pin1;
     private int pin2;
-    private int timeOut;
-    private int timer;
+    private Timer timer;
     private UltraSonicCallback ultraSonicCallback;
     private boolean isOn;
 
-    public UltrasonicSensor(int pin1, int pin2, int timeOut, int timer, UltraSonicCallback ultraSonicCallBack, boolean isOn) {
+    public UltrasonicSensor(int pin1, int pin2, UltraSonicCallback ultraSonicCallBack, boolean isOn) {
         this.pin1 = pin1;
         this.pin2 = pin2;
-        this.timer = timer;
-        this.timeOut = timeOut;
+        this.timer = new Timer(1000);
         this.ultraSonicCallback = ultraSonicCallBack;
         this.isOn = isOn;
+    }
+
+    public int objectDetection(){
+        return calculateDistance();
+    }
+
+    public int calculateDistance(){
+        int distance = ultraSonicPulse() / 58;
+        return distance;
+    }
+
+    public int ultraSonicPulse(){
+        toggleOn();
+       return BoeBot.pulseIn(this.pin1, this.isOn, this.pin2);
+    }
+
+    public void toggleOn(){
+        if(this.timer.timeout()){
+             BoeBot.digitalWrite(this.pin1, true);
+        } else {
+            BoeBot.digitalWrite(this.pin1, false);
+        }
+
     }
 
 //    public int objectDetection(){
