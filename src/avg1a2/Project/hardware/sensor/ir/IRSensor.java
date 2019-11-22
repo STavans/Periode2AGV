@@ -9,8 +9,6 @@ public class IRSensor implements Sensor {
     private int pin;
     private IRCallback irCallback;
 
-    private Timer timer;
-
     public IRSensor(int pin, IRCallback irCallback) {
         this.pin = pin;
         this.irCallback = irCallback;
