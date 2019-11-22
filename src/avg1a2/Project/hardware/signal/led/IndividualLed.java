@@ -80,8 +80,10 @@ public class IndividualLed implements LED {
     /**
      * Checks if the led is ready to be updated, if so, toggles the state.
      */
-    public void update() {
-        if (timer.timeout() || timer == null) {
+    public void update() throws RuntimeException {
+        if (!(delay > 0)) {
+            throw new RuntimeException("Delay has not been set");
+        } else if (timer.timeout() || timer == null) {
             toggle();
         }
     }
@@ -91,10 +93,8 @@ public class IndividualLed implements LED {
      * @param delay The amount of delay (in milliseconds) between each toggle.
      */
     private void setTimer(int delay) {
-        if (delay > 0) {
-            this.timer = new Timer(delay);
-            timer.mark();
-        }
+        this.timer = new Timer(delay);
+        timer.mark();
     }
 
     /**
