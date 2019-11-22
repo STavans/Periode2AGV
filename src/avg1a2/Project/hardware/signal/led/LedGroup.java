@@ -87,8 +87,10 @@ public class LedGroup implements LED{
     /**
      * Checks if the led is ready to be updated, if so, toggles the state.
      */
-    public void update() {
-        if (timer.timeout() || timer == null) {
+    public void update() throws RuntimeException {
+        if (!(delay > 0)) {
+            throw new RuntimeException("Delay has not been set");
+        } else if (timer.timeout() || timer == null) {
             toggle();
         }
     }

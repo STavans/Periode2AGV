@@ -1,11 +1,11 @@
 package avg1a2.project.hardware.sensor.ir;
 
 import TI.BoeBot;
+import TI.Timer;
 import avg1a2.project.hardware.sensor.Sensor;
 
 
 public class IRSensor implements Sensor {
-
     private int pin;
     private IRCallback irCallback;
 
@@ -15,10 +15,9 @@ public class IRSensor implements Sensor {
     }
 
     public int[] scan(){
-
         int pulse[] = new int[12];
         for (int i = 0; i <12; i++) {
-            pulse[i] = BoeBot.pulseIn(8,false,20000);
+            pulse[i] = BoeBot.pulseIn(1,false,20000);
         }
         return pulse;
     }
@@ -53,10 +52,9 @@ public class IRSensor implements Sensor {
 
     @Override
     public void update() {
-        int pulseLength = BoeBot.pulseIn(8, false, 30000);
-
-        if (pulseLength > 2000){
-        this.irCallback.onSignal(converter(scan()));
+        int pulseLen = BoeBot.pulseIn(pin,false,30000);
+        if (pulseLen > 2000) {
+            this.irCallback.onSignal(converter(scan()));
         }
     }
 }
