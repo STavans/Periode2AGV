@@ -15,7 +15,7 @@ public class TestMain {
                     test2.update();
                     test3.update();
                 } catch (RuntimeException runtimeException) {
-                    System.out.println(runtimeException);
+                   System.out.println(runtimeException);
                 }
         }
     }

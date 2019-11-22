@@ -59,6 +59,7 @@ public class NeoPixel implements LED{
      */
     public void on() {
         BoeBot.rgbSet(pin,r,g,b);
+        BoeBot.rgbShow();
         this.isOn = true;
     }
 
@@ -67,6 +68,7 @@ public class NeoPixel implements LED{
      */
     public void off() {
         BoeBot.rgbSet(pin,0,0,0);
+        BoeBot.rgbShow();
         this.isOn = false;
     }
 

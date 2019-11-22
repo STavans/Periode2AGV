@@ -2,6 +2,10 @@ package avg1a2.project.logic;
 
 import TI.BoeBot;
 import avg1a2.project.hardware.sensor.ultrasonic.Test;
+import avg1a2.project.hardware.signal.led.IndividualLed;
+import avg1a2.project.hardware.signal.led.LED;
+import avg1a2.project.hardware.signal.led.LedGroup;
+import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.*;
 
 class Program implements UltraSonicCallback {
@@ -10,16 +14,21 @@ class Program implements UltraSonicCallback {
     }
 
     void run() {
-        Test test = new Test(this);
+        LedGroup pixels = new LedGroup(500);
+        pixels.addLed("pixel1" ,new NeoPixel(0,153,255,153));
+        pixels.addLed("pixel2" ,new NeoPixel(0,51,102,255));
+        pixels.addLed("pixel3" ,new NeoPixel(0,255,51,204));
+        pixels.addLed("pixel4" ,new NeoPixel(0,255,255,0));
+        pixels.addLed("pixel5" ,new NeoPixel(0,0,51,102));
+        pixels.addLed("pixel6" ,new NeoPixel(0,0,102,255));
 
         while (true) {
-            test.update();
+            try {
+                pixels.update();
+            } catch (RuntimeException runtimeException) {
+                System.out.println(runtimeException);
+            }
             BoeBot.wait(1);
         }
-    }
-
-    @Override
-    public void onSignal() {
-        System.out.println("Distance is lower than 50");
     }
 }
