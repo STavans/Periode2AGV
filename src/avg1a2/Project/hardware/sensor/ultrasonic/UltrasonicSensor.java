@@ -41,6 +41,7 @@ public class UltrasonicSensor{
              BoeBot.digitalWrite(this.pin1, true);
         } else {
             BoeBot.digitalWrite(this.pin1, false);
+            System.out.println("Whatever");
         }
 
     }
