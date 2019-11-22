@@ -83,7 +83,7 @@ public class IndividualLed implements LED {
     public void update() throws RuntimeException {
         if (!(delay > 0)) {
             throw new RuntimeException("Delay has not been set");
-        } else if (timer.timeout() || timer == null) {
+        } else if (timer == null || timer.timeout()) {
             toggle();
         }
     }
