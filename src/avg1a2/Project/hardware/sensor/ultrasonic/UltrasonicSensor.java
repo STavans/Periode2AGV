@@ -42,6 +42,8 @@ That is to test if the sensor works correctly
 
 /*
 This method gets the pulse length of the ultrasonic, it does so by triggering a pulse
+and returning the value of it
+
  */
     public int ultraSonicPulse(){
         BoeBot.digitalWrite(this.pin1, true);
