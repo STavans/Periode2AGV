@@ -8,7 +8,9 @@ public class Test {
     int pin = 0;
     int pin2 = 1;
     private Timer timer = new Timer(50);
-    boolean idle = false;
+    private Timer timer2 = new Timer(1);
+    boolean state = true;
+    boolean listening = false;
 
     UltraSonicCallback ultraSonicCallback;
 
@@ -17,7 +19,7 @@ public class Test {
     }
 
     public void update() {
-        if (timer.timeout() || timer == null) {
+        if (timer == null || timer.timeout()) {
             int scan = ultraScan();
             if (scan > 100) {
                 int distance = calculateDistance(scan);
@@ -30,20 +32,33 @@ public class Test {
     }
 
     public int ultraScan(){
-        BoeBot.digitalWrite(pin, true);
-        BoeBot.wait(1);
-        BoeBot.digitalWrite(pin, false);
-        int pulse = BoeBot.pulseIn(pin2,true,10000);
-        if (pulse > 100) {
-            return pulse;
+        toggle();
+        if (!listening) {
+            int pulse = BoeBot.pulseIn(pin2,true,10000);
+            if (pulse > 100) {
+                return pulse;
+            }
+            else {
+                return 0;
+            }
         }
-        else {
-            return 0;
-        }
+        return 0;
     }
 
     public int calculateDistance(int pulse){
         int distance = pulse / 58;
         return distance;
+    }
+
+    public void toggle() {
+        if (timer2 == null || timer2.timeout() )
+            if (listening) {
+                BoeBot.digitalWrite(pin, state);
+            } else {
+                BoeBot.digitalWrite(pin,state);
+            }
+            state = !state;
+            listening = !listening;
+            timer2 = new Timer(1);
     }
 }

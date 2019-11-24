@@ -59,6 +59,7 @@ public class NeoPixel implements LED{
      */
     public void on() {
         BoeBot.rgbSet(pin,r,g,b);
+        BoeBot.rgbShow();
         this.isOn = true;
     }
 
@@ -67,6 +68,7 @@ public class NeoPixel implements LED{
      */
     public void off() {
         BoeBot.rgbSet(pin,0,0,0);
+        BoeBot.rgbShow();
         this.isOn = false;
     }
 
@@ -92,7 +94,7 @@ public class NeoPixel implements LED{
     public void update() throws RuntimeException {
         if (!(delay > 0)) {
             throw new RuntimeException("Delay has not been set");
-        } else if (timer.timeout() || timer == null) {
+        } else if (timer == null || timer.timeout()) {
             toggle();
         }
     }
