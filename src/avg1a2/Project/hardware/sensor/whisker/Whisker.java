@@ -1,4 +1,4 @@
-package avg1a2.examplecode.modules.Whisker;
+package avg1a2.project.hardware.sensor.whisker;
 
 import TI.BoeBot;
 import avg1a2.project.hardware.sensor.Sensor;
