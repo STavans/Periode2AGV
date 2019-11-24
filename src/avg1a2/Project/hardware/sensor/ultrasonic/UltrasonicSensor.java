@@ -7,92 +7,89 @@ import avg1a2.project.modules.UltraSonicCallback;
 
 import java.util.function.BinaryOperator;
 
-public class UltrasonicSensor{
+public class UltrasonicSensor implements Sensor{
     private int pin1;
     private int pin2;
     private Timer timer;
+    private Timer timer2;
     private UltraSonicCallback ultraSonicCallback;
     private boolean isOn;
 
+/*
+Initialises all of the privates shown above
+ */
     public UltrasonicSensor(int pin1, int pin2, UltraSonicCallback ultraSonicCallBack, boolean isOn) {
         this.pin1 = pin1;
         this.pin2 = pin2;
-        this.timer = new Timer(1000);
+        this.timer = new Timer(50);
+
         this.ultraSonicCallback = ultraSonicCallBack;
         this.isOn = isOn;
     }
 
-    public int objectDetection(){
-        return calculateDistance();
-    }
+/*
+This method calculates the distance of the ultrasonic sensor's pulse length, if the pulse is greater than 100 it returns a zero.
+That is to test if the sensor works correctly
+ */
+    public int calculateDistance(int pulse){
 
-    public int calculateDistance(){
-        int distance = ultraSonicPulse() / 58;
-        return distance;
-    }
-
-    public int ultraSonicPulse(){
-        toggleOn();
-       return BoeBot.pulseIn(this.pin1, this.isOn, this.pin2);
-    }
-
-    public void toggleOn(){
-        if(this.timer.timeout()){
-             BoeBot.digitalWrite(this.pin1, true);
-        } else {
-            BoeBot.digitalWrite(this.pin1, false);
-            System.out.println("Whatever");
+        if(pulse > 100) {
+            return pulse / 58;
         }
+        return 0;
 
     }
 
-//    public int objectDetection(){
-//        Timer timer = new Timer(this.timeOut);
-//
-//        if(timer.timeout()){
-//            BoeBot.digitalWrite(pin1,false);
-//            this.isOn = false;
-//            BoeBot.pulseIn(this.pin1, true, this.timer);
-//            int distance = (this.timer * 343) /2;
-//            this.ultraSonicCallback.onUltraSonic();
-//            return distance;
-//
-//        } else {
-//            BoeBot.digitalWrite(pin1,true);
-//            this.isOn = true;
-//
-//        }
-//        return 0;
-//    }
-//
-//    @Override
-//    public boolean isActive() {
-//        return false;
-//    }
-//
+/*
+This method gets the pulse length of the ultrasonic, it does so by triggering a pulse
+ */
+    public int ultraSonicPulse(){
+        BoeBot.digitalWrite(this.pin1, true);
+        BoeBot.wait(1);
+        BoeBot.digitalWrite(this.pin1, false);
+        int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
+
+        if(pulse > 100){
+            return pulse;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
 //    @Override
 //    public void update() {
-//        if(objectDetection() > 25){
-//            this.ultraSonicCallback.onUltraSonic();
-//            System.out.println("Hij rijdt");
-//        } else if(objectDetection() < 25){
-//            System.out.println("Hij moet stoppen");
+//        if(this.timer.timeout() || this.timer == null){
+//                int distance = calculateDistance();
+//
+//                if(distance < 50){
+//                    this.ultraSonicCallback.onUltraSonic();
+//                }
+//
+//            this.timer = new Timer(50);
 //        }
-//
 //    }
-//
-    public void detectObject() {
-        while (true) {
-            BoeBot.digitalWrite(0, true);
-            BoeBot.uwait(300);
-            BoeBot.digitalWrite(0, false);
-
-            int pulse = BoeBot.pulseIn(1, true, 10000);
-
-            System.out.println("Pulse: " + pulse);
-            BoeBot.uwait(500);
-//            Hij geeft een -2 als de sensor een object detecteerd
+    /*
+    This updates the current state of the ultrasonic sensor. By having a set timer of 50milliseconds
+    it gets the ultrasonic pulse and then calculates the distance
+     */
+public void update() {
+    if (timer.timeout()) {
+        int scan = ultraSonicPulse();
+        if (scan > 100) {
+            int distance = calculateDistance(scan);
+            if (distance < 50) {
+                System.out.println(distance);
+                ultraSonicCallback.onUltraSonic();
+            }
         }
+        this.timer = new Timer(50);
+
     }
 
+}
 }

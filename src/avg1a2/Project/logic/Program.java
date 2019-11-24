@@ -14,13 +14,14 @@ class Program implements UltraSonicCallback {
         UltrasonicSensor sensor = new UltrasonicSensor(0,1, this, true);
 
         while (true) {
-            sensor.calculateDistance();
+            sensor.update();
             BoeBot.wait(1);
         }
     }
-    
+
     @Override
     public void onUltraSonic() {
+
 
     }
 }
