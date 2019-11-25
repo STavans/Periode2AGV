@@ -20,7 +20,6 @@ public class State {
             throw new IllegalArgumentException("Not a valid state.");
         }
     }
-
     
     String getState() {
         if (overwritten) {
