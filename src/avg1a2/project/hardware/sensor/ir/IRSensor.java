@@ -4,7 +4,11 @@ import TI.BoeBot;
 import TI.Timer;
 import avg1a2.project.hardware.sensor.Sensor;
 
-
+/**
+ * this class uses the infrared sensor as an input sensor.
+ * the IR signal will be converted into a 0 or 1 and this code is the specific button id such that
+ * when pressed on the remote control, the BoeBot executes the correct action.
+ */
 public class IRSensor implements Sensor {
     private int pin;
     private IRCallback irCallback;
@@ -14,6 +18,11 @@ public class IRSensor implements Sensor {
         this.irCallback = irCallback;
     }
 
+    /**
+     * receives the IR signal, puts this signal in an array, and reverses the signal such that
+     * when converted a button id is generated.
+     * @return returns the reversed IR signal array
+     */
     public int[] scan(){
         int pulse[] = new int[12];
         for (int i = 0; i <12; i++) {
@@ -22,6 +31,11 @@ public class IRSensor implements Sensor {
         return pulse;
     }
 
+    /**
+     * to convert the IR signal into a 0 or 1
+     * @param signal uses the
+     * @return returns the converted id for each individual button when pressed
+     */
     private int converter (int signal[]) {
 
         int id = 0;
@@ -50,6 +64,9 @@ public class IRSensor implements Sensor {
         return true;
     }
 
+    /**
+     * to check if the user pressed in a new button on the remote control.
+     */
     @Override
     public void update() {
         int pulseLen = BoeBot.pulseIn(pin,false,30000);
