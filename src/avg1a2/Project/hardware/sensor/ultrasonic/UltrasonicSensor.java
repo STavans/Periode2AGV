@@ -3,9 +3,6 @@ package avg1a2.project.hardware.sensor.ultrasonic;
 import TI.BoeBot;
 import TI.Timer;
 import avg1a2.project.hardware.sensor.Sensor;
-import avg1a2.project.modules.UltraSonicCallback;
-
-import java.util.function.BinaryOperator;
 
 public class UltrasonicSensor implements Sensor{
     private int pin1;

@@ -1,8 +1,8 @@
 package avg1a2.project.logic;
 
 import TI.BoeBot;
+import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
-import avg1a2.project.modules.*;
 
 class Program implements UltraSonicCallback {
     Program() {
