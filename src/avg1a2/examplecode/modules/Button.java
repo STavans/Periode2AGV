@@ -14,6 +14,7 @@ public class Button implements Sensor {
      */
     public Button(int input) {
         this.button = input;
+
     }
 
     /**
