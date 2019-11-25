@@ -12,9 +12,9 @@ public class State {
     }
 
     public void setState(String state) throws IllegalArgumentException {
-        if (state.equals("Override")) {
+        if (state.equals(override)) {
             this.overwritten = true;
-        } else if (state.equals("Routing")) {
+        } else if (state.equals(routing)) {
             this.overwritten = false;
         } else {
             throw new IllegalArgumentException("Not a valid state.");

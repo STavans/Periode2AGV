@@ -6,7 +6,7 @@ class Init {
     static DataStore buildData() {
         DataStore dataStore = new DataStore();
         buildRoutes(dataStore);
-        buildRoutes(dataStore);
+        buildCommandLayouts(dataStore);
         return dataStore;
     }
 
