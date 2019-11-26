@@ -36,4 +36,14 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void onCommand1() {
         
     }
+
+    @Override
+    public void mute() {
+
+    }
+
+    @Override
+    public void onCommand2() {
+
+    }
 }
