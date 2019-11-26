@@ -21,7 +21,7 @@ public class UltrasonicSensor implements Sensor {
         this.timer = new Timer(50);
 
         this.ultraSonicCallback = ultraSonicCallBack;
-        this.isOn = isOn;
+        
     }
 
     /**
