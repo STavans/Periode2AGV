@@ -33,9 +33,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         speaker.Beep();
     }
 
-    public void onCommand1() {
-        
-    }
 
     @Override
     public void leftDiagonal() {
