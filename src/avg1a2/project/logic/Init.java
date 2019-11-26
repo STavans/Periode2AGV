@@ -1,5 +1,6 @@
 package avg1a2.project.logic;
 
+import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.data.DataStore;
 
 /**
@@ -32,5 +33,13 @@ class Init {
      */
     private static void buildCommandLayouts(DataStore dataStore) {
 
+    }
+
+    /**
+     * Builds the Motion Control and adds it to the DataStore.
+     * @param dataStore The DataStore which it needs to fill with a new Motion Control.
+     */
+    private static void buildMotionControl(DataStore dataStore) {
+        dataStore.addMotionControl(new MotionControl());
     }
 }
