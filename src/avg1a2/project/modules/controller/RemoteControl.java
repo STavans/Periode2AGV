@@ -117,5 +117,5 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     }
 
->>>>>>> master
+>>>>>>> `   `
 }
