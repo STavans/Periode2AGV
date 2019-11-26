@@ -1,3 +1,5 @@
+package avg1a2.tests;
+
 import TI.BoeBot;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
