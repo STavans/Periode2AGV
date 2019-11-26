@@ -39,4 +39,8 @@ public class Speaker {
     public int getFrequency() {
         return this.frequency;
     }
+
+    public void mute(){
+        this.frequency = 0;
+    }
 }

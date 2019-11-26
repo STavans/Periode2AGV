@@ -11,13 +11,16 @@ public class CollisionDetection implements UltraSonicCallback {
 
     private CollisionDetectionCallback collisionDetectionCallback;
 
+    /**
+     * @param collisionDetection gets initialised in the constructor
+     **/
     public CollisionDetection(CollisionDetectionCallback collisionDetection){
         this.collisionDetectionCallback = collisionDetection;
     }
 
     /**
-     *
-     */
+     *This updates the ultrasonic sensor
+     **/
     public void update(){
         UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(0, 1, this);
         ultrasonicSensor.update();
@@ -28,8 +31,8 @@ public class CollisionDetection implements UltraSonicCallback {
     }
 
     /**
-     *
-     */
+     *Calls the collisionDetectionCallback
+     **/
     @Override
     public void onUltraSonic() {
 
