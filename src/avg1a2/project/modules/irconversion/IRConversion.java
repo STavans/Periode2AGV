@@ -19,8 +19,46 @@ public class IRConversion implements IRCallback {
                 break;
             case 0b0000001 :
                 callback.forward();
-
-
+                break;
+            case 0b0000010 :
+                callback.rightDiagonal();
+                break;
+            case 0b0000011 :
+                callback.leftTurn();
+                break;
+            case 0b0000100 :
+                callback.stop();
+                break;
+            case 0b0000101 :
+                callback.rightTurn();
+                break;
+            case 0b0000110 :
+                callback.leftBackDiagonal();
+                break;
+            case 0b0000111 :
+                callback.reverse();
+                break;
+            case 0b0001000 :
+                callback.rightBackDiagonal();
+                break;
+            case 0b0010100 :
+                callback.mute();
+                break;
+            case 0b0010101 :
+                callback.switchOn();
+                break;
+            case 0b0011010 :
+                callback.infiniteRightTurn();
+                break;
+            case 0b0011011 :
+                callback.infiniteLeftTurn();
+                break;
+            case 0b0010000 :
+                callback.square();
+                break;
+            case 0b0010001 :
+                callback.triangle();
+                break;
         }
 
     }
