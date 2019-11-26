@@ -6,6 +6,7 @@ import avg1a2.project.hardware.sensor.button.Button;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.sensor.whisker.Whisker;
+import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.controller.PcControl;
@@ -19,6 +20,7 @@ public class DataStore {
     private MotionControl motionControl;
     private PcControl pcControl;
     private RemoteControl remoteControl;
+    private State state;
     private CollisionDetection collisionDetection;
     private IRConversion irConversion;
     private Component wheels;
@@ -82,6 +84,18 @@ public class DataStore {
             throw new IllegalArgumentException("Remote Control has not been initialized");
         } else {
             return this.remoteControl;
+        }
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState() throws IllegalArgumentException {
+        if (state == null) {
+            throw new IllegalArgumentException("State has not been initialized");
+        } else {
+            return this.state;
         }
     }
 

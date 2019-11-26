@@ -24,6 +24,7 @@ class Init {
     static DataStore buildData() {
         DataStore dataStore = new DataStore();
         buildControllers(dataStore);
+        buildState(dataStore);
         buildEngine(dataStore);
         buildCollisionDetection(dataStore);
         buildIrConversion(dataStore);
@@ -56,6 +57,10 @@ class Init {
         dataStore.setRemoteControl(new RemoteControl());
         dataStore.setPcControl(new PcControl());
         dataStore.setMotionControl(new MotionControl());
+    }
+
+    private static void buildState(DataStore dataStore) {
+        dataStore.setState(new State("Override","Routing"));
     }
 
     private static void buildCollisionDetection(DataStore dataStore) {
