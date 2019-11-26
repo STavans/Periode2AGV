@@ -3,8 +3,10 @@ package avg1a2.project.modules.controller;
 import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
+import avg1a2.project.hardware.sensor.button.Button;
+import avg1a2.project.hardware.sensor.button.ButtonCallback;
 
-public class MotionControl {
+public class MotionControl implements ButtonCallback {
 
     private Servo sLinks;
     private Servo sRecht;
@@ -12,7 +14,6 @@ public class MotionControl {
     private Timer timer;
 
     public MotionControl(){
-
         this.sLinks = new Servo(12);
         this.sRecht = new Servo(13);
         this.currentSpeed = 0;
@@ -113,4 +114,8 @@ public class MotionControl {
         }
 
 
+    @Override
+    public void onButtonPress() {
+        //do nothing
+    }
 }
