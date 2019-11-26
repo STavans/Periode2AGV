@@ -19,10 +19,8 @@ public class CollisionDetection implements UltraSonicCallback {
      *
      */
     public void update(){
-        UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(0, 1, this, true);
-        while (true) {
-            ultrasonicSensor.update();
-        }
+        UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(0, 1, this);
+        ultrasonicSensor.update();
     }
 
     public void collisionWhisker(){

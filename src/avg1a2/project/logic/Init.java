@@ -59,11 +59,11 @@ class Init {
     }
 
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection());
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl()));
     }
 
     private static void buildIrConversion(DataStore dataStore) {
-        dataStore.setIrConversion(new IRConversion());
+        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl()));
     }
 
     private static void buildEngine(DataStore dataStore){
@@ -72,7 +72,7 @@ class Init {
 
     private static void buildSensors(DataStore dataStore) {
         dataStore.setButton(new Button(1,dataStore.getMotionControl()));
-        dataStore.setIrSensor(new IRSensor(1,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new UltrasonicSensor(1,2,dataStore.getCollisionDetection()));
         dataStore.setWhiskerLeft(new Whisker(1));
         dataStore.setWhiskerRight(new Whisker(2));
