@@ -4,7 +4,7 @@ package avg1a2.project.hardware.engine;
 import TI.Servo;
 import avg1a2.project.hardware.Component;
 
-public class Wheels {
+public class Wheels implements Component {
 
     private Servo left;
     private Servo right;
@@ -38,6 +38,10 @@ public class Wheels {
 
     public int getRightSpeed(){
         return this.speedRight;
+    }
+
+    public void update() {
+
     }
 
 }
