@@ -6,6 +6,11 @@ import TI.Timer;
 import avg1a2.project.hardware.sensor.button.Button;
 import avg1a2.project.hardware.sensor.button.ButtonCallback;
 
+/**
+ * Class will have to be reworked to work with updatable in a infinite loop.
+ * Not doing now, cause no time and I am tired.
+ * - Faithfully Signed, Mick van der Werf, signing off for a while.
+ */
 public class MotionControl implements ButtonCallback {
 
     private Servo sLinks;
