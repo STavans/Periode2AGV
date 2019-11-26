@@ -14,7 +14,7 @@ class Program {
     Program() {
         running = true;
         dataStore = Init.buildData();
-        state = new State();
+        state = new State("Override", "Routing");
     }
 
     void run() throws RuntimeException{

@@ -1,31 +1,31 @@
 package avg1a2.project.logic;
 
 public class State {
-    private String override;
-    private String routing;
-    private boolean overwritten;
+    private String active;
+    private String inactive;
+    private boolean state;
 
-    State() {
-        this.override = "Override";
-        this.routing = "Routing";
-        this.overwritten = false;
+    State(String active, String inactive) {
+        this.active = active;
+        this.inactive = inactive;
+        this.state = false;
     }
 
     public void setState(String state) throws IllegalArgumentException {
-        if (state.equals(override)) {
-            this.overwritten = true;
-        } else if (state.equals(routing)) {
-            this.overwritten = false;
+        if (state.equals(active)) {
+            this.state = true;
+        } else if (state.equals(inactive)) {
+            this.state = false;
         } else {
             throw new IllegalArgumentException("Not a valid state.");
         }
     }
     
     String getState() {
-        if (overwritten) {
-            return override;
+        if (state) {
+            return active;
         } else {
-            return routing;
+            return inactive;
         }
     }
 }
