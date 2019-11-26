@@ -13,50 +13,50 @@ public class IRConversion implements IRCallback {
 
     @Override
     public void onSignal(int signal) {
-        switch (signal){
-            case 0b0000000 :
+        switch (Integer.toBinaryString(signal)){
+            case "10000000" :
                 callback.leftDiagonal();
                 break;
-            case 0b0000001 :
+            case "10000001" :
                 callback.forward();
                 break;
-            case 0b0000010 :
+            case "10000010" :
                 callback.rightDiagonal();
                 break;
-            case 0b0000011 :
+            case "10000011" :
                 callback.leftTurn();
                 break;
-            case 0b0000100 :
+            case "10000100" :
                 callback.stop();
                 break;
-            case 0b0000101 :
+            case "10000101" :
                 callback.rightTurn();
                 break;
-            case 0b0000110 :
+            case "10000110" :
                 callback.leftBackDiagonal();
                 break;
-            case 0b0000111 :
+            case "10000111" :
                 callback.reverse();
                 break;
-            case 0b0001000 :
+            case "10001000" :
                 callback.rightBackDiagonal();
                 break;
-            case 0b0010100 :
+            case "10010100" :
                 callback.mute();
                 break;
-            case 0b0010101 :
+            case "10010101" :
                 callback.switchOn();
                 break;
-            case 0b0011010 :
+            case "10011010" :
                 callback.infiniteRightTurn();
                 break;
-            case 0b0011011 :
+            case "10011011" :
                 callback.infiniteLeftTurn();
                 break;
-            case 0b0010000 :
+            case "10010000" :
                 callback.square();
                 break;
-            case 0b0010001 :
+            case "10010001" :
                 callback.triangle();
                 break;
         }

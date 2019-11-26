@@ -12,10 +12,17 @@ import com.sun.xml.internal.ws.api.pipe.Engine;
 import javax.xml.crypto.Data;
 
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
+    private MotionControl motionControl;
 
+    public RemoteControl() {
+    }
 
     public void run(DataStore dataStore) {
        dataStore.getCollisionDetection().update();
+       dataStore.getIrSensor().update();
+       if (motionControl == null) {
+           motionControl = dataStore.getMotionControl();
+       }
     }
 
     public void onFrontCollision() {
@@ -38,96 +45,107 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void leftDiagonal() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(45, 200);
         forward();
+
     }
 
     @Override
     public void forward() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         motionControl.accelerateToSpeed(200);
     }
 
     @Override
     public void rightDiagonal() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(-45, 200);
         forward();
+
     }
 
     @Override
     public void leftTurn() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(90, 200);
         forward();
+
     }
 
     @Override
     public void stop() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         motionControl.emergencyBrake();
+
     }
 
     @Override
     public void rightTurn() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(-90, 200);
         forward();
+
     }
 
 
     @Override
     public void leftBackDiagonal() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(135, 200);
         forward();
+
     }
 
     @Override
     public void reverse() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.setSpeedForward(-200);
         forward();
+
     }
 
     @Override
     public void rightBackDiagonal() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         stop();
         motionControl.turnDegrees(-135, 200);
         forward();
+
     }
 
     public void mute() {
+        System.out.println("WORKS!");
         Speaker speaker = new Speaker(1, 1000, 20);
         speaker.mute();
+
     }
 
     public void switchOn() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
         motionControl.onButtonPress();
+
     }
 
     @Override
     public void infiniteRightTurn() {
-
+        System.out.println("WORKS!");
     }
 
     @Override
     public void infiniteLeftTurn() {
-
+        System.out.println("WORKS!");
     }
 
     @Override
     public void square() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
 
 
         for(int i = 0; i < 4; i++){
@@ -140,7 +158,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void triangle() {
-        MotionControl motionControl = new MotionControl();
+        System.out.println("WORKS!");
 
         for(int i = 0; i < 3; i++){
             stop();
