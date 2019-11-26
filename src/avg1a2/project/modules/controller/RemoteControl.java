@@ -18,4 +18,80 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void onCommand1() {
         
     }
+
+    @Override
+    public void leftDiagonal() {
+
+    }
+
+    @Override
+    public void forward() {
+
+    }
+
+    @Override
+    public void rightDiagonal() {
+
+    }
+
+    @Override
+    public void leftTurn() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public void rightTurn() {
+
+    }
+
+    @Override
+    public void leftBackDiagonal() {
+
+    }
+
+    @Override
+    public void reverse() {
+
+    }
+
+    @Override
+    public void rightBackDiagonal() {
+
+    }
+
+    @Override
+    public void mute() {
+
+    }
+
+    @Override
+    public void switchOn() {
+
+    }
+
+    @Override
+    public void infiniteRightTurn() {
+
+    }
+
+    @Override
+    public void infiniteLeftTurn() {
+
+    }
+
+    @Override
+    public void square() {
+
+    }
+
+    @Override
+    public void triangle() {
+
+    }
+
 }

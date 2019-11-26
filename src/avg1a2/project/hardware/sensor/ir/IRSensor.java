@@ -26,7 +26,7 @@ public class IRSensor implements Sensor {
     public int[] scan(){
         int pulse[] = new int[12];
         for (int i = 0; i <12; i++) {
-            pulse[i] = BoeBot.pulseIn(1,false,20000);
+            pulse[i] = BoeBot.pulseIn(pin,false,20000);
         }
         return pulse;
     }
@@ -65,7 +65,7 @@ public class IRSensor implements Sensor {
     }
 
     /**
-     * to check if the user pressed in a new button on the remote control.
+     * to check if the user pressed a new button on the remote control.
      */
     @Override
     public void update() {

@@ -1,4 +1,4 @@
-package avg1a2.tests;
+package testpackage;
 
 import avg1a2.project.hardware.sensor.ir.IRCallback;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
@@ -16,6 +16,6 @@ public class Program implements IRCallback {
 
     @Override
     public void onSignal(int signal) {
-        System.out.println(Integer.toBinaryString(signal));
+        System.out.println(signal);
     }
 }
