@@ -7,13 +7,15 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversionCallback;
+import com.sun.xml.internal.ws.api.pipe.Engine;
+
+import javax.xml.crypto.Data;
 
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
 
 
     public void run(DataStore dataStore) {
-        CollisionDetection collisionDetectionUpdate = new CollisionDetection(this);
-        collisionDetectionUpdate.update();
+       dataStore.getCollisionDetection().update();
     }
 
     public void onFrontCollision() {
@@ -36,65 +38,81 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void leftDiagonal() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(45, 200);
+        forward();
     }
 
     @Override
     public void forward() {
-
+        MotionControl motionControl = new MotionControl();
+        motionControl.accelerateToSpeed(200);
     }
 
     @Override
     public void rightDiagonal() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(-45, 200);
+        forward();
     }
 
     @Override
     public void leftTurn() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(90, 200);
+        forward();
     }
 
     @Override
     public void stop() {
-
+        MotionControl motionControl = new MotionControl();
+        motionControl.emergencyBrake();
     }
 
     @Override
     public void rightTurn() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(-90, 200);
+        forward();
     }
+
 
     @Override
     public void leftBackDiagonal() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(135, 200);
+        forward();
     }
 
     @Override
     public void reverse() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.setSpeedForward(-200);
+        forward();
     }
 
     @Override
-<<<<<<< HEAD
-=======
     public void rightBackDiagonal() {
-
+        MotionControl motionControl = new MotionControl();
+        stop();
+        motionControl.turnDegrees(-135, 200);
+        forward();
     }
 
-    @Override
->>>>>>> master
     public void mute() {
-
+        Speaker speaker = new Speaker(1, 1000, 20);
+        speaker.mute();
     }
 
-    @Override
-<<<<<<< HEAD
-    public void onCommand2() {
-
-    }
-=======
     public void switchOn() {
-
+        MotionControl motionControl = new MotionControl();
+        motionControl.onButtonPress();
     }
 
     @Override
@@ -109,13 +127,27 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void square() {
+        MotionControl motionControl = new MotionControl();
+
+
+        for(int i = 0; i < 4; i++){
+            stop();
+            motionControl.turnDegrees(90, 200);
+            forward();
+        }
 
     }
 
     @Override
     public void triangle() {
+        MotionControl motionControl = new MotionControl();
+
+        for(int i = 0; i < 3; i++){
+            stop();
+            motionControl.turnDegrees(60,200);
+            forward();
+        }
 
     }
 
->>>>>>> `   `
 }
