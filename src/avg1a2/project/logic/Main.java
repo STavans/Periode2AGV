@@ -1,5 +1,9 @@
 package avg1a2.project.logic;
 
+/**
+ * Only starts the programs and runs it.
+ * It also catches any runtime exceptions and prints the error message in the console.
+ */
 public class Main {
     public static void main (String[] args) {
         try {
