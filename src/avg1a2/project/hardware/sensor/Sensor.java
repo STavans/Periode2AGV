@@ -1,5 +1,7 @@
 package avg1a2.project.hardware.sensor;
 
-public interface Sensor extends avg1a2.project.hardware.Component {
+import avg1a2.project.hardware.Component;
+
+public interface Sensor extends Component {
     boolean isActive();
 }

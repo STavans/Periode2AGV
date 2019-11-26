@@ -15,7 +15,7 @@ public class UltrasonicSensor implements Sensor {
     /**
     Initialises all of the privates shown above
      **/
-    public UltrasonicSensor(int pin1, int pin2, UltraSonicCallback ultraSonicCallBack, boolean isOn) {
+    public UltrasonicSensor(int pin1, int pin2, UltraSonicCallback ultraSonicCallBack) {
         this.pin1 = pin1;
         this.pin2 = pin2;
         this.timer = new Timer(50);
