@@ -3,6 +3,7 @@ package avg1a2.project.modules.controller;
 import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
+import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.button.Button;
 import avg1a2.project.hardware.sensor.button.ButtonCallback;
 
@@ -17,6 +18,7 @@ public class MotionControl implements ButtonCallback {
     private Servo sRecht;
     private int currentSpeed;
     private Timer timer;
+    private Component wheels;
 
     public MotionControl(){
         this.sLinks = new Servo(12);
@@ -25,6 +27,9 @@ public class MotionControl implements ButtonCallback {
         this.timer = new Timer(100);
     }
 
+    public void setWheels(Component wheels) {
+        this.wheels = wheels;
+    }
 
     public void accelerateToSpeed(int toSpeed){
 

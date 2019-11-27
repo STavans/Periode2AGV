@@ -1,14 +1,27 @@
 package avg1a2.project.modules.irconversion;
 
+import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ir.IRCallback;
-import avg1a2.project.hardware.sensor.ir.IRSensor;
 
 public class IRConversion implements IRCallback {
     //hier komen de individuele knopcodes van de afstandsbediening
     private IRConversionCallback callback;
+    private Component irSensor;
 
     public IRConversion(IRConversionCallback callback){
         this.callback = callback;
+    }
+
+    public void setIrSensor(Component irSensor) {
+        this.irSensor = irSensor;
+    }
+    
+    public void update() {
+        if (irSensor == null) {
+            throw new RuntimeException("IR sensor has not been set");
+        } else {
+            irSensor.update();
+        }
     }
 
     @Override
