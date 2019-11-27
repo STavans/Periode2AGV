@@ -66,7 +66,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(45,200);
+            motionControl.setTurnDegrees(-45,200);
             //forward();
         }
     }
@@ -176,6 +176,29 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
                 motionControl.setTurnDegrees(60,200);
                 forward();
             }
+        }
+    }
+
+    @Override
+    public void smoothTurnLeft() {
+
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+
+            motionControl.setState("Executing");
+            motionControl.smoothTurnLeft();
+
+        }
+    }
+
+    @Override
+    public void smoothTurnRight() {
+
+
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+
+            motionControl.setState("Executing");
+            motionControl.smoothTurnRight();
+
         }
     }
 }
