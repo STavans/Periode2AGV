@@ -15,15 +15,17 @@ public class CollisionDetection implements UltraSonicCallback {
     private boolean collision;
     private LedGroup group;
     private Speaker warningSpeaker;
+    private LedGroup ledGroup;
 
     /**
      * @param collisionDetection gets initialised in the constructor
      **/
-    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group, Speaker warningSpeaker){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group, Speaker warningSpeaker, LedGroup ledGroup){
         this.collisionDetectionCallback = collisionDetection;
         this.group = group;
         this.collision = false;
         this.warningSpeaker = warningSpeaker;
+        this.ledGroup = ledGroup;
     }
 
     public void setUltrasonicSensor(Component ultrasonicSensor) {
@@ -44,8 +46,8 @@ public class CollisionDetection implements UltraSonicCallback {
             ultrasonicSensor.update();
         }
         if (timer != null && timer.timeout() && collision) {
-            group.off();
             collision = false;
+            ledGroup.on();
         }
     }
 
