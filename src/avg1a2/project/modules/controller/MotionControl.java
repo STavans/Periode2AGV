@@ -104,8 +104,14 @@ public class MotionControl implements ButtonCallback {
         int pulse;
         this.turnDegrees = Math.abs(degrees);
         this.turnSpeed = Math.abs(turnSpeed);
+<<<<<<< HEAD
         turnTime = (int)(this.turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
         if (degrees < 0) {
+=======
+        turnTime = (int)(this.turnDegrees / (double)turnSpeed * 427);
+        //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
+        if (turnDegrees < 0) {
+>>>>>>> master
             reverse = true;
         }
         if (reverse) {
