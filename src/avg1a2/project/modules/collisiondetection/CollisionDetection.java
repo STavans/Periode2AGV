@@ -28,6 +28,7 @@ public class CollisionDetection implements UltraSonicCallback {
         this.collision = false;
         this.warningSpeaker = warningSpeaker;
         this.ledGroup = ledGroup;
+        ledGroup.on();
     }
 
     public void setUltrasonicSensor(Component ultrasonicSensor) {
