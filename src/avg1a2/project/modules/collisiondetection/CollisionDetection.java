@@ -59,9 +59,9 @@ public class CollisionDetection implements UltraSonicCallback {
     @Override
     public void onUltraSonic() {
         group.on();
-        warningSpeaker.Beep();
         collision = true;
         timer = new Timer(500);
         collisionDetectionCallback.onFrontCollision();
+        warningSpeaker.Beep();
     }
 }
