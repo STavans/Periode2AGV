@@ -173,4 +173,27 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
             }
         }
     }
+
+    @Override
+    public void smoothTurnLeft() {
+
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+
+            motionControl.setState("Executing");
+            motionControl.smoothTurnLeft();
+
+        }
+    }
+
+    @Override
+    public void smoothTurnRight() {
+
+
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+
+            motionControl.setState("Executing");
+            motionControl.smoothTurnRight();
+
+        }
+    }
 }

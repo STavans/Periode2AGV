@@ -105,7 +105,7 @@ public class MotionControl implements ButtonCallback {
         this.turnDegrees = Math.abs(degrees);
         this.turnSpeed = Math.abs(turnSpeed);
         turnTime = (int)(this.turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
-        if (turnDegrees < 0) {
+        if (degrees < 0) {
             reverse = true;
         }
         if (reverse) {
@@ -118,4 +118,21 @@ public class MotionControl implements ButtonCallback {
         setAction("turnDegrees");
         timer = new Timer(turnTime);
     }
+
+
+    public void smoothTurnLeft(){
+
+      sLinks.update(1425);
+      sRecht.update(1600);
+
+      setState("Idle");
+    }
+    public void smoothTurnRight(){
+
+        sLinks.update(1600);
+        sRecht.update(1425);
+
+        setState("Idle");
+    }
+
 }

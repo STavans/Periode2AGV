@@ -16,4 +16,7 @@ public interface IRConversionCallback {
     void infiniteLeftTurn();
     void square();
     void triangle();
+    void smoothTurnLeft();
+    void smoothTurnRight();
+
 }
