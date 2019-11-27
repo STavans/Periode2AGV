@@ -44,7 +44,7 @@ public class UltrasonicSensor implements Sensor {
      **/
     public int ultraSonicPulse() {
         BoeBot.digitalWrite(this.pin1, true);
-        BoeBot.wait(1);
+        BoeBot.uwait(1);
         BoeBot.digitalWrite(this.pin1, false);
         int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
 
@@ -75,7 +75,6 @@ public class UltrasonicSensor implements Sensor {
                     ultraSonicCallback.onUltraSonic();
                 }
             }
-            this.timer = new Timer(50);
         }
     }
 }
