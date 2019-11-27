@@ -11,13 +11,13 @@ public class Program implements IRCallback {
 
     public void run() {
 
-        RemoteControlTest remoteControlTest = new RemoteControlTest();
+        /*RemoteControlTest remoteControlTest = new RemoteControlTest();
         IRConversion irConversion = new IRConversion(remoteControlTest);
         IRSensor irSensor = new IRSensor(15,irConversion);
         while (true){
             irSensor.update();
             BoeBot.wait(1);
-        }
+        }*/
     }
 
     @Override

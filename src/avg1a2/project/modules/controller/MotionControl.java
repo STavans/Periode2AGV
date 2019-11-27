@@ -122,14 +122,14 @@ public class MotionControl implements ButtonCallback {
 
     public void smoothTurnLeft(){
 
-      sLinks.update(1425);
-      sRecht.update(1600);
+      sLinks.update(1575);
+      sRecht.update(1350);
 
       setState("Idle");
     }
     public void smoothTurnRight(){
 
-        sLinks.update(1600);
+        sLinks.update(1750);
         sRecht.update(1425);
 
         setState("Idle");

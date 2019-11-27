@@ -61,7 +61,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-45,200);
+            motionControl.setTurnDegrees(45,200);
             //forward();
         }
     }
