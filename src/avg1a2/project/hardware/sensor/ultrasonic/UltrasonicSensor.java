@@ -8,9 +8,7 @@ public class UltrasonicSensor implements Sensor {
     private int pin1;
     private int pin2;
     private Timer timer;
-    private Timer timer2;
     private UltraSonicCallback ultraSonicCallback;
-    private boolean isOn;
 
     /**
     Initialises all of the privates shown above

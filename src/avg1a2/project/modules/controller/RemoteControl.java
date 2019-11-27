@@ -1,5 +1,6 @@
 package avg1a2.project.modules.controller;
 
+import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
@@ -11,21 +12,18 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
 import javax.xml.crypto.Data;
 
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
-    private MotionControl motionControl;
 
-    public RemoteControl() {
+    private MotionControl motionControl;
+    public RemoteControl(MotionControl motionControl) {
+        this.motionControl = motionControl;
     }
 
     public void run(DataStore dataStore) {
        dataStore.getCollisionDetection().update();
-       dataStore.getIrSensor().update();
-       if (motionControl == null) {
-           motionControl = dataStore.getMotionControl();
-       }
+       dataStore.getIrConversion().update();
     }
 
     public void onFrontCollision() {
-        MotionControl motionControl = new MotionControl();
         motionControl.emergencyBrake();
 
         LedGroup group = new LedGroup();

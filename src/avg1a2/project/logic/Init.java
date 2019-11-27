@@ -55,9 +55,9 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new Motion Control.
      */
     private static void buildControllers(DataStore dataStore) {
-        dataStore.setRemoteControl(new RemoteControl());
-        dataStore.setPcControl(new PcControl());
         dataStore.setMotionControl(new MotionControl());
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setPcControl(new PcControl());
     }
 
     private static void buildState(DataStore dataStore) {
@@ -82,6 +82,11 @@ class Init {
         dataStore.setUltrasonicSensor(new UltrasonicSensor(1,2,dataStore.getCollisionDetection()));
         dataStore.setWhiskerLeft(new Whisker(1));
         dataStore.setWhiskerRight(new Whisker(2));
+    }
+
+    private static void setSensors(DataStore dataStore) {
+        dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
+        dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
     }
 
     //private static void buildSignals() {
