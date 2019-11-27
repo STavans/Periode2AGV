@@ -79,10 +79,8 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     @Override
     public void stop() {
 
-        if (motionControl.stateCheck()) {
-            motionControl.setState("Executing");
-            motionControl.emergencyBrake();
-        }
+        motionControl.setState("Executing");
+        motionControl.emergencyBrake();
     }
 
     @Override
