@@ -24,11 +24,14 @@ class Init {
     static DataStore buildData() {
         DataStore dataStore = new DataStore();
         buildControllers(dataStore);
+        buildState(dataStore);
         buildEngine(dataStore);
         buildCollisionDetection(dataStore);
         buildIrConversion(dataStore);
         buildCommandLayouts(dataStore);
         buildRoutes(dataStore);
+        buildSensors(dataStore);
+        setSensors(dataStore);
         return dataStore;
     }
 
@@ -53,9 +56,13 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new Motion Control.
      */
     private static void buildControllers(DataStore dataStore) {
-        dataStore.setRemoteControl(new RemoteControl());
-        dataStore.setPcControl(new PcControl());
         dataStore.setMotionControl(new MotionControl());
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setPcControl(new PcControl());
+    }
+
+    private static void buildState(DataStore dataStore) {
+        dataStore.setState(new State("Override","Routing"));
     }
 
     private static void buildCollisionDetection(DataStore dataStore) {
@@ -72,10 +79,15 @@ class Init {
 
     private static void buildSensors(DataStore dataStore) {
         dataStore.setButton(new Button(1,dataStore.getMotionControl()));
-        dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,2,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
         dataStore.setWhiskerLeft(new Whisker(1));
         dataStore.setWhiskerRight(new Whisker(2));
+    }
+
+    private static void setSensors(DataStore dataStore) {
+        dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
+        dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
     }
 
     //private static void buildSignals() {

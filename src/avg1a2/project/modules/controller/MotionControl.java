@@ -3,65 +3,71 @@ package avg1a2.project.modules.controller;
 import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
+import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.button.Button;
 import avg1a2.project.hardware.sensor.button.ButtonCallback;
+import avg1a2.project.logic.State;
+import avg1a2.project.modules.irconversion.IRConversionCallback;
 
+/**
+ * Class will have to be reworked to work with updatable in a infinite loop.
+ * Not doing now, cause no time and I am tired.
+ * - Faithfully Signed, Mick van der Werf, signing off for a while.
+ */
 public class MotionControl implements ButtonCallback {
 
     private Servo sLinks;
     private Servo sRecht;
-    private int currentSpeed;
     private Timer timer;
+    private State state;
+    private String action;
+    private int turnDegrees;
+    private int turnSpeed;
+    private int turnTime;
 
     public MotionControl(){
         this.sLinks = new Servo(12);
         this.sRecht = new Servo(13);
-        this.currentSpeed = 0;
         this.timer = new Timer(100);
+        state = new State("Executing","Idle");
+    }
+
+    public void update() {
+        if (!stateCheck()) {
+            switch (action) {
+                case "turnDegrees" :
+                    turnDegrees();
+                    break;
+                case "none" :
+                    break;
+            }
+        }
+    }
+
+    public boolean stateCheck() {
+        if (state.getState().equals("Idle")) {
+            return true;
+        }
+        else return false;
+    }
+
+    public void setState(String state) {
+        this.state.setState(state);
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    @Override
+    public void onButtonPress() {
+        //do nothing
     }
 
 
-    public void accelerateToSpeed(int toSpeed){
 
-        int toGo = toSpeed - this.currentSpeed;
-        int leftServo = 1500 + this.currentSpeed;
-        int rightServo = 1500 - this.currentSpeed;
-        this.timer.mark();
-        if(toGo > 0){
-
-            int i = 0;
-            while(i < toGo){
-
-                if(this.timer.timeout()){
-
-                this.sLinks.update(leftServo + i);
-                this.sRecht.update(rightServo - i);
-
-                i++;
-                }
-
-
-            }
-            this.currentSpeed = this.currentSpeed + i;
-
-        }else if(toGo < 0){
-
-            int i = 0;
-            while(i > toGo){
-
-                if(this.timer.timeout()){
-
-                    this.sLinks.update(leftServo + i);
-                    this.sRecht.update(rightServo - i);
-
-                    i--;
-                }
-
-
-            }
-            this.currentSpeed = this.currentSpeed - i;
-
-        }
+    public void accelerateToSpeed(int targetSpeed){
+        //
     }
 
 
@@ -69,6 +75,7 @@ public class MotionControl implements ButtonCallback {
 
         this.sLinks.update(1500 + speed);
         this.sRecht.update(1500 - speed);
+        setState("Idle");
     }
 
 
@@ -76,46 +83,39 @@ public class MotionControl implements ButtonCallback {
 
         this.sLinks.update(1500);
         this.sRecht.update(1500);
-        this.currentSpeed = 0;
+        setState("Idle");
     }
 
 
 
-        public void turnDegrees(int degrees, int turnSpeed){
-
-            int prevSpeed = this.currentSpeed;
-            double turnTime = ((double)degrees / turnSpeed) * 425; //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
-            this.timer.mark();
-
-            setSpeedForward(0);
-            if(degrees > 0) {
-                this.sLinks.update(1500 + turnSpeed);
-                this.sRecht.update(1500 + turnSpeed);
-
-                if(this.timer.timeout()){
-                this.sLinks.update(1500);
-                this.sRecht.update(1500);
-
-                }
-            }
-            else{
-                turnTime = turnTime * -1;
-                this.sLinks.update(1500 - turnSpeed);
-                this.sRecht.update(1500 - turnSpeed);
-                if(this.timer.timeout()) {
-                    this.sLinks.update(1500);
-                    this.sRecht.update(1500);
-                }
-
-            }
-
-            setSpeedForward(prevSpeed);
+    public void turnDegrees(){
+        if (timer != null && timer.timeout()) {
+            sLinks.update(1500);
+            sRecht.update(1500);
+            setTurnDegrees(0,0);
+            setAction("none");
+            setState("Idle");
 
         }
+    }
+    public void setTurnDegrees(int degrees, int turnSpeed) {
 
-
-    @Override
-    public void onButtonPress() {
-        //do nothing
+        boolean reverse = false;
+        int pulse;
+        this.turnDegrees = Math.abs(degrees);
+        this.turnSpeed = Math.abs(turnSpeed);
+        turnTime = (int)(this.turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
+        if (turnDegrees < 0) {
+            reverse = true;
+        }
+        if (reverse) {
+            pulse = 1500 - turnSpeed;
+        } else {
+            pulse = 1500 + turnSpeed;
+        }
+        sLinks.update(pulse);
+        sRecht.update(pulse);
+        setAction("turnDegrees");
+        timer = new Timer(turnTime);
     }
 }

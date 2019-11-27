@@ -13,4 +13,9 @@ public class PcControl implements CollisionDetectionCallback {
     public void onCollision() {
 
     }
+
+    @Override
+    public void onFrontCollision() {
+
+    }
 }
