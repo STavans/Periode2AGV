@@ -1,5 +1,6 @@
 package avg1a2.project.logic;
 
+import TI.BoeBot;
 import avg1a2.project.modules.data.DataStore;
 
 /**
@@ -15,6 +16,7 @@ class Program {
     Program() {
         running = true;
         dataStore = Init.buildData();
+        dataStore.getState().setState("Override");
     }
 
     /**
@@ -32,6 +34,7 @@ class Program {
                 running = false;
                 throw new RuntimeException("Program exited due to an illegal state.");
             }
+            BoeBot.wait(1);
         }
     }
 }
