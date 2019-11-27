@@ -80,7 +80,7 @@ class Init {
     private static void buildSensors(DataStore dataStore) {
         dataStore.setButton(new Button(1,dataStore.getMotionControl()));
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,2,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
         dataStore.setWhiskerLeft(new Whisker(1));
         dataStore.setWhiskerRight(new Whisker(2));
     }

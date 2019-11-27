@@ -31,7 +31,7 @@ public class UltrasonicSensor implements Sensor {
         if (pulse > 100) {
             return pulse / 58;
         }
-        return 0;
+        else return 100;
 
     }
 
@@ -45,7 +45,6 @@ public class UltrasonicSensor implements Sensor {
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pin1, false);
         int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
-
         if (pulse > 100) {
             return pulse;
         } else {
@@ -68,8 +67,7 @@ public class UltrasonicSensor implements Sensor {
             int scan = ultraSonicPulse();
             if (scan > 100) {
                 int distance = calculateDistance(scan);
-                if (distance < 50) {
-                    System.out.println(distance);
+                if (distance < 15) {
                     ultraSonicCallback.onUltraSonic();
                 }
             }
