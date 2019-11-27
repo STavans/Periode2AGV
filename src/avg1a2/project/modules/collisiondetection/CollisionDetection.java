@@ -6,9 +6,11 @@ import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
+import avg1a2.project.modules.controller.MotionControl;
 
 public class CollisionDetection implements UltraSonicCallback {
 
+    private MotionControl motionControl;
     private CollisionDetectionCallback collisionDetectionCallback;
     private Component ultrasonicSensor;
     private Timer timer;
@@ -20,7 +22,7 @@ public class CollisionDetection implements UltraSonicCallback {
     /**
      * @param collisionDetection gets initialised in the constructor
      **/
-    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group, Speaker warningSpeaker, LedGroup ledGroup){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection,MotionControl motionControl , LedGroup group, Speaker warningSpeaker, LedGroup ledGroup){
         this.collisionDetectionCallback = collisionDetection;
         this.group = group;
         this.collision = false;
@@ -45,11 +47,11 @@ public class CollisionDetection implements UltraSonicCallback {
         } else {
             ultrasonicSensor.update();
         }
-        if (collision) {
-            if (timer != null && timer.timeout()) {
-                collision = false;
-                ledGroup.on();
-            }
+        if (timer != null && timer.timeout() && collision) {
+            collision = false;
+            ledGroup.on();
+        }
+        if (motionControl.stateCheck()) {
             warningSpeaker.Beep();
         }
     }
