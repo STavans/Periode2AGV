@@ -29,6 +29,7 @@ class Init {
         buildState(dataStore);
         buildEngine(dataStore);
         buildCollisionDetection(dataStore);
+        buildProcess(dataStore);
         buildIrConversion(dataStore);
         buildCommandLayouts(dataStore);
         buildRoutes(dataStore);
@@ -77,6 +78,8 @@ class Init {
         group.addLed("6",new NeoPixel(5,50,255,0,0));
         dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),group));
     }
+
+
 
     private static void buildIrConversion(DataStore dataStore) {
         dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl()));

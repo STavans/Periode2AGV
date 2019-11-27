@@ -8,18 +8,21 @@ import avg1a2.project.hardware.signal.led.NeoPixel;
 
 public class CollisionDetection implements UltraSonicCallback {
 
+
     private CollisionDetectionCallback collisionDetectionCallback;
     private Component ultrasonicSensor;
     private Timer timer;
     private boolean collision;
     private LedGroup group;
+    private LedGroup ledGroup;
 
     /**
      * @param collisionDetection gets initialised in the constructor
      **/
-    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group, LedGroup ledGroup){
         this.collisionDetectionCallback = collisionDetection;
         this.group = group;
+        this.ledGroup = ledGroup;
         this.collision = false;
     }
 
@@ -42,6 +45,8 @@ public class CollisionDetection implements UltraSonicCallback {
         }
         if (timer != null && timer.timeout() && collision) {
             group.off();
+
+
             collision = false;
         }
     }
@@ -56,6 +61,7 @@ public class CollisionDetection implements UltraSonicCallback {
     @Override
     public void onUltraSonic() {
         group.on();
+
         collision = true;
         timer = new Timer(500);
         collisionDetectionCallback.onFrontCollision();

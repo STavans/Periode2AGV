@@ -29,7 +29,12 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
             collisionDetection.update();
             dataStore.getIrConversion().update();
             motionControl.update();
+            pixelOn();
         }
+    }
+
+    public void pixelOn(){
+
     }
 
     public void onFrontCollision() {
