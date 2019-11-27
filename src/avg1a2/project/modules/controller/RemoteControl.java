@@ -138,7 +138,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteRightTurn() {
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
-            //
+            motionControl.infRight();
         }
     }
 
@@ -146,7 +146,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteLeftTurn() {
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
-            //
+            motionControl.infLeft();
         }
     }
 
@@ -196,4 +196,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
         }
     }
+
+
 }

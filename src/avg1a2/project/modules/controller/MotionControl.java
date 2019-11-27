@@ -135,4 +135,21 @@ public class MotionControl implements ButtonCallback {
         setState("Idle");
     }
 
+    public void infRight(){
+
+        sLinks.update(1600);
+        sRecht.update(1600);
+
+        setState("Idle");
+    }
+
+    public void infLeft(){
+
+        sLinks.update(1400);
+        sRecht.update(1400);
+
+        setState("Idle");
+
+    }
+
 }
