@@ -9,7 +9,6 @@ import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversionCallback;
 
-import javax.xml.crypto.Data;
 
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
 
@@ -24,7 +23,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     }
 
     public void onFrontCollision() {
-        motionControl.emergencyBrake();
+        stop();
 
         LedGroup group = new LedGroup();
         group.addLed(" neo0",new NeoPixel(0, 10, 255, 0, 0));
@@ -39,130 +38,127 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         speaker.Beep();
     }
 
-
     @Override
     public void leftDiagonal() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(45, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(-45,200);
+            forward();
+        }
     }
 
     @Override
     public void forward() {
-        System.out.println("WORKS!");
-        motionControl.accelerateToSpeed(200);
+        if (motionControl.stateCheck()) {
+            motionControl.accelerateToSpeed(200);
+        }
     }
 
     @Override
     public void rightDiagonal() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(-45, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(45,200);
+            forward();
+        }
     }
 
     @Override
     public void leftTurn() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(90, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(-90,200);
+            forward();
+        }
     }
 
     @Override
     public void stop() {
-        System.out.println("WORKS!");
-        motionControl.emergencyBrake();
-
+        if (motionControl.stateCheck()) {
+            motionControl.emergencyBrake();
+        }
     }
 
     @Override
     public void rightTurn() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(-90, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(90,200);
+            forward();
+        }
     }
-
 
     @Override
     public void leftBackDiagonal() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(135, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(-135,200);
+            forward();
+        }
     }
 
     @Override
     public void reverse() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.setSpeedForward(-200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.setSpeedForward(200);
+            forward();
+        }
     }
 
     @Override
     public void rightBackDiagonal() {
-        System.out.println("WORKS!");
-        stop();
-        motionControl.turnDegrees(-135, 200);
-        forward();
-
+        if (motionControl.stateCheck()) {
+            stop();
+            motionControl.turnDegrees(135,200);
+            forward();
+        }
     }
 
+    @Override
     public void mute() {
-        System.out.println("WORKS!");
-        Speaker speaker = new Speaker(1, 1000, 20);
-        speaker.mute();
 
     }
 
+    @Override
     public void switchOn() {
-        System.out.println("WORKS!");
-        motionControl.onButtonPress();
 
     }
 
     @Override
     public void infiniteRightTurn() {
-        System.out.println("WORKS!");
+        if (motionControl.stateCheck()) {
+            //
+        }
     }
 
     @Override
     public void infiniteLeftTurn() {
-        System.out.println("WORKS!");
+        if (motionControl.stateCheck()) {
+            //
+        }
     }
 
     @Override
     public void square() {
-        System.out.println("WORKS!");
-
-
-        for(int i = 0; i < 4; i++){
-            stop();
-            motionControl.turnDegrees(90, 200);
-            forward();
+        if (motionControl.stateCheck()) {
+            for (int i = 0; i < 4; i++) {
+                stop();
+                motionControl.turnDegrees(90,200);
+                forward();
+            }
         }
-
     }
 
     @Override
     public void triangle() {
-        System.out.println("WORKS!");
-
-        for(int i = 0; i < 3; i++){
-            stop();
-            motionControl.turnDegrees(60,200);
-            forward();
+        if (motionControl.stateCheck()) {
+            for (int i = 0; i < 3; i++) {
+                stop();
+                motionControl.turnDegrees(60,200);
+                forward();
+            }
         }
-
     }
 
 }

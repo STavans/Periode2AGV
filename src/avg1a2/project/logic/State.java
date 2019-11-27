@@ -14,7 +14,7 @@ public class State {
      * @param active Active state represented by a String for the state name.
      * @param inactive Inactive state represented by a String for the state name.
      */
-    State(String active, String inactive) {
+    public State(String active, String inactive) {
         this.active = active;
         this.inactive = inactive;
         this.state = false;
@@ -39,7 +39,7 @@ public class State {
      * Getter function to get the current state, returns the state based on a boolean attribute.
      * @return The current state of this object.
      */
-    String getState() {
+    public String getState() {
         if (state) {
             return active;
         } else {

@@ -31,6 +31,7 @@ class Init {
         buildCommandLayouts(dataStore);
         buildRoutes(dataStore);
         buildSensors(dataStore);
+        setSensors(dataStore);
         return dataStore;
     }
 
