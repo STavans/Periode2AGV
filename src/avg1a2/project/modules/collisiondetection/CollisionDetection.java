@@ -45,9 +45,12 @@ public class CollisionDetection implements UltraSonicCallback {
         } else {
             ultrasonicSensor.update();
         }
-        if (timer != null && timer.timeout() && collision) {
-            collision = false;
-            ledGroup.on();
+        if (collision) {
+            if (timer != null && timer.timeout()) {
+                collision = false;
+                ledGroup.on();
+            }
+            warningSpeaker.Beep();
         }
     }
 
@@ -64,6 +67,5 @@ public class CollisionDetection implements UltraSonicCallback {
         collision = true;
         timer = new Timer(500);
         collisionDetectionCallback.onFrontCollision();
-        warningSpeaker.Beep();
     }
 }
