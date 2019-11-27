@@ -1,22 +1,34 @@
 package avg1a2.project.modules.collisiondetection;
 
+import TI.Timer;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
+import avg1a2.project.hardware.signal.led.LedGroup;
+import avg1a2.project.hardware.signal.led.NeoPixel;
 
 public class CollisionDetection implements UltraSonicCallback {
 
     private CollisionDetectionCallback collisionDetectionCallback;
     private Component ultrasonicSensor;
+    private Timer timer;
+    private boolean collision;
+    private LedGroup group;
 
     /**
      * @param collisionDetection gets initialised in the constructor
      **/
-    public CollisionDetection(CollisionDetectionCallback collisionDetection){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup group){
         this.collisionDetectionCallback = collisionDetection;
+        this.group = group;
+        this.collision = false;
     }
 
     public void setUltrasonicSensor(Component ultrasonicSensor) {
         this.ultrasonicSensor = ultrasonicSensor;
+    }
+
+    public boolean isCollision() {
+        return collision;
     }
 
     /**
@@ -27,6 +39,10 @@ public class CollisionDetection implements UltraSonicCallback {
             throw new RuntimeException("Ultrasonic sensor has not been assigned");
         } else {
             ultrasonicSensor.update();
+        }
+        if (timer != null && timer.timeout() && collision) {
+            group.off();
+            collision = false;
         }
     }
 
@@ -39,7 +55,9 @@ public class CollisionDetection implements UltraSonicCallback {
      **/
     @Override
     public void onUltraSonic() {
-
+        group.on();
+        collision = true;
+        timer = new Timer(500);
         collisionDetectionCallback.onFrontCollision();
     }
 }
