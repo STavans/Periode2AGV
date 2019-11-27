@@ -5,6 +5,7 @@ import avg1a2.project.hardware.sensor.button.Button;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.sensor.whisker.Whisker;
+import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
@@ -75,7 +76,7 @@ class Init {
         group.addLed("4",new NeoPixel(3,50,255,0,0));
         group.addLed("5",new NeoPixel(4,50,255,0,0));
         group.addLed("6",new NeoPixel(5,50,255,0,0));
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),group));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),group, new Speaker(2, 1000, 500)));
     }
 
     private static void buildIrConversion(DataStore dataStore) {
