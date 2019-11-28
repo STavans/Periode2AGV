@@ -25,7 +25,7 @@ public class MotionControl implements ButtonCallback {
     private int turnSpeed;
     private int turnTime;
 
-    public MotionControl(State state){
+    public MotionControl(){
         this.sLinks = new Servo(12);
         this.sRecht = new Servo(13);
         this.timer = new Timer(100);
