@@ -65,9 +65,12 @@ public class CollisionDetection implements UltraSonicCallback {
      **/
     @Override
     public void onUltraSonic() {
+        if (!collision) {
+            collisionDetectionCallback.onFrontCollision();
+        }
         group.on();
         collision = true;
         timer = new Timer(500);
-        collisionDetectionCallback.onFrontCollision();
+
     }
 }
