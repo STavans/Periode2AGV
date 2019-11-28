@@ -18,6 +18,8 @@ public interface IRConversionCallback {
     void triangle();
     void smoothTurnLeft();
     void smoothTurnRight();
+    void speedUp();
+    void slowDown();
 
 
 }
