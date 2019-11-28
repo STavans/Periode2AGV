@@ -20,7 +20,7 @@ public class EngineCodedump {
      * - Faithfully Signed, Mick van der Werf, signing off for a while.
      */
 
-        private Servo sLinks;
+        /**private Servo sLinks;
         private Servo sRecht;
         private int currentSpeed;
         private Timer timer;
@@ -72,7 +72,7 @@ public class EngineCodedump {
 
         public void onButtonPress() {
             //do nothing
-        }
+        }*/
 
 
 
@@ -128,7 +128,7 @@ public class EngineCodedump {
         }
 
 
-        public void setSpeedForward(int speed){
+        /**public void setSpeedForward(int speed){
 
             this.sLinks.update(1500 + speed);
             this.sRecht.update(1500 - speed);
@@ -140,7 +140,7 @@ public class EngineCodedump {
             this.sLinks.update(1500);
             this.sRecht.update(1500);
             this.currentSpeed = 0;
-        }
+        }*/
 
 
 

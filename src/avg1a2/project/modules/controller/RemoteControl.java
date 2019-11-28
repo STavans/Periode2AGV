@@ -43,7 +43,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-45,200);
+            motionControl.setTurnDegrees(-45,50);
             //forward();
         }
     }
@@ -61,7 +61,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(45,200);
+            motionControl.setTurnDegrees(45,50);
             //forward();
         }
     }
@@ -71,16 +71,17 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()){
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-90,200);
+            motionControl.setTurnDegrees(-90,50);
             //forward();
         }
     }
 
     @Override
     public void stop() {
-
-        motionControl.setState("Executing");
-        motionControl.emergencyBrake();
+        if (motionControl.stateCheck()) {
+            motionControl.setState("Executing");
+            motionControl.emergencyBrake();
+        }
     }
 
     @Override
@@ -88,7 +89,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(90,200);
+            motionControl.setTurnDegrees(90,50);
             //forward();
         }
     }
@@ -98,7 +99,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-135,200);
+            motionControl.setTurnDegrees(-135,50);
             //forward();
         }
     }
@@ -117,7 +118,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(135,200);
+            motionControl.setTurnDegrees(135,50);
             //forward();
         }
     }
@@ -154,7 +155,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
             motionControl.setState("Executing");
             for (int i = 0; i < 4; i++) {
                 stop();
-                motionControl.setTurnDegrees(90,200);
+                motionControl.setTurnDegrees(90,50);
                 forward();
             }
         }
@@ -166,7 +167,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
             motionControl.setState("Executing");
             for (int i = 0; i < 3; i++) {
                 stop();
-                motionControl.setTurnDegrees(60,200);
+                motionControl.setTurnDegrees(60,50);
                 forward();
             }
         }
@@ -185,8 +186,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void smoothTurnRight() {
-
-
         if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
 
             motionControl.setState("Executing");
@@ -195,5 +194,20 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         }
     }
 
+    @Override
+    public void speedUp() {
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+            motionControl.setState("Executing");
+            motionControl.speedUp();
 
+        }
+    }
+
+    @Override
+    public void slowDown() {
+        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+            motionControl.setState("Executing");
+            motionControl.slowDown();
+    }
+    }
 }

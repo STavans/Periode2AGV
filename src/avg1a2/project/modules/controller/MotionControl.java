@@ -24,12 +24,17 @@ public class MotionControl implements ButtonCallback {
     private int turnDegrees;
     private int turnSpeed;
     private int turnTime;
+    private int currentspeed;
 
     public MotionControl(){
         this.sLinks = new Servo(12);
         this.sRecht = new Servo(13);
         this.timer = new Timer(100);
-        state = new State("Executing","Idle");
+        this.currentspeed = 0;
+        state = new State();
+        state.addState("Executing");
+        state.addState("Idle");
+        state.setState("Idle");
     }
 
     public void update() {
@@ -75,6 +80,7 @@ public class MotionControl implements ButtonCallback {
 
         this.sLinks.update(1500 + speed);
         this.sRecht.update(1500 - speed);
+        this.currentspeed = speed;
         setState("Idle");
     }
 
@@ -83,6 +89,7 @@ public class MotionControl implements ButtonCallback {
 
         this.sLinks.update(1500);
         this.sRecht.update(1500);
+        this.currentspeed = 0;
         setState("Idle");
     }
 
@@ -95,7 +102,6 @@ public class MotionControl implements ButtonCallback {
             setTurnDegrees(0,0);
             setAction("none");
             setState("Idle");
-
         }
     }
     public void setTurnDegrees(int degrees, int turnSpeed) {
@@ -150,6 +156,20 @@ public class MotionControl implements ButtonCallback {
 
         setState("Idle");
 
+    }
+
+    public void speedUp() {
+        this.currentspeed += 5;
+        setSpeedForward(currentspeed);
+
+        setState("Idle");
+    }
+
+    public void slowDown() {
+        this.currentspeed -= 5;
+        setSpeedForward(currentspeed);
+
+        setState("Idle");
     }
 
 }

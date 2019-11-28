@@ -2,11 +2,11 @@ package avg1a2.project.logic;
 
 import java.util.ArrayList;
 
-public class State {
+public class TestState {
     private ArrayList<String> states;
     private String currentState;
 
-    public State() {
+    public TestState() {
         this.states = new ArrayList<>();
     }
 
@@ -32,7 +32,7 @@ public class State {
         if (currentState != null) {
             return currentState;
         } else {
-            throw new IllegalStateException("No State has been set");
+         throw new IllegalStateException("No State has been set");
         }
     }
 }

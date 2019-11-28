@@ -65,7 +65,9 @@ class Init {
     }
 
     private static void buildState(DataStore dataStore) {
-        dataStore.setState(new State("Override","Routing"));
+        dataStore.setState(new State());
+        dataStore.getState().addState("Override");
+        dataStore.getState().addState("Routing");
     }
 
     private static void buildCollisionDetection(DataStore dataStore) {
@@ -88,7 +90,7 @@ class Init {
         ledGroup.addLed("6", new NeoPixel(5, 255,255,255));
 
 
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),group, new Speaker(2, 1000, 100), ledGroup));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),group, new Speaker(2, 1000, 500), ledGroup));
     }
 
     private static void buildIrConversion(DataStore dataStore) {

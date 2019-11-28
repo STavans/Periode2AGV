@@ -78,6 +78,12 @@ public class IRConversion implements IRCallback {
             case "10010010" :
                 callback.smoothTurnRight();
                 break;
+            case "10011110" :
+                callback.speedUp();
+                break;
+            case "10011111" :
+                callback.slowDown();
+                break;
         }
 
     }
