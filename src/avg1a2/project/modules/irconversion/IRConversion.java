@@ -2,21 +2,33 @@ package avg1a2.project.modules.irconversion;
 
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ir.IRCallback;
-import avg1a2.project.modules.data.CommandLayout;
 
+/**
+ * Converts the IR signal to match it with one of it's callback functions based on the code received.
+ */
 public class IRConversion implements IRCallback {
-    //hier komen de individuele knopcodes van de afstandsbediening
     private IRConversionCallback callback;
     private Component irSensor;
 
+    /**
+     * Constructor sets the callback to signal on detection.
+     * @param callback Callback to signal on detection of a IR signal.
+     */
     public IRConversion(IRConversionCallback callback){
         this.callback = callback;
     }
 
+    /**
+     * Sets the sensor to use to scan for IR signals.
+     * @param irSensor the sensor to use.
+     */
     public void setIrSensor(Component irSensor) {
         this.irSensor = irSensor;
     }
 
+    /**
+     * Updates the converted, allowing it to continuously scan for IR signals.
+     */
     public void update() {
         if (irSensor == null) {
             throw new RuntimeException("IR sensor has not been set");
@@ -25,11 +37,14 @@ public class IRConversion implements IRCallback {
         }
     }
 
-
+    /**
+     * Callback function called from the sensor on IR detection.
+     * Compares the code received to a
+     * @param signal Signal received by the sensor.
+     */
     @Override
     public void onSignal(int signal) {
         switch (signal) {
-
             case 0b10000000 :
                 callback.leftDiagonal();
                 break;
