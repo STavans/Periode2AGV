@@ -1,5 +1,8 @@
 package avg1a2.project.modules.irconversion;
 
+/**
+ * Conversion callback which calls functions based on the code received.
+ */
 public interface IRConversionCallback {
     void leftDiagonal();
     void forward();

@@ -1,14 +1,5 @@
 package avg1a2.tests;
 
-import TI.BoeBot;
-import TI.Servo;
-import TI.Timer;
-import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.button.Button;
-import avg1a2.project.hardware.sensor.button.ButtonCallback;
-import avg1a2.project.logic.State;
-import avg1a2.project.modules.irconversion.IRConversionCallback;
-
 public class EngineCodedump {
 
 

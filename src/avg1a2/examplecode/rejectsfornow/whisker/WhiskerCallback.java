@@ -1,4 +1,4 @@
-package avg1a2.project.hardware.sensor.whisker;
+package avg1a2.examplecode.rejectsfornow.whisker;
 
 public interface WhiskerCallback {
     void onPress();

@@ -1,116 +1,133 @@
 package avg1a2.project.modules.controller;
 
-import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
-import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.button.Button;
-import avg1a2.project.hardware.sensor.button.ButtonCallback;
 import avg1a2.project.logic.State;
-import avg1a2.project.modules.irconversion.IRConversionCallback;
 
 /**
- * Class will have to be reworked to work with updatable in a infinite loop.
- * Not doing now, cause no time and I am tired.
- * - Faithfully Signed, Mick van der Werf, signing off for a while.
+ * Controller to manage any and all actions related to motion and is called/used by the other controllers.
  */
-public class MotionControl implements ButtonCallback {
-
-    private Servo sLinks;
-    private Servo sRecht;
+public class MotionControl  {
+    private Servo sLeft;
+    private Servo sRight;
     private Timer timer;
     private State state;
-    private String action;
-    private int turnDegrees;
-    private int turnSpeed;
-    private int turnTime;
-    private int currentspeed;
+    private State action;
+    private int currentSpeed;
 
-    public MotionControl(){
-        this.sLinks = new Servo(12);
-        this.sRecht = new Servo(13);
-        this.timer = new Timer(100);
-        this.currentspeed = 0;
-        state = new State();
-        state.addState("Executing");
-        state.addState("Idle");
-        state.setState("Idle");
+    /**
+     * Constructor sets it's Servo's and it's currentSpeed at creation.
+     */
+    public MotionControl(Servo sLeft, Servo sRight){
+        this.sLeft = sLeft;
+        this.sRight = sRight;
+        this.currentSpeed = 0;
     }
 
+    /**
+     * Updates the controller to check if any actions are still in progress and if so, to continue them.
+     */
     public void update() {
-        if (!stateCheck()) {
-            switch (action) {
-                case "turnDegrees" :
-                    turnDegrees();
-                    break;
-                case "none" :
-                    break;
-            }
+        if (state.ifState("Executing")) {
+            turnDegrees();
         }
     }
 
-    public boolean stateCheck() {
-        if (state.getState().equals("Idle")) {
-            return true;
-        }
-        else return false;
+    /**
+     * Insert a new State object for the controller to use.
+     * @param state The State for the controller to use.
+     */
+    public void newState(State state) {
+        this.state = state;
+        this.state.setState("Idle");
     }
 
+    /**
+     * Set the current active state of the controller.
+     * @param state The new state the controller needs to be in.
+     */
     public void setState(String state) {
         this.state.setState(state);
     }
 
-    public void setAction(String action) {
+    /**
+     * Checks if the controller is idle using it's state.
+     * @return True if the controller is idle, false if it's not.
+     */
+    boolean isIdle() {
+        return state.ifState("Idle");
+    }
+
+    /**
+     * Insert a new State object, defining all non single run actions for the controller to use.
+     * @param action State containing all actions.
+     */
+    public void newAction(State action) {
         this.action = action;
     }
 
-    @Override
-    public void onButtonPress() {
-        //do nothing
+    /**
+     * Sets the current action for the controller to keep checking to execute.
+     * @param action New active action.
+     */
+    void setAction(String action) {
+        this.action.setState(action);
     }
 
-
-
+    /**
+     * Function to allow the BoeBot to accelerate to a given a speed.
+     * @param targetSpeed The target speed for the BoeBot to reach.
+     */
     public void accelerateToSpeed(int targetSpeed){
-        //
+        //todo Also do not forget to add the action to the Init script if you want to keep checking for it.
     }
 
-
-    public void setSpeedForward(int speed){
-
-        this.sLinks.update(1500 + speed);
-        this.sRecht.update(1500 - speed);
-        this.currentspeed = speed;
+    /**
+     * Sets a new speed for the BoeBot.
+     * @param speed The new speed of the BoeBot.
+     */
+    void setSpeedForward(int speed){
+        this.sLeft.update(1500 + speed);
+        this.sRight.update(1500 - speed);
+        this.currentSpeed = speed;
         setState("Idle");
     }
 
-
-    public void emergencyBrake(){
-
-        this.sLinks.update(1500);
-        this.sRecht.update(1500);
-        this.currentspeed = 0;
+    /**
+     * Emergency brake for the BoeBot to come to a total standstill in case of emergency.
+     */
+    void emergencyBrake(){
+        this.sLeft.update(1500); // This code is repeated a lot, maybe a private function to set the wheels? Doesn't help much, but it is a bit shorter.
+        this.sRight.update(1500);
+        this.currentSpeed = 0;
+        //maybe we need to let it increase back to the currentSpeed afterwards instead.
         setState("Idle");
     }
 
-
-
-    public void turnDegrees(){
-        if (timer != null && timer.timeout()) {
-            sLinks.update(1500);
-            sRecht.update(1500);
+    /**
+     * Function to check if the turnDegrees function needs to be ended.
+     */
+    private void turnDegrees(){ //Can we combine this function back into the other turn function? Maybe one function that manages these both?
+        if (action.ifState("TurnDegrees") && timer != null && timer.timeout()) {
+            sLeft.update(1500);
+            sRight.update(1500);
             setTurnDegrees(0,0);
-            setAction("none");
+            setAction("None");
             setState("Idle");
         }
     }
-    public void setTurnDegrees(int degrees, int turnSpeed) {
 
+    /**
+     * Initiates the BoeBot to start turning.
+     * @param degrees The amount of degrees to turn.
+     * @param turnSpeed The speed at which to turn.
+     */
+    void setTurnDegrees(int degrees, int turnSpeed) { //Can we just hardcode the speed and time based on degrees?
         boolean reverse = false;
         int pulse;
-        this.turnDegrees = Math.abs(degrees);
-        this.turnSpeed = Math.abs(turnSpeed);
-        turnTime = (int)(this.turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn.
+        int turnDegrees = Math.abs(degrees);
+        turnSpeed = Math.abs(turnSpeed);
+        int turnTime = (int)(turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn 90 degrees.
         if (degrees < 0) {
             reverse = true;
         }
@@ -119,56 +136,63 @@ public class MotionControl implements ButtonCallback {
         } else {
             pulse = 1500 + turnSpeed;
         }
-        sLinks.update(pulse);
-        sRecht.update(pulse);
-        setAction("turnDegrees");
+        sLeft.update(pulse); //REPEATED CODE AGAIN!!! ;)
+        sRight.update(pulse);
+        setAction("TurnDegrees");
         timer = new Timer(turnTime);
     }
 
-
-    public void smoothTurnLeft(){
-
-      sLinks.update(1575);
-      sRecht.update(1350);
-
-      setState("Idle");
-    }
-    public void smoothTurnRight(){
-
-        sLinks.update(1750);
-        sRecht.update(1425);
-
+    /**
+     * BoeBot turns left smoothly using a certain offset.
+     */
+    void smoothTurnLeft(){ // Maybe we want to give the offset as a parameter?
+        sLeft.update(1575); //DUPLICATE IGNORED!
+        sRight.update(1350);
         setState("Idle");
     }
 
-    public void infRight(){
-
-        sLinks.update(1600);
-        sRecht.update(1600);
-
+    /**
+     * BoeBot turns right smoothly using a certain offset.
+     */
+    void smoothTurnRight(){
+        sLeft.update(1750); //do I have to repeat myself?
+        sRight.update(1425);
         setState("Idle");
     }
 
-    public void infLeft(){
-
-        sLinks.update(1400);
-        sRecht.update(1400);
-
-        setState("Idle");
-
-    }
-
-    public void speedUp() {
-        this.currentspeed += 5;
-        setSpeedForward(currentspeed);
-
+    /**
+     * Makes the BoeBot turn right infinitely.
+     */
+    void infRight(){
+        sLeft.update(1600); //you know what I'd say.
+        sRight.update(1600); // Maybe not use set speeds, but the currentSpeed instead?, or just slow in general
         setState("Idle");
     }
 
-    public void slowDown() {
-        this.currentspeed -= 5;
-        setSpeedForward(currentspeed);
+    /**
+     * Makes the BoeBot turn left infinitely.
+     */
+    void infLeft(){
+        sLeft.update(1400); //last time I swear.
+        sRight.update(1400); // Maybe not use set speeds, but the currentSpeed instead?, or just slow in general
+        setState("Idle");
+    }
 
+    /**
+     * Makes the BoeBot speed up with an increase of 5.
+     */
+    void speedUp() {
+        this.currentSpeed += 5;
+        setSpeedForward(currentSpeed); //Maybe change to accelerate?
+        setState("Idle");
+    }
+
+    /**
+     * Makes the BoeBot slow down with a decrease of 5.
+     */
+    void slowDown() {
+        this.currentSpeed -= 5;
+        setSpeedForward(currentSpeed); //Maybe change to accelerate?
         setState("Idle");
     }
 
