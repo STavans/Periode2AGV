@@ -20,7 +20,9 @@ public class DataStore {
     private MotionControl motionControl;
     private PcControl pcControl;
     private RemoteControl remoteControl;
-    private State state;
+    private State programState;
+    private State motionState;
+    private State motionAction;
     private CollisionDetection collisionDetection;
     private IRConversion irConversion;
     private Component wheels;
@@ -87,15 +89,39 @@ public class DataStore {
         }
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void newProgramState(State programState) {
+        this.programState = programState;
     }
 
-    public State getState() throws IllegalArgumentException {
-        if (state == null) {
+    public void newMotionState(State motionState) {
+        this.motionState = programState;
+    }
+
+    public void newMotionAction(State motionAction) {
+        this.motionAction = programState;
+    }
+
+    public State getProgramState() throws IllegalArgumentException {
+        if (programState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
-            return this.state;
+            return this.programState;
+        }
+    }
+
+    public State getMotionState() throws IllegalArgumentException {
+        if (motionState == null) {
+            throw new IllegalArgumentException("State has not been initialized");
+        } else {
+            return this.motionState;
+        }
+    }
+
+    public State getMotionAction() throws IllegalArgumentException {
+        if (motionAction == null) {
+            throw new IllegalArgumentException("State has not been initialized");
+        } else {
+            return this.motionAction;
         }
     }
 

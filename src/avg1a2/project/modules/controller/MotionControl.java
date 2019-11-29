@@ -20,7 +20,7 @@ public class MotionControl implements ButtonCallback {
     private Servo sRecht;
     private Timer timer;
     private State state;
-    private String action;
+    private State action;
     private int turnDegrees;
     private int turnSpeed;
     private int turnTime;
@@ -31,37 +31,33 @@ public class MotionControl implements ButtonCallback {
         this.sRecht = new Servo(13);
         this.timer = new Timer(100);
         this.currentspeed = 0;
-        state = new State();
-        state.addState("Executing");
-        state.addState("Idle");
-        state.setState("Idle");
     }
 
     public void update() {
-        if (!stateCheck()) {
-            switch (action) {
-                case "turnDegrees" :
-                    turnDegrees();
-                    break;
-                case "none" :
-                    break;
-            }
+        if (state.ifState("Executing")) {
+            turnDegrees();
         }
     }
 
-    public boolean stateCheck() {
-        if (state.getState().equals("Idle")) {
-            return true;
-        }
-        else return false;
+    public void newState(State state) {
+        this.state = state;
+        this.state.setState("Idle");
+    }
+
+    public void newAction(State action) {
+        this.action = action;
     }
 
     public void setState(String state) {
         this.state.setState(state);
     }
 
+    public boolean isIdle() {
+        return state.ifState("Idle");
+    }
+
     public void setAction(String action) {
-        this.action = action;
+        this.action.setState(action);
     }
 
     @Override
@@ -96,11 +92,11 @@ public class MotionControl implements ButtonCallback {
 
 
     public void turnDegrees(){
-        if (timer != null && timer.timeout()) {
+        if (action.ifState("TurnDegrees") && timer != null && timer.timeout()) {
             sLinks.update(1500);
             sRecht.update(1500);
             setTurnDegrees(0,0);
-            setAction("none");
+            setAction("None");
             setState("Idle");
         }
     }
@@ -121,17 +117,17 @@ public class MotionControl implements ButtonCallback {
         }
         sLinks.update(pulse);
         sRecht.update(pulse);
-        setAction("turnDegrees");
+        setAction("TurnDegrees");
         timer = new Timer(turnTime);
     }
 
 
     public void smoothTurnLeft(){
 
-      sLinks.update(1575);
-      sRecht.update(1350);
+        sLinks.update(1575);
+        sRecht.update(1350);
 
-      setState("Idle");
+        setState("Idle");
     }
     public void smoothTurnRight(){
 

@@ -16,7 +16,7 @@ class Program {
     Program() {
         running = true;
         dataStore = Init.buildData();
-        dataStore.getState().setState("Override");
+        dataStore.getProgramState().setState("Override");
     }
 
     /**
@@ -26,9 +26,9 @@ class Program {
      */
     void run() throws RuntimeException{
         while (running) {
-            if (dataStore.getState().getState().equals("Override")) {
+            if (dataStore.getProgramState().ifState("Override")) {
                 dataStore.getRemoteControl().run(dataStore);
-            } else if (dataStore.getState().getState().equals("Routing")) {
+            } else if (dataStore.getProgramState().ifState("Routing")) {
                 dataStore.getPcControl().run(dataStore);
             } else {
                 running = false;

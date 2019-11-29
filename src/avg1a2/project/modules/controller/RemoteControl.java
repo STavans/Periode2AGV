@@ -40,7 +40,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void leftDiagonal() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-45,50);
@@ -50,7 +50,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void forward() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.setSpeedForward(200);
         }
@@ -58,7 +58,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void rightDiagonal() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(45,50);
@@ -68,7 +68,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void leftTurn() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()){
+        if (motionControl.isIdle() && !collisionDetection.isCollision()){
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-90,50);
@@ -78,7 +78,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void stop() {
-        if (motionControl.stateCheck()) {
+        if (motionControl.isIdle()) {
             motionControl.setState("Executing");
             motionControl.emergencyBrake();
         }
@@ -86,7 +86,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void rightTurn() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(90,50);
@@ -96,7 +96,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void leftBackDiagonal() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-135,50);
@@ -106,7 +106,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void reverse() {
-        if (motionControl.stateCheck()) {
+        if (motionControl.isIdle()) {
             motionControl.setState("Executing");
             motionControl.setSpeedForward(-200);
             //forward();
@@ -115,7 +115,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void rightBackDiagonal() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             stop();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(135,50);
@@ -135,7 +135,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void infiniteRightTurn() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.infRight();
         }
@@ -143,7 +143,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void infiniteLeftTurn() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.infLeft();
         }
@@ -151,7 +151,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void square() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             for (int i = 0; i < 4; i++) {
                 stop();
@@ -163,7 +163,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void triangle() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             for (int i = 0; i < 3; i++) {
                 stop();
@@ -176,7 +176,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     @Override
     public void smoothTurnLeft() {
 
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
 
             motionControl.setState("Executing");
             motionControl.smoothTurnLeft();
@@ -186,7 +186,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void smoothTurnRight() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
 
             motionControl.setState("Executing");
             motionControl.smoothTurnRight();
@@ -196,7 +196,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void speedUp() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.speedUp();
 
@@ -205,9 +205,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     @Override
     public void slowDown() {
-        if (motionControl.stateCheck() && !collisionDetection.isCollision()) {
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.slowDown();
-    }
+        }
     }
 }

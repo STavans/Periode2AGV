@@ -35,4 +35,15 @@ public class State {
             throw new IllegalStateException("No State has been set");
         }
     }
+
+    public Boolean ifState(String state) {
+        if (!states.contains(state)) {
+            throw new IllegalArgumentException("The requested state has not been set.");
+        }
+        if (state.equals(currentState)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -65,9 +65,19 @@ class Init {
     }
 
     private static void buildState(DataStore dataStore) {
-        dataStore.setState(new State());
-        dataStore.getState().addState("Override");
-        dataStore.getState().addState("Routing");
+        dataStore.newProgramState(new State());
+        dataStore.getProgramState().addState("Override");
+        dataStore.getProgramState().addState("Routing");
+
+        dataStore.newMotionState(new State());
+        dataStore.getMotionState().addState("Idle");
+        dataStore.getMotionState().addState("Executing");
+        dataStore.getMotionControl().newState(dataStore.getMotionState());
+
+        dataStore.newMotionAction(new State());
+        dataStore.getMotionAction().addState("TurnDegrees");
+        dataStore.getMotionAction().addState("None");
+        dataStore.getMotionControl().newAction(dataStore.getMotionAction());
     }
 
     private static void buildCollisionDetection(DataStore dataStore) {
