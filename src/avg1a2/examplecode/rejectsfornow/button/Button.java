@@ -1,7 +1,6 @@
-package avg1a2.project.hardware.sensor.button;
+package avg1a2.examplecode.rejectsfornow.button;
 
 import TI.BoeBot;
-import avg1a2.project.hardware.sensor.Sensor;
 
 /**
  * A button is a sensor based object which will return true when pressed and false when not.
@@ -27,7 +26,9 @@ public class Button implements Sensor {
         return !BoeBot.digitalRead(button);
     }
 
-    @Override
+    /**
+     * Function to be able to be continuously called and give a signal to it's callback whenever it detects input.
+     */
     public void update() {
         if(this.isActive()){
             buttonCallBack.onButtonPress();

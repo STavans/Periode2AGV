@@ -2,9 +2,12 @@ package avg1a2.project.hardware.sensor.ultrasonic;
 
 import TI.BoeBot;
 import TI.Timer;
-import avg1a2.project.hardware.sensor.Sensor;
+import avg1a2.project.hardware.Component;
 
-public class UltrasonicSensor implements Sensor {
+/**
+ * UltraSonic sensor is the sensor which will calculate distance towards an object in front of it, based on sound pulses.
+ */
+public class UltrasonicSensor implements Component {
     private int pin1;
     private int pin2;
     private Timer timer;
@@ -26,7 +29,7 @@ public class UltrasonicSensor implements Sensor {
     This method calculates the distance of the ultrasonic sensor's pulse length, if the pulse is greater than 100 it returns a zero.
     That is to test if the sensor works correctly
      **/
-    public int calculateDistance(int pulse) {
+    private int calculateDistance(int pulse) {
 
         if (pulse > 100) {
             return pulse / 58;
@@ -40,7 +43,7 @@ public class UltrasonicSensor implements Sensor {
     and returning the value of it
 
      **/
-    public int ultraSonicPulse() {
+    private int ultraSonicPulse() {
         BoeBot.digitalWrite(this.pin1, true);
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pin1, false);
@@ -51,12 +54,6 @@ public class UltrasonicSensor implements Sensor {
             return 0;
         }
     }
-
-    @Override
-    public boolean isActive() {
-        return false;
-    }
-
 
     /**
     This updates the current state of the ultrasonic sensor. By having a set timer of 50milliseconds

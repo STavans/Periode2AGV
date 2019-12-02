@@ -1,14 +1,5 @@
 package avg1a2.tests;
 
-import TI.BoeBot;
-import TI.Servo;
-import TI.Timer;
-import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.button.Button;
-import avg1a2.project.hardware.sensor.button.ButtonCallback;
-import avg1a2.project.logic.State;
-import avg1a2.project.modules.irconversion.IRConversionCallback;
-
 public class EngineCodedump {
 
 
@@ -20,7 +11,7 @@ public class EngineCodedump {
      * - Faithfully Signed, Mick van der Werf, signing off for a while.
      */
 
-        private Servo sLinks;
+        /**private Servo sLinks;
         private Servo sRecht;
         private int currentSpeed;
         private Timer timer;
@@ -72,7 +63,7 @@ public class EngineCodedump {
 
         public void onButtonPress() {
             //do nothing
-        }
+        }*/
 
 
 
@@ -128,7 +119,7 @@ public class EngineCodedump {
         }
 
 
-        public void setSpeedForward(int speed){
+        /**public void setSpeedForward(int speed){
 
             this.sLinks.update(1500 + speed);
             this.sRecht.update(1500 - speed);
@@ -140,7 +131,7 @@ public class EngineCodedump {
             this.sLinks.update(1500);
             this.sRecht.update(1500);
             this.currentSpeed = 0;
-        }
+        }*/
 
 
 

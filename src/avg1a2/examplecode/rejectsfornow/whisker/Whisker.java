@@ -1,9 +1,9 @@
-package avg1a2.project.hardware.sensor.whisker;
+package avg1a2.examplecode.rejectsfornow.whisker;
 
 import TI.BoeBot;
-import avg1a2.project.hardware.sensor.Sensor;
+import avg1a2.project.hardware.Component;
 
-public class Whisker implements Sensor {
+public class Whisker implements Component {
     private int pin;
 
 /*
@@ -18,21 +18,17 @@ The constructor initialises the integer
      */
     public void whiskerIsActive(){
         if(BoeBot.digitalRead(pin)){
-            isActive();
+            //isActive();
         }  else{
             System.out.println("It's not activated");
         }
     }
 
-    @Override
-    public boolean isActive() {
-        System.out.println("It's activated");
-        return false;
-    }
 
     @Override
     public void update() {
-
-
+        //
+        // To Do, if we use it
+        //
     }
 }
