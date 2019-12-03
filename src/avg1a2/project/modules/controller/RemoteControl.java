@@ -54,7 +54,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void onFrontCollision() {
         motionControl.setState("Idle");
-        motionControl.setAction("");
+        motionControl.setAction("None");
         stop(); //Maybe we need to let it brake instead?
     }
 
