@@ -8,7 +8,6 @@ import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.MotionControl;
-import avg1a2.examplecode.rejectsfornow.PcControl;
 import avg1a2.project.modules.controller.RemoteControl;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversion;
@@ -79,21 +78,21 @@ class Init {
      */
     private static void buildSignals(DataStore dataStore) {
         LedGroup idle = new LedGroup(); //used by the collision detector to signify an idle state.
-        idle.addLed("idle1",new NeoPixel(0,50,255,0,0));
-        idle.addLed("idle2",new NeoPixel(1,50,255,0,0));
-        idle.addLed("idle3",new NeoPixel(2,50,255,0,0));
-        idle.addLed("idle4",new NeoPixel(3,50,255,0,0));
-        idle.addLed("idle5",new NeoPixel(4,50,255,0,0));
-        idle.addLed("idle6",new NeoPixel(5,50,255,0,0));
+        idle.addLed("idle1",new NeoPixel(0,50,255,255,255));
+        idle.addLed("idle2",new NeoPixel(1,50,255,255,255));
+        idle.addLed("idle3",new NeoPixel(2,50,255,255,255));
+        idle.addLed("idle4",new NeoPixel(3,50,255,255,255));
+        idle.addLed("idle5",new NeoPixel(4,50,255,255,255));
+        idle.addLed("idle6",new NeoPixel(5,50,255,255,255));
         dataStore.addLedGroup("idle",idle);
 
         LedGroup collision = new LedGroup(); // used by the collision detector to signify a collided state.
-        collision.addLed("collision1", new NeoPixel(0, 255,255,255));
-        collision.addLed("collision2", new NeoPixel(1, 255,255,255));
-        collision.addLed("collision3", new NeoPixel(2, 255,255,255));
-        collision.addLed("collision4", new NeoPixel(3, 255,255,255));
-        collision.addLed("collision5", new NeoPixel(4, 255,255,255));
-        collision.addLed("collision6", new NeoPixel(5, 255,255,255));
+        collision.addLed("collision1", new NeoPixel(0, 255,0,0));
+        collision.addLed("collision2", new NeoPixel(1, 255,0,0));
+        collision.addLed("collision3", new NeoPixel(2, 255,0,0));
+        collision.addLed("collision4", new NeoPixel(3, 255,0,0));
+        collision.addLed("collision5", new NeoPixel(4, 255,0,0));
+        collision.addLed("collision6", new NeoPixel(5, 255,0,0));
         dataStore.addLedGroup("collision",collision);
 
         dataStore.setSpeaker(new Speaker(2, 1000, 500));
