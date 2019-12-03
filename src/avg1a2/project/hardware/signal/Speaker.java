@@ -46,6 +46,7 @@ public class Speaker implements Component {
     }
 
     public void update() {
+        Beep();
         //todo
     }
 }
