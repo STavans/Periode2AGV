@@ -61,7 +61,7 @@ public class CollisionDetection implements UltraSonicCallback {
         if (isCollision) {
             if (timer != null && timer.timeout()) {
                 isCollision = false;
-                collision.on();
+                idle.on();
             }
             warningSpeaker.update(); // needs to be updated to support the update functionality.
         }
@@ -74,7 +74,7 @@ public class CollisionDetection implements UltraSonicCallback {
         if (!isCollision) {
             collisionDetectionCallback.onFrontCollision();
         }
-        idle.on();
+        collision.on();
         isCollision = true;
         timer = new Timer(500);
     }
