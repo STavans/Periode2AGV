@@ -26,7 +26,8 @@ public class DataStore {
     private State motionAction;
     private Component irSensor;
     private Component ultrasonicSensor;
-    private Component speaker;
+    private Component warningSpeaker;
+    private Component runningSpeaker;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
     private Servo sRight;
@@ -219,10 +220,10 @@ public class DataStore {
     }
 
     /**
-     * Sets the speaker in the DataStore.
+     * Sets the warningSpeaker in the DataStore.
      */
-    public void setSpeaker(Speaker speaker) {
-        this.speaker = speaker;
+    public void setWarningSpeaker(Speaker speaker) {
+        this.warningSpeaker = speaker;
     }
 
     /**
@@ -230,11 +231,31 @@ public class DataStore {
      * @return speaker object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
-    public Component getSpeaker() throws IllegalArgumentException {
-        if (speaker == null) {
-            throw new IllegalArgumentException("Speaker has not been initialized");
+    public Component getWarningSpeaker() throws IllegalArgumentException {
+        if (warningSpeaker == null) {
+            throw new IllegalArgumentException("WarningSpeaker has not been initialized");
         } else {
-            return this.speaker;
+            return this.warningSpeaker;
+        }
+    }
+
+    /**
+     * Sets the runningSpeaker in the DataStore.
+     */
+    public void setRunningSpeaker(Speaker speaker) {
+        this.runningSpeaker = speaker;
+    }
+
+    /**
+     * Gets the speaker from the DataStore.
+     * @return speaker object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Component getRunningSpeaker() throws IllegalArgumentException {
+        if (runningSpeaker == null) {
+            throw new IllegalArgumentException("RunningSpeaker has not been initialized");
+        } else {
+            return this.runningSpeaker;
         }
     }
 

@@ -95,7 +95,8 @@ class Init {
         collision.addLed("collision6", new NeoPixel(5, 255,0,0));
         dataStore.addLedGroup("collision",collision);
 
-        dataStore.setSpeaker(new Speaker(2, 1000, 500));
+        dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
+        dataStore.setRunningSpeaker(new Speaker(2,500,50));
     }
 
     /**
@@ -103,7 +104,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),dataStore.getLedGroup("idle"), dataStore.getLedGroup("collision"), dataStore.getSpeaker()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),dataStore.getLedGroup("idle"), dataStore.getLedGroup("collision"), dataStore.getWarningSpeaker(),dataStore.getRunningSpeaker()));
     }
 
     /**
