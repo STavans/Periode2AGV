@@ -52,7 +52,6 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
-        dataStore.setPcControl(new PcControl());
     }
 
     /**
