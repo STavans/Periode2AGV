@@ -1,5 +1,6 @@
 package avg1a2.project.modules.controller;
 
+import TI.Timer;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.irconversion.IRConversion;
@@ -12,6 +13,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
     private IRConversion irConversion;
+    private Timer timer;
 
     /**
      * Constructor sets the motionController to use.
@@ -158,7 +160,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Mutes the BoeBot.
      */
     public void mute() {
-        //todo mute button call, also create constant sound.
+        if (timer == null || timer.timeout()) {
+            collisionDetection.mute();
+            timer = new Timer(200);
+        }
     }
 
     /**
