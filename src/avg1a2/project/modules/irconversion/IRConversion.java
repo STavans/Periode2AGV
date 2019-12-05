@@ -58,7 +58,7 @@ public class IRConversion implements IRCallback {
                 callback.leftTurn();
                 break;
             case 0b10000100 :
-                callback.stop();
+                callback.brake();
                 break;
             case 0b10000101 :
                 callback.rightTurn();

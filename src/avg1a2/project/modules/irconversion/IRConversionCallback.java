@@ -20,7 +20,7 @@ public interface IRConversionCallback {
     void smoothTurnRight();
     void speedUp();
     void slowDown();
-    
+    void brake();
 
 
 }

@@ -57,7 +57,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void onFrontCollision() {
         motionControl.setState("Idle");
         motionControl.setAction("None");
-        stop(); //Maybe we need to let it brake instead?
+        brake(); //Maybe we need to let it brake instead?
     }
 
     /**
@@ -65,7 +65,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-45,50);
         }
@@ -86,9 +86,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(45,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(45,50);
         }
     }
 
@@ -97,9 +97,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()){
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-90,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(-90,50);
         }
     }
 
@@ -109,7 +109,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void emergencyBrake() { //Stop or brake?
         if (motionControl.isIdle()) {
             motionControl.setState("Executing");
-            motionControl.emergencyBrake(); //stop or brake?
+            motionControl.emergencyBrake();
         }
     }
 
@@ -118,9 +118,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(90,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(90,50);
         }
     }
 
@@ -129,9 +129,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-135,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(-135,50);
         }
     }
 
@@ -150,7 +150,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(135,50);
         }
@@ -221,6 +221,13 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.slowDown();
+        }
+    }
+
+    public void brake(){
+        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
+            motionControl.setState("Executing");
+            motionControl.brake();
         }
     }
 }
