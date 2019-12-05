@@ -12,7 +12,10 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.BlueBotControl;
 import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.controller.RemoteControl;
+import avg1a2.project.modules.controller.SignalControl;
 import avg1a2.project.modules.irconversion.IRConversion;
+import sun.misc.Signal;
+
 import java.util.HashMap;
 
 /**
@@ -23,6 +26,7 @@ public class DataStore {
     private RemoteControl remoteControl;
     private BlueBotControl blueBotControl;
     private CollisionDetection collisionDetection;
+    private SignalControl signalControl;
     private IRConversion irConversion;
     private State programState;
     private State motionState;
@@ -119,6 +123,18 @@ public class DataStore {
             throw new IllegalArgumentException("Collision Detection has not been initialized");
         } else {
             return this.collisionDetection;
+        }
+    }
+
+    public void setSignalControl(SignalControl signalControl){
+        this.signalControl = signalControl;
+    }
+
+    public SignalControl getSignalControl(){
+        if(this.signalControl == null){
+            throw new IllegalArgumentException("The signal controls have not been initialized");
+        } else {
+            return this.signalControl;
         }
     }
 

@@ -12,8 +12,10 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
+    private SignalControl signalControl;
     private IRConversion irConversion;
     private Timer timer;
+
 
     /**
      * Constructor sets the motionController to use.
@@ -29,6 +31,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
+    }
+
+    public void setSignalControl(SignalControl signalControl){
+        this.signalControl = signalControl;
     }
 
     /**
@@ -58,6 +64,14 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         motionControl.setState("Idle");
         motionControl.setAction("None");
         brake(); //Maybe we need to let it brake instead?
+    }
+
+    @Override
+    public void emergencyCollision() {
+        motionControl.setState("Idle");
+        motionControl.setState("None");
+        emergencyBrake();
+        signalControl.boeBotCollision();
     }
 
     /**
@@ -118,6 +132,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
+
             brake(); //stop or brake?
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(90,50);
@@ -169,6 +184,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteRightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
+            signalControl.turnRightLED();
             motionControl.infRight();
         }
     }
@@ -179,6 +195,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteLeftTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
+            signalControl.turnLeftLED();
             motionControl.infLeft();
         }
     }

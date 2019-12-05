@@ -12,6 +12,7 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.BlueBotControl;
 import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.controller.RemoteControl;
+import avg1a2.project.modules.controller.SignalControl;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversion;
 
@@ -31,6 +32,7 @@ class Init {
         buildState(dataStore);
         buildSignals(dataStore);
         buildCollisionDetection(dataStore);
+        buildSignalControl(dataStore);
         buildIrConversion(dataStore);
         buildSensors(dataStore);
         setSensors(dataStore);
@@ -103,12 +105,12 @@ class Init {
         LedGroup turnLeft = new LedGroup();
         turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
         turnLeft.addLed("turnLED2", new NeoPixel(3, 255, 255, 0));
-        dataStore.addLedGroup("turnLeftLEDs", collision);
+        dataStore.addLedGroup("turnLeftLEDs", turnLeft);
 
         LedGroup turnRight = new LedGroup();
         turnRight.addLed("turnRightLED1", new NeoPixel(2, 255, 255, 0));
         turnRight.addLed("turnRightLED2", new NeoPixel(5, 255, 255, 0));
-        dataStore.addLedGroup("turnRightLEDs", collision);
+        dataStore.addLedGroup("turnRightLEDs", turnRight);
 
         dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
     }
@@ -118,12 +120,15 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),
-                                                                dataStore.getLedGroup("idle"),
-                                                                dataStore.getLedGroup("collision"),
-                                                                dataStore.getLedGroup("turnLeftLEDs"),
-                                                                dataStore.getLedGroup("turnRightLEDs"),
-                                                                dataStore.getWarningSpeaker()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getSignalControl()));
+    }
+
+    private static void buildSignalControl(DataStore dataStore){
+        dataStore.setSignalControl(new SignalControl(dataStore.getLedGroup("idle"),
+                                                     dataStore.getLedGroup("collision"),
+                                                     dataStore.getLedGroup("turnRightLEDs"),
+                                                     dataStore.getLedGroup("turnLeftLEDs"),
+                                                     dataStore.getWarningSpeaker()));
     }
 
     /**

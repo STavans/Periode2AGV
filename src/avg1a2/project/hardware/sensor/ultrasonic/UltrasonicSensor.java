@@ -64,8 +64,10 @@ public class UltrasonicSensor implements Component {
             int scan = ultraSonicPulse();
             if (scan > 100) {
                 int distance = calculateDistance(scan);
-                if (distance < 20) {
+                if (distance < 20 && distance > 10) {
                     ultraSonicCallback.onUltraSonic();
+                }  else if (distance <= 10){
+                    ultraSonicCallback.closeUltraSonic();
                 }
             }
         }
