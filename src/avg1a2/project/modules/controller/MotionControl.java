@@ -91,7 +91,7 @@ public class MotionControl  {
     /**
      * Function to allow the BoeBot to accelerate to the current target speed.
      */
-    public void accelerateToSpeed(){
+    private void accelerateToSpeed(){
         if (this.action.ifState("Accelerating")) {
             if (targetSpeed != currentSpeed) {
                 if (targetSpeed < currentSpeed) {
@@ -110,7 +110,7 @@ public class MotionControl  {
      * Sets a new speed for the BoeBot.
      * @param speed The new speed of the BoeBot.
      */
-    void setSpeedForward(int speed){
+    private void setSpeedForward(int speed){
         this.sLeft.update(1500 + speed);
         this.sRight.update(1500 - speed);
         this.currentSpeed = speed;
