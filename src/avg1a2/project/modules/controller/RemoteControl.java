@@ -77,7 +77,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void forward() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
-            motionControl.setSpeedForward(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
+            motionControl.setTargetSpeed(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
         }
     }
 
@@ -107,10 +107,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Makes the BoeBot stop.
      */
     public void emergencyBrake() { //Stop or brake?
-        if (motionControl.isIdle()) {
-            motionControl.setState("Executing");
-            motionControl.emergencyBrake();
-        }
+
     }
 
     /**
@@ -225,9 +222,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     }
 
     public void brake(){
-        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            //motionControl.setState("Executing");
-            //motionControl.brake();
-        }
+        motionControl.setState("Executing");
+        motionControl.setTargetSpeed(0);
     }
 }

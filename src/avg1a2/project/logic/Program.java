@@ -16,7 +16,7 @@ class Program {
     Program() {
         running = true;
         dataStore = Init.buildData();
-        dataStore.getProgramState().setState("BlueBot");
+        dataStore.getProgramState().setState("Override");
     }
 
     /**
