@@ -2,16 +2,21 @@ package avg1a2.project.modules.controller;
 
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensorCallback;
+import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 
 public class BlueBotControl implements BluetoothSensorCallback {
     private Component bluetoothSensor;
-    private NeoPixel neoPixel1;
-    private NeoPixel neoPixel2;
+    private LedGroup neopixels;
 
     public BlueBotControl() {
-        neoPixel1 = new NeoPixel(0,0,0,255);
-        neoPixel2 = new NeoPixel(0,0,0,255);
+        neopixels = new LedGroup();
+        neopixels.addLed("pixel1",new NeoPixel(0,0,0,255));
+        neopixels.addLed("pixel2",new NeoPixel(1,0,0,255));
+        neopixels.addLed("pixel3",new NeoPixel(2,0,0,255));
+        neopixels.addLed("pixel4",new NeoPixel(3,0,0,255));
+        neopixels.addLed("pixel5",new NeoPixel(4,0,0,255));
+        neopixels.addLed("pixel6",new NeoPixel(5,0,0,255));
     }
 
     public void setBluetoothSensor(Component bluetoothSensor) {
@@ -28,11 +33,9 @@ public class BlueBotControl implements BluetoothSensorCallback {
     @Override
     public void onSignal(int data) {
         if (data == 119) {
-            neoPixel1.on();
-            neoPixel2.on();
+            neopixels.on();
         } else {
-            neoPixel1.off();
-            neoPixel2.off();
+            neopixels.off();
         }
     }
 }
