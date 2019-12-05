@@ -4,15 +4,14 @@ import TI.Timer;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
 import avg1a2.project.hardware.signal.led.LedGroup;
+import avg1a2.project.modules.controller.SignalControl;
 
 /**
  * Manages all CollisionDetection in the program, whenever one is detected, this will be signalled to the controllers.
  */
 public class CollisionDetection implements UltraSonicCallback {
     private CollisionDetectionCallback collisionDetectionCallback;
-    private LedGroup idle;
-    private LedGroup collision;
-    private Component warningSpeaker;
+    private SignalControl signalControl;
     private Component ultrasonicSensor;
     private Timer timer;
     private boolean isCollision;
@@ -20,18 +19,11 @@ public class CollisionDetection implements UltraSonicCallback {
     /**
      * Constructor sets the required parameters, except for the sensor to use.
      * @param collisionDetection The controller to which to signal the collision to.
-     * @param idle The LedGroup to use whenever no collision has been detected.
-     * @param collision The LedGroup to use whenever a collision has been detected.
-     * @param warningSpeaker Speaker to use whenever a collision has been detected.
      */
-    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup idle, LedGroup collision, Component warningSpeaker){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection, SignalControl signalControl){
+        this.signalControl = signalControl;
         this.collisionDetectionCallback = collisionDetection;
-        this.idle = idle; //Might want to manage all LEDs from a different location once we implement more.
-        this.collision = collision; //Might want to manage all LEDs from a different location once we implement more.
-
-        this.warningSpeaker = warningSpeaker;
         this.isCollision = false;
-        idle.on();
     }
 
     /**
@@ -62,9 +54,9 @@ public class CollisionDetection implements UltraSonicCallback {
         if (isCollision) {
             if (timer != null && timer.timeout()) {
                 isCollision = false;
-                idle.on();
+                signalControl.boeBotOn();
             }
-            warningSpeaker.update(); // needs to be updated to support the update functionality.
+            signalControl.setWarningSpeakerOn(); // needs to be updated to support the update functionality.
         }
 
     }
@@ -76,16 +68,16 @@ public class CollisionDetection implements UltraSonicCallback {
         if (!isCollision) {
             collisionDetectionCallback.onFrontCollision();
         }
-        collision.on();
+        this.signalControl.boeBotCollision();
         isCollision = true;
         timer = new Timer(500);
     }
 
     public void closeUltraSonic(){
         if(!isCollision){
-            collisionDetectionCallback.onFrontCollision();
+            collisionDetectionCallback.emergencyCollision();
         }
-        collision.on();
+        signalControl.boeBotCollision();
         isCollision = true;
         timer = new Timer(500);
 
