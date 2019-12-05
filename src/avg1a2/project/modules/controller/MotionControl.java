@@ -58,10 +58,8 @@ public class MotionControl  {
      */
     public void setTargetSpeed(int targetSpeed) {
         this.targetSpeed = targetSpeed;
-        if (this.targetSpeed != currentSpeed) {
-            this.action.setState("Accelerating");
-            this.state.setState("Executing");
-        }
+        this.action.setState("Accelerating");
+        this.state.setState("Executing");
     }
 
     /**
@@ -93,13 +91,13 @@ public class MotionControl  {
     /**
      * Function to allow the BoeBot to accelerate to the current target speed.
      */
-    public void accelerateToSpeed(){
+    private void accelerateToSpeed(){
         if (this.action.ifState("Accelerating")) {
             if (targetSpeed != currentSpeed) {
                 if (targetSpeed < currentSpeed) {
-                    setSpeedForward(currentSpeed - 1);
+                    setSpeedForward(currentSpeed - 5);
                 } else {
-                    setSpeedForward(currentSpeed + 1);
+                    setSpeedForward(currentSpeed + 5);
                 }
             } else {
                 this.action.setState("None");
@@ -112,7 +110,7 @@ public class MotionControl  {
      * Sets a new speed for the BoeBot.
      * @param speed The new speed of the BoeBot.
      */
-    void setSpeedForward(int speed){
+    private void setSpeedForward(int speed){
         this.sLeft.update(1500 + speed);
         this.sRight.update(1500 - speed);
         this.currentSpeed = speed;
@@ -122,10 +120,9 @@ public class MotionControl  {
      * Emergency brake for the BoeBot to come to a total standstill in case of emergency.
      */
     void emergencyBrake(){
-        this.sLeft.update(1500); // This code is repeated a lot, maybe a private function to set the wheels? Doesn't help much, but it is a bit shorter.
+        this.sLeft.update(1500);
         this.sRight.update(1500);
         this.currentSpeed = 0;
-        //maybe we need to let it increase back to the currentSpeed afterwards instead.
         setState("Idle");
     }
 
@@ -147,7 +144,7 @@ public class MotionControl  {
      * @param degrees The amount of degrees to turn.
      * @param turnSpeed The speed at which to turn.
      */
-    void setTurnDegrees(int degrees, int turnSpeed) { //Can we just hardcode the speed and time based on degrees?
+    void setTurnDegrees(int degrees, int turnSpeed) {
         boolean reverse = false;
         int pulse;
         int turnDegrees = Math.abs(degrees);
@@ -161,7 +158,7 @@ public class MotionControl  {
         } else {
             pulse = 1500 + turnSpeed;
         }
-        sLeft.update(pulse); //REPEATED CODE AGAIN!!! ;)
+        sLeft.update(pulse);
         sRight.update(pulse);
         setAction("TurnDegrees");
         timer = new Timer(turnTime);
@@ -170,8 +167,8 @@ public class MotionControl  {
     /**
      * BoeBot turns left smoothly using a certain offset.
      */
-    void smoothTurnLeft(){ // Maybe we want to give the offset as a parameter?
-        sLeft.update(1575); //DUPLICATE IGNORED!
+    void smoothTurnLeft(){
+        sLeft.update(1575);
         sRight.update(1350);
         setState("Idle");
     }
@@ -180,7 +177,7 @@ public class MotionControl  {
      * BoeBot turns right smoothly using a certain offset.
      */
     void smoothTurnRight(){
-        sLeft.update(1750); //do I have to repeat myself?
+        sLeft.update(1750);
         sRight.update(1425);
         setState("Idle");
     }
@@ -189,8 +186,8 @@ public class MotionControl  {
      * Makes the BoeBot turn right infinitely.
      */
     void infRight(){
-        sLeft.update(1600); //you know what I'd say.
-        sRight.update(1600); // Maybe not use set speeds, but the currentSpeed instead?, or just slow in general
+        sLeft.update(1500 + currentSpeed);
+        sRight.update(1500 + currentSpeed);
         setState("Idle");
     }
 
@@ -198,8 +195,8 @@ public class MotionControl  {
      * Makes the BoeBot turn left infinitely.
      */
     void infLeft(){
-        sLeft.update(1400); //last time I swear.
-        sRight.update(1400); // Maybe not use set speeds, but the currentSpeed instead?, or just slow in general
+        sLeft.update(1500 - currentSpeed);
+        sRight.update(1500 - currentSpeed);
         setState("Idle");
     }
 
@@ -207,28 +204,13 @@ public class MotionControl  {
      * Makes the BoeBot speed up with an increase of 5.
      */
     void speedUp() {
-        this.currentSpeed += 5;
-        setSpeedForward(currentSpeed); //Maybe change to accelerate?
-        setState("Idle");
+        targetSpeed += 5;
     }
 
     /**
      * Makes the BoeBot slow down with a decrease of 5.
      */
     void slowDown() {
-        this.currentSpeed -= 5;
-        setSpeedForward(currentSpeed); //Maybe change to accelerate?
-        setState("Idle");
+        targetSpeed -= 5;
     }
-
-    /**void brake() {
-        boolean brake = true;
-        while (brake) {
-            this.currentSpeed -= 20;
-            if (currentSpeed == 0) {
-                brake = false;
-            }
-        }
-    }*/
-
 }

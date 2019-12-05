@@ -138,7 +138,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void reverse() {
         if (motionControl.isIdle()) {
             motionControl.setState("Executing");
-            motionControl.setSpeedForward(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
+            motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
         }
     }
 
