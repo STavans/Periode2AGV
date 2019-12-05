@@ -33,6 +33,7 @@ class Program {
                     valid = true;
                     break;
                 case "BlueBot" :
+                    dataStore.getBlueBotControl().run();
                     valid = true;
                     break;
             }

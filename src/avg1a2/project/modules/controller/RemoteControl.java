@@ -226,8 +226,8 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
 
     public void brake(){
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            motionControl.setState("Executing");
-            motionControl.brake();
+            //motionControl.setState("Executing");
+            //motionControl.brake();
         }
     }
 }
