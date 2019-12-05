@@ -58,6 +58,10 @@ public class MotionControl  {
      */
     public void setTargetSpeed(int targetSpeed) {
         this.targetSpeed = targetSpeed;
+        if (this.targetSpeed != currentSpeed) {
+            this.action.setState("Accelerating");
+            this.state.setState("Executing");
+        }
     }
 
     /**
@@ -92,8 +96,13 @@ public class MotionControl  {
     public void accelerateToSpeed(){
         if (this.action.ifState("Accelerating")) {
             if (targetSpeed != currentSpeed) {
-                //do Something.
+                if (targetSpeed < currentSpeed) {
+                    setSpeedForward(currentSpeed - 1);
+                } else {
+                    setSpeedForward(currentSpeed + 1);
+                }
             } else {
+                this.action.setState("None");
                 this.state.setState("Idle");
             }
         }
@@ -107,7 +116,6 @@ public class MotionControl  {
         this.sLeft.update(1500 + speed);
         this.sRight.update(1500 - speed);
         this.currentSpeed = speed;
-        setState("Idle");
     }
 
     /**
