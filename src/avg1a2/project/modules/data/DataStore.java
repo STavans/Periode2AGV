@@ -27,7 +27,6 @@ public class DataStore {
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component warningSpeaker;
-    private Component runningSpeaker;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
     private Servo sRight;
@@ -236,26 +235,6 @@ public class DataStore {
             throw new IllegalArgumentException("WarningSpeaker has not been initialized");
         } else {
             return this.warningSpeaker;
-        }
-    }
-
-    /**
-     * Sets the runningSpeaker in the DataStore.
-     */
-    public void setRunningSpeaker(Speaker speaker) {
-        this.runningSpeaker = speaker;
-    }
-
-    /**
-     * Gets the speaker from the DataStore.
-     * @return speaker object.
-     * @throws IllegalArgumentException Exception if object is not set.
-     */
-    public Component getRunningSpeaker() throws IllegalArgumentException {
-        if (runningSpeaker == null) {
-            throw new IllegalArgumentException("RunningSpeaker has not been initialized");
-        } else {
-            return this.runningSpeaker;
         }
     }
 

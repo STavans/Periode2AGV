@@ -95,18 +95,7 @@ class Init {
         collision.addLed("collision6", new NeoPixel(5, 255,0,0));
         dataStore.addLedGroup("collision",collision);
 
-        LedGroup turnLeft = new LedGroup();
-        turnLeft.addLed("Turn left led1", new NeoPixel(0, 255, 255, 0));
-        turnLeft.addLed("Turn left led2", new NeoPixel(3, 255, 255, 0));
-        dataStore.addLedGroup("turnLeftLEDs", collision);
-
-        LedGroup turnRight = new LedGroup();
-        turnRight.addLed("Turn right led1", new NeoPixel(2, 255, 255, 0));
-        turnRight.addLed("Turn right led1", new NeoPixel(5, 255, 255, 0));
-        dataStore.addLedGroup("turnRightLEDs", collision);
-
         dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
-        dataStore.setRunningSpeaker(new Speaker(2,500,50));
     }
 
     /**
@@ -114,13 +103,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),
-                                                                dataStore.getLedGroup("idle"),
-                                                                dataStore.getLedGroup("collision"),
-                                                                dataStore.getLedGroup("turnLeftLEDs"),
-                                                                dataStore.getLedGroup("turnRightLEDs"),
-                                                                dataStore.getWarningSpeaker(),
-                                                                dataStore.getRunningSpeaker()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),dataStore.getLedGroup("idle"), dataStore.getLedGroup("collision"), dataStore.getWarningSpeaker()));
     }
 
     /**
