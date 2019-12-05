@@ -107,7 +107,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Makes the BoeBot stop.
      */
     public void emergencyBrake() { //Stop or brake?
-
+        if (motionControl.isIdle() && !collisionDetection.isCollision()){
+            motionControl.setState("Executing");
+            motionControl.emergencyBrake();
+        }
     }
 
     /**
