@@ -90,11 +90,16 @@ public class CollisionDetection implements UltraSonicCallback {
         timer = new Timer(500);
     }
 
-    public void midDetection(){
-        turnLeft.on();
-        turnRight.on();
+    public void closeUltraSonic(){
+        if(!isCollision){
+            collisionDetectionCallback.onFrontCollision();
+        }
+        collision.on();
+        isCollision = true;
+        timer = new Timer(500);
 
     }
+
 
     public void mute() {
         this.mute = !this.mute;
