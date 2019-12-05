@@ -196,7 +196,7 @@ public class MotionControl  {
         setState("Idle");
     }
 
-    void brake() {
+    /**void brake() {
         boolean brake = true;
         while (brake) {
             this.currentSpeed -= 20;
@@ -204,6 +204,6 @@ public class MotionControl  {
                 brake = false;
             }
         }
-    }
+    }*/
 
 }

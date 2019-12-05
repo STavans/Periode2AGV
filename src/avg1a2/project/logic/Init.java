@@ -1,12 +1,15 @@
 package avg1a2.project.logic;
 
+import TI.SerialConnection;
 import TI.Servo;
+import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
+import avg1a2.project.modules.controller.BlueBotControl;
 import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.controller.RemoteControl;
 import avg1a2.project.modules.data.DataStore;
@@ -51,6 +54,7 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setBlueBotControl(new BlueBotControl());
     }
 
     /**
@@ -60,6 +64,7 @@ class Init {
     private static void buildState(DataStore dataStore) {
         dataStore.newProgramState(new State());
         dataStore.getProgramState().addState("Override");
+        dataStore.getProgramState().addState("BlueBot");
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
@@ -136,6 +141,7 @@ class Init {
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
+        dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
     }
 
     /**
@@ -145,6 +151,7 @@ class Init {
     private static void setSensors(DataStore dataStore) {
         dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
         dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
+        dataStore.getBlueBotControl().setBluetoothSensor(dataStore.getBluetoothSensor());
     }
 
     /**
