@@ -14,6 +14,7 @@ public class MotionControl  {
     private State state;
     private State action;
     private int currentSpeed;
+    private int targetSpeed;
 
     /**
      * Constructor sets it's Servo's and it's currentSpeed at creation.
@@ -30,6 +31,7 @@ public class MotionControl  {
     public void update() {
         if (state.ifState("Executing")) {
             turnDegrees();
+            accelerateToSpeed();
         }
     }
 
@@ -48,6 +50,14 @@ public class MotionControl  {
      */
     public void setState(String state) {
         this.state.setState(state);
+    }
+
+    /**
+     * Sets the targetSpeed for the BoeBot.
+     * @param targetSpeed Target Speed for the BoeBot to reach.
+     */
+    public void setTargetSpeed(int targetSpeed) {
+        this.targetSpeed = targetSpeed;
     }
 
     /**
@@ -75,11 +85,16 @@ public class MotionControl  {
     }
 
     /**
-     * Function to allow the BoeBot to accelerate to a given a speed.
-     * @param targetSpeed The target speed for the BoeBot to reach.
+     * Function to allow the BoeBot to accelerate to the current target speed.
      */
-    public void accelerateToSpeed(int targetSpeed){
-        //todo Also do not forget to add the action to the Init script if you want to keep checking for it.
+    public void accelerateToSpeed(){
+        if (this.action.ifState("Accelerating")) {
+            if (targetSpeed != currentSpeed) {
+                //do Something.
+            } else {
+                this.state.setState("Idle");
+            }
+        }
     }
 
     /**
