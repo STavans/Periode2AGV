@@ -96,7 +96,6 @@ class Init {
         dataStore.addLedGroup("collision",collision);
 
         dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
-        dataStore.setRunningSpeaker(new Speaker(2,500,50));
     }
 
     /**
@@ -104,7 +103,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),dataStore.getLedGroup("idle"), dataStore.getLedGroup("collision"), dataStore.getWarningSpeaker(),dataStore.getRunningSpeaker()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),dataStore.getLedGroup("idle"), dataStore.getLedGroup("collision"), dataStore.getWarningSpeaker()));
     }
 
     /**
