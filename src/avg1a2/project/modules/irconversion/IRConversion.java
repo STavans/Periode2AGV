@@ -93,6 +93,10 @@ public class IRConversion implements IRCallback {
             case 0b10011111 :
                 callback.slowDown();
                 break;
+            case 0b10010001 :
+                callback.emergencyBrake();
+                break;
+
         }
 
     }
