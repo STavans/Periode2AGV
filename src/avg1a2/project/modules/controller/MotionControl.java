@@ -74,6 +74,8 @@ public class MotionControl  {
      */
     public void newAction(State action) {
         this.action = action;
+        //TEMP
+        this.action.addState("Accelerating");
     }
 
     /**

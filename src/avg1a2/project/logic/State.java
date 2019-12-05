@@ -20,7 +20,7 @@ public class State {
      * Adds a state to the ArrayList and makes it available as a proper state.
      * @param state The State to add.
      */
-    void addState(String state) {
+    public void addState(String state) {
         states.add(state);
     }
 
