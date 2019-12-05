@@ -196,4 +196,14 @@ public class MotionControl  {
         setState("Idle");
     }
 
+    void brake() {
+        boolean brake = true;
+        while (brake) {
+            this.currentSpeed -= 20;
+            if (currentSpeed == 0) {
+                brake = false;
+            }
+        }
+    }
+
 }
