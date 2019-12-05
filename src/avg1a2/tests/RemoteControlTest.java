@@ -4,7 +4,7 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
 
 import java.sql.SQLOutput;
 
-public class RemoteControlTest implements IRConversionCallback {
+/*public class RemoteControlTest implements IRConversionCallback {
     @Override
     public void leftDiagonal() {
         System.out.println("Left diagonal");
@@ -91,4 +91,4 @@ public class RemoteControlTest implements IRConversionCallback {
         System.out.println("OOGA BOOGA TRIANGLE");
 
     }
-}
+}*/

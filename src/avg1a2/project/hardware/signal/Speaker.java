@@ -1,8 +1,9 @@
 package avg1a2.project.hardware.signal;
 
 import TI.BoeBot;
+import avg1a2.project.hardware.Component;
 
-public class Speaker {
+public class Speaker implements Component {
 
     private int frequency;
     private int time;
@@ -42,5 +43,10 @@ public class Speaker {
 
     public void mute(){
         this.frequency = 0;
+    }
+
+    public void update() {
+        Beep();
+        //todo
     }
 }

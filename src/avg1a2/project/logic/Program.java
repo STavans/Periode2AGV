@@ -16,7 +16,7 @@ class Program {
     Program() {
         running = true;
         dataStore = Init.buildData();
-        dataStore.getState().setState("Override");
+        dataStore.getProgramState().setState("Override");
     }
 
     /**
@@ -24,17 +24,15 @@ class Program {
      * @throws RuntimeException If the program somehow enters an undefined state,
      *                          or if the states aren't defined properly, the loop will exit with an Illegal State error.
      */
-    void run() throws RuntimeException{
+    void run() throws IllegalStateException{
         while (running) {
-            if (dataStore.getState().getState().equals("Override")) {
-                dataStore.getRemoteControl().run(dataStore);
-            } else if (dataStore.getState().getState().equals("Routing")) {
-                dataStore.getPcControl().run(dataStore);
+            if (dataStore.getProgramState().ifState("Override")) {
+                dataStore.getRemoteControl().run();
             } else {
                 running = false;
-                throw new RuntimeException("Program exited due to an illegal state.");
+                throw new IllegalStateException("Program exited due to an illegal state.");
             }
-            BoeBot.wait(1);
+            BoeBot.wait(1); //BoeBot wait 1 is required for the program to function and not disrupt itself, this is due to BoeBot behaviour.
         }
     }
 }
