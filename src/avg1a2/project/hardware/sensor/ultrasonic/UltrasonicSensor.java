@@ -45,7 +45,7 @@ public class UltrasonicSensor implements Component {
      **/
     private int ultraSonicPulse() {
         BoeBot.digitalWrite(this.pin1, true);
-        BoeBot.wait(1);
+        BoeBot.uwait(1);
         BoeBot.digitalWrite(this.pin1, false);
         int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
         if (pulse > 100) {
@@ -64,11 +64,10 @@ public class UltrasonicSensor implements Component {
             int scan = ultraSonicPulse();
             if (scan > 100) {
                 int distance = calculateDistance(scan);
-                if (distance < 15) {
+                if (distance < 20) {
                     ultraSonicCallback.onUltraSonic();
                 }
             }
-            this.timer = new Timer(50);
         }
     }
 }

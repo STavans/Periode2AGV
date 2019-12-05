@@ -12,6 +12,8 @@ public class CollisionDetection implements UltraSonicCallback {
     private CollisionDetectionCallback collisionDetectionCallback;
     private LedGroup idle;
     private LedGroup collision;
+    private LedGroup turnRight;
+    private LedGroup turnLeft;
     private Component warningSpeaker;
     private Component runningSpeaker;
     private Component ultrasonicSensor;
@@ -26,10 +28,12 @@ public class CollisionDetection implements UltraSonicCallback {
      * @param collision The LedGroup to use whenever a collision has been detected.
      * @param warningSpeaker Speaker to use whenever a collision has been detected.
      */
-    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup idle, LedGroup collision, Component warningSpeaker){
+    public CollisionDetection(CollisionDetectionCallback collisionDetection, LedGroup idle, LedGroup collision, LedGroup turnRight, LedGroup turnLeft, Component warningSpeaker){
         this.collisionDetectionCallback = collisionDetection;
         this.idle = idle; //Might want to manage all LEDs from a different location once we implement more.
         this.collision = collision; //Might want to manage all LEDs from a different location once we implement more.
+        this.turnRight = turnRight;
+        this.turnLeft = turnLeft;
         this.warningSpeaker = warningSpeaker;
         this.runningSpeaker = runningSpeaker;
         this.isCollision = false;
@@ -84,6 +88,12 @@ public class CollisionDetection implements UltraSonicCallback {
         collision.on();
         isCollision = true;
         timer = new Timer(500);
+    }
+
+    public void midDetection(){
+        turnLeft.on();
+        turnRight.on();
+
     }
 
     public void mute() {
