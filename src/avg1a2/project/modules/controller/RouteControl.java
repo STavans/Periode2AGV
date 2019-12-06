@@ -19,6 +19,22 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
         this.motionControl = motionControl;
     }
 
+    public void runRoute(){
+
+        for(String action : this.route.getRoute()){
+
+            switch(action) {
+
+
+
+
+            }
+
+        }
+
+
+    }
+
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
     }
@@ -55,6 +71,11 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
     @Override
     public void onLineLost() {
         motionControl.emergencyBrake();
+    }
+
+    @Override
+    public void goForward() {
+        motionControl.setTargetSpeed(30);
     }
 
     @Override
