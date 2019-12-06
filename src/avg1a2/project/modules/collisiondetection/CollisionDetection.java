@@ -3,7 +3,6 @@ package avg1a2.project.modules.collisiondetection;
 import TI.Timer;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
-import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.modules.controller.SignalControl;
 
 /**

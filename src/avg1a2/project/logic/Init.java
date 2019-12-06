@@ -32,11 +32,11 @@ class Init {
         buildState(dataStore);
         buildSignals(dataStore);
         buildCollisionDetection(dataStore);
-        buildSignalControl(dataStore);
         buildIrConversion(dataStore);
         buildSensors(dataStore);
         setSensors(dataStore);
         setModules(dataStore);
+        setSignals(dataStore);
         return dataStore;
     }
 
@@ -57,6 +57,7 @@ class Init {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl());
+        dataStore.setSignalControl(new SignalControl());
     }
 
     /**
@@ -123,14 +124,6 @@ class Init {
         dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getSignalControl()));
     }
 
-    private static void buildSignalControl(DataStore dataStore){
-        dataStore.setSignalControl(new SignalControl(dataStore.getLedGroup("idle"),
-                                                     dataStore.getLedGroup("collision"),
-                                                     dataStore.getLedGroup("turnRightLEDs"),
-                                                     dataStore.getLedGroup("turnLeftLEDs"),
-                                                     dataStore.getWarningSpeaker()));
-    }
-
     /**
      * Builds the IrConversion object and adds it to the dataStore.
      * @param dataStore The DataStore which it needs to fill with a new IrConversion.
@@ -145,7 +138,7 @@ class Init {
      */
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
     }
 
@@ -166,5 +159,13 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
+    }
+
+    private static void setSignals(DataStore dataStore) {
+        dataStore.getSignalControl().setIdle(dataStore.getLedGroup("idle"));
+        dataStore.getSignalControl().setCollision(dataStore.getLedGroup("collision"));
+        dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
+        dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
+        dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 }

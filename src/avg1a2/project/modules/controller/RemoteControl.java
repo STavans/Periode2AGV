@@ -49,12 +49,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Updates the controller, which also updates all of it's own updates.
      */
     public void run() {
-        if (collisionDetection != null) {
-            collisionDetection.update();
-            irConversion.update();
-            motionControl.update();
-            //todo error catching.
-        }
+        collisionDetection.update();
+        irConversion.update();
+        motionControl.update();
+        //todo error catching.
     }
 
     /**
@@ -64,12 +62,13 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         motionControl.setState("Idle");
         motionControl.setAction("None");
         brake(); //Maybe we need to let it brake instead?
+        signalControl.boeBotCollision();
     }
 
     @Override
     public void emergencyCollision() {
         motionControl.setState("Idle");
-        motionControl.setState("None");
+        motionControl.setAction("None");
         emergencyBrake();
         signalControl.boeBotCollision();
     }

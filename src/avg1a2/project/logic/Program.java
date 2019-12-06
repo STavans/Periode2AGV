@@ -1,6 +1,8 @@
 package avg1a2.project.logic;
 
 import TI.BoeBot;
+import avg1a2.project.modules.controller.BlueBotControl;
+import avg1a2.project.modules.controller.RemoteControl;
 import avg1a2.project.modules.data.DataStore;
 
 /**
@@ -8,15 +10,20 @@ import avg1a2.project.modules.data.DataStore;
  */
 class Program {
     private boolean running;
-    private DataStore dataStore;
+    private RemoteControl remoteControl;
+    private BlueBotControl blueBotControl;
+    private State state;
 
     /**
      * Constructor calls the Init "script" and creates the program state.
      */
     Program() {
         running = true;
-        dataStore = Init.buildData();
-        dataStore.getProgramState().setState("Override");
+        DataStore dataStore = Init.buildData();
+        this.state = dataStore.getProgramState();
+        this.remoteControl = dataStore.getRemoteControl();
+        this.blueBotControl = dataStore.getBlueBotControl();
+        state.setState("Override");
     }
 
     /**
@@ -27,13 +34,13 @@ class Program {
     void run() throws IllegalStateException{
         boolean valid = false;
         while (running) {
-            switch (dataStore.getProgramState().getState()) {
+            switch (state.getState()) {
                 case "Override" :
-                    dataStore.getRemoteControl().run();
+                    remoteControl.run();
                     valid = true;
                     break;
                 case "BlueBot" :
-                    dataStore.getBlueBotControl().run();
+                    blueBotControl.run();
                     valid = true;
                     break;
             }
