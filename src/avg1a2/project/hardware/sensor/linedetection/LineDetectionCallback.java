@@ -5,4 +5,5 @@ public interface LineDetectionCallback {
     void lineCorrectionLeft();
     void lineCorrectionRight();
     void onLineLost();
+    void goForward();
 }

@@ -213,4 +213,9 @@ public class MotionControl  {
     void slowDown() {
         targetSpeed -= 5;
     }
+
+    void updateWheels(int speedLeft, int speedRight){
+        this.sLeft.update(1500 + speedLeft);
+        this.sRight.update(1500 - speedRight);
+    }
 }
