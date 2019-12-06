@@ -45,7 +45,6 @@ public class UltrasonicSensor implements Component {
         BoeBot.uwait(1);
         BoeBot.digitalWrite(this.pin1, false);
         int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
-        System.out.println(pulse);
         if (pulse > 100) {
             return pulse;
         } else {

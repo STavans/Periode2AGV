@@ -55,8 +55,8 @@ class Init {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
-        dataStore.setBlueBotControl(new BlueBotControl());
         dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
+        dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
     /**
