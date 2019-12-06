@@ -21,8 +21,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
         this.motionControl = motionControl;
+        this.signalControl = signalControl;
     }
 
     /**
@@ -31,10 +32,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
-    }
-
-    public void setSignalControl(SignalControl signalControl){
-        this.signalControl = signalControl;
     }
 
     /**

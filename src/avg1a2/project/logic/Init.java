@@ -4,15 +4,13 @@ import TI.SerialConnection;
 import TI.Servo;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
+import avg1a2.project.hardware.sensor.linedetection.LineDetection;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
-import avg1a2.project.modules.controller.BlueBotControl;
-import avg1a2.project.modules.controller.MotionControl;
-import avg1a2.project.modules.controller.RemoteControl;
-import avg1a2.project.modules.controller.SignalControl;
+import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversion;
 
@@ -55,9 +53,10 @@ class Init {
      */
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
-        dataStore.setBlueBotControl(new BlueBotControl());
         dataStore.setSignalControl(new SignalControl());
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
+        dataStore.setBlueBotControl(new BlueBotControl());
+        dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
     }
 
     /**
@@ -121,7 +120,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getSignalControl()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getRouteControl(), dataStore.getSignalControl()));
     }
 
     /**
@@ -140,6 +139,7 @@ class Init {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
+        dataStore.setLineDetection(new LineDetection(1300,0,1,2,3,dataStore.getRouteControl()));
     }
 
     /**
@@ -159,6 +159,8 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
+        dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
     }
 
     private static void setSignals(DataStore dataStore) {
