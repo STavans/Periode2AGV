@@ -4,15 +4,13 @@ import TI.Servo;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
+import avg1a2.project.hardware.sensor.linedetection.LineDetection;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
-import avg1a2.project.modules.controller.BlueBotControl;
-import avg1a2.project.modules.controller.MotionControl;
-import avg1a2.project.modules.controller.RemoteControl;
-import avg1a2.project.modules.controller.SignalControl;
+import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.irconversion.IRConversion;
 import sun.misc.Signal;
 
@@ -27,6 +25,7 @@ public class DataStore {
     private BlueBotControl blueBotControl;
     private CollisionDetection collisionDetection;
     private SignalControl signalControl;
+    private RouteControl routeControl;
     private IRConversion irConversion;
     private State programState;
     private State motionState;
@@ -34,6 +33,7 @@ public class DataStore {
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component bluetoothSensor;
+    private Component lineDetection;
     private Component warningSpeaker;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
@@ -135,6 +135,18 @@ public class DataStore {
             throw new IllegalArgumentException("The signal controls have not been initialized");
         } else {
             return this.signalControl;
+        }
+    }
+
+    public void setRouteControl(RouteControl routeControl){
+        this.routeControl = routeControl;
+    }
+
+    public RouteControl getRouteControl(){
+        if(this.routeControl == null){
+            throw new IllegalArgumentException("The route controls have not been initialized");
+        } else {
+            return this.routeControl;
         }
     }
 
@@ -275,6 +287,26 @@ public class DataStore {
             throw new IllegalArgumentException("Bluetooth Sensor has not been initialized");
         } else {
             return this.bluetoothSensor;
+        }
+    }
+
+    /**
+     * Sets the LineDetection in the DataStore.
+     */
+    public void setLineDetection(LineDetection lineDetection) {
+        this.lineDetection = lineDetection;
+    }
+
+    /**
+     * Gets the LineDetection from the DataStore.
+     * @return LineDetection object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Component getLineDetection() throws IllegalArgumentException {
+        if (lineDetection == null) {
+            throw new IllegalArgumentException("Line detection has not been initialized");
+        } else {
+            return this.lineDetection;
         }
     }
 
