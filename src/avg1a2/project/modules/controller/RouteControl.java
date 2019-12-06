@@ -60,12 +60,12 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
 
     @Override
     public void lineCorrectionLeft() {
-        motionControl.updateWheels(0, 10);
+        motionControl.updateWheels(0, 50);
     }
 
     @Override
     public void lineCorrectionRight() {
-        motionControl.updateWheels(10,0);
+        motionControl.updateWheels(50,0);
     }
 
     @Override

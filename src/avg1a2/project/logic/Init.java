@@ -137,9 +137,9 @@ class Init {
      */
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(0,1,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(1000,0,1,2,3,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(900,0,1,2,3,dataStore.getRouteControl()));
     }
 
     /**
