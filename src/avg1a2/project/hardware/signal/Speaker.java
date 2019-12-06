@@ -4,7 +4,6 @@ import TI.BoeBot;
 import avg1a2.project.hardware.Component;
 
 public class Speaker implements Component {
-
     private int frequency;
     private int time;
     private int pin;

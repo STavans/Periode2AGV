@@ -19,10 +19,7 @@ public class UltrasonicSensor implements Component {
     public UltrasonicSensor(int pin1, int pin2, UltraSonicCallback ultraSonicCallBack) {
         this.pin1 = pin1;
         this.pin2 = pin2;
-        this.timer = new Timer(50);
-
         this.ultraSonicCallback = ultraSonicCallBack;
-        
     }
 
     /**
@@ -48,6 +45,7 @@ public class UltrasonicSensor implements Component {
         BoeBot.uwait(1);
         BoeBot.digitalWrite(this.pin1, false);
         int pulse = BoeBot.pulseIn(this.pin2, true, 10000);
+        System.out.println(pulse);
         if (pulse > 100) {
             return pulse;
         } else {
@@ -60,14 +58,18 @@ public class UltrasonicSensor implements Component {
     it gets the ultrasonic pulse and then calculates the distance
      **/
     public void update() {
-        if (timer.timeout()) {
+        if (timer == null || timer.timeout()) {
             int scan = ultraSonicPulse();
+            //System.out.println(scan);
             if (scan > 100) {
                 int distance = calculateDistance(scan);
-                if (distance < 20) {
+                if (distance < 20 && distance > 10) {
                     ultraSonicCallback.onUltraSonic();
+                }  else if (distance <= 10){
+                    ultraSonicCallback.closeUltraSonic();
                 }
             }
+            timer = new Timer(50);
         }
     }
 }

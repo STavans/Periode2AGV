@@ -5,9 +5,9 @@ import avg1a2.project.hardware.Component;
 
 public class BluetoothSensor implements Component {
     private SerialConnection connection;
-    private BluetoothSensorCallback callback;
+    private BluetoothCallback callback;
 
-    public BluetoothSensor(SerialConnection connection, BluetoothSensorCallback callback) {
+    public BluetoothSensor(SerialConnection connection, BluetoothCallback callback) {
         this.connection = connection;
         this.callback = callback;
     }

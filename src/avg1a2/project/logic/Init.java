@@ -12,6 +12,7 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.BlueBotControl;
 import avg1a2.project.modules.controller.MotionControl;
 import avg1a2.project.modules.controller.RemoteControl;
+import avg1a2.project.modules.controller.SignalControl;
 import avg1a2.project.modules.data.DataStore;
 import avg1a2.project.modules.irconversion.IRConversion;
 
@@ -35,6 +36,7 @@ class Init {
         buildSensors(dataStore);
         setSensors(dataStore);
         setModules(dataStore);
+        setSignals(dataStore);
         return dataStore;
     }
 
@@ -55,6 +57,7 @@ class Init {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl());
+        dataStore.setSignalControl(new SignalControl());
     }
 
     /**
@@ -103,12 +106,12 @@ class Init {
         LedGroup turnLeft = new LedGroup();
         turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
         turnLeft.addLed("turnLED2", new NeoPixel(3, 255, 255, 0));
-        dataStore.addLedGroup("turnLeftLEDs", collision);
+        dataStore.addLedGroup("turnLeftLEDs", turnLeft);
 
         LedGroup turnRight = new LedGroup();
         turnRight.addLed("turnRightLED1", new NeoPixel(2, 255, 255, 0));
         turnRight.addLed("turnRightLED2", new NeoPixel(5, 255, 255, 0));
-        dataStore.addLedGroup("turnRightLEDs", collision);
+        dataStore.addLedGroup("turnRightLEDs", turnRight);
 
         dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
     }
@@ -118,12 +121,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(),
-                                                                dataStore.getLedGroup("idle"),
-                                                                dataStore.getLedGroup("collision"),
-                                                                dataStore.getLedGroup("turnLeftLEDs"),
-                                                                dataStore.getLedGroup("turnRightLEDs"),
-                                                                dataStore.getWarningSpeaker()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getSignalControl()));
     }
 
     /**
@@ -140,7 +138,7 @@ class Init {
      */
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
     }
 
@@ -161,5 +159,13 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
+    }
+
+    private static void setSignals(DataStore dataStore) {
+        dataStore.getSignalControl().setIdle(dataStore.getLedGroup("idle"));
+        dataStore.getSignalControl().setCollision(dataStore.getLedGroup("collision"));
+        dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
+        dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
+        dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 }

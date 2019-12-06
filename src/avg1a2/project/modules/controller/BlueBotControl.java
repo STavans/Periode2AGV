@@ -1,11 +1,11 @@
 package avg1a2.project.modules.controller;
 
 import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensorCallback;
+import avg1a2.project.hardware.sensor.bluetooth.BluetoothCallback;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 
-public class BlueBotControl implements BluetoothSensorCallback {
+public class BlueBotControl implements BluetoothCallback {
     private Component bluetoothSensor;
     private LedGroup neopixels;
 
