@@ -31,33 +31,39 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
         this.route = route;
     }
 
+    public void run(){
+        motionControl.update();
+        lineDetection.update();
+        collisionDetection.update();
+    }
+
     @Override
     public void onCrossroads() {
-
+        motionControl.emergencyBrake();
     }
 
     @Override
     public void lineCorrectionLeft() {
-
+        motionControl.updateWheels(0, 10);
     }
 
     @Override
     public void lineCorrectionRight() {
-
+        motionControl.updateWheels(10,0);
     }
 
     @Override
     public void onLineLost() {
-
+        motionControl.emergencyBrake();
     }
 
     @Override
     public void onFrontCollision() {
-
+        motionControl.setTargetSpeed(0);
     }
 
     @Override
     public void emergencyCollision() {
-
+        motionControl.emergencyBrake();
     }
 }
