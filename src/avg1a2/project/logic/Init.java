@@ -43,8 +43,8 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new servo's.
      */
     private static void buildServos(DataStore dataStore) {
-        dataStore.setSLeft(new Servo(12));
-        dataStore.setSRight(new Servo(13));
+        dataStore.setSLeft(new Servo(13));
+        dataStore.setSRight(new Servo(12));
     }
 
     /**
@@ -139,7 +139,7 @@ class Init {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(1300,0,1,2,3,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(1000,0,1,2,3,dataStore.getRouteControl()));
     }
 
     /**

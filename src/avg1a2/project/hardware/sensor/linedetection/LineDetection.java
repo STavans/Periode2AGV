@@ -24,28 +24,36 @@ public class LineDetection implements Component {
 
     @Override
     public void update() {
-//        if (timer == null || timer.timeout()) {
-//            System.out.println("Front left sensor is: " +  BoeBot.analogRead(frontLeftSensor));
-//            System.out.println("Front right sensor is: " +  BoeBot.analogRead(frontRightSensor));
+        if (timer == null || timer.timeout()) {
+            System.out.println("Front left sensor is: " +  BoeBot.analogRead(frontLeftSensor));
+            System.out.println("Front right sensor is: " +  BoeBot.analogRead(frontRightSensor));
 //            System.out.println("Front back left sensor sensor is: " +  BoeBot.analogRead(backLeftSensor));
 //            System.out.println("Front back right sensor is: " +  BoeBot.analogRead(backRightSensor));
 
-            if(frontLeftSensor > threshhold && frontRightSensor > threshhold && backLeftSensor > threshhold && backRightSensor > threshhold){
+            int dataFrontLeft = BoeBot.analogRead(frontLeftSensor);
+            int dataFrontRight = BoeBot.analogRead(frontRightSensor);
+            int dataBackLeft = BoeBot.analogRead(backLeftSensor);
+            int dataBackRight = BoeBot.analogRead(backRightSensor);
+
+
+
+
+            if(dataFrontLeft > threshhold && dataFrontRight > threshhold && dataBackLeft > threshhold && dataBackRight > threshhold){
                 callback.onCrossroads();
             }
-            if(frontLeftSensor < threshhold){
+            if(dataFrontLeft < threshhold){
                 callback.lineCorrectionRight();
             }
-            if(frontRightSensor < threshhold){
+            if(dataFrontRight < threshhold){
                 callback.lineCorrectionLeft();
             }
-            if(frontLeftSensor > threshhold && frontRightSensor > threshhold){
+            if(dataFrontLeft > threshhold && dataFrontRight > threshhold){
                 callback.goForward();
             }
-            if(frontLeftSensor < threshhold && frontRightSensor < threshhold && backLeftSensor < threshhold && backRightSensor < threshhold){
+            if(dataFrontLeft < threshhold && dataFrontRight < threshhold && dataBackLeft < threshhold && dataBackRight < threshhold){
                 callback.onLineLost();
-//            }
-//            timer = new Timer(2000);
+            }
+            timer = new Timer(2000);
         }
     }
 }
