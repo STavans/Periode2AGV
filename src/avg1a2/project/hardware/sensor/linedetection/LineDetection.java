@@ -1,6 +1,7 @@
 package avg1a2.project.hardware.sensor.linedetection;
 
 import TI.BoeBot;
+import TI.Timer;
 import avg1a2.project.hardware.Component;
 
 public class LineDetection implements Component {
@@ -10,6 +11,7 @@ public class LineDetection implements Component {
     private int frontRightSensor;
     private int backRightSensor;
     private LineDetectionCallback callback;
+    private Timer timer;
 
     public LineDetection(int threshhold, int backLeftSensor, int frontLeftSensor, int frontRightSensor, int backRightSensor, LineDetectionCallback callback) {
         this.threshhold = threshhold;
@@ -22,25 +24,28 @@ public class LineDetection implements Component {
 
     @Override
     public void update() {
-        System.out.println("Front left sensor is: " +  BoeBot.analogRead(frontLeftSensor));
-        System.out.println("Front right sensor is: " +  BoeBot.analogRead(frontRightSensor));
-        System.out.println("Front back left sensor sensor is: " +  BoeBot.analogRead(backLeftSensor));
-        System.out.println("Front back right sensor is: " +  BoeBot.analogRead(backRightSensor));
+//        if (timer == null || timer.timeout()) {
+//            System.out.println("Front left sensor is: " +  BoeBot.analogRead(frontLeftSensor));
+//            System.out.println("Front right sensor is: " +  BoeBot.analogRead(frontRightSensor));
+//            System.out.println("Front back left sensor sensor is: " +  BoeBot.analogRead(backLeftSensor));
+//            System.out.println("Front back right sensor is: " +  BoeBot.analogRead(backRightSensor));
 
-        if(frontLeftSensor > threshhold && frontRightSensor > threshhold && backLeftSensor > threshhold && backRightSensor > threshhold){
-            callback.onCrossroads();
-        }
-        if(frontLeftSensor < threshhold){
-            callback.lineCorrectionRight();
-        }
-        if(frontRightSensor < threshhold){
-            callback.lineCorrectionLeft();
-        }
-        if(frontLeftSensor > threshhold && frontRightSensor > threshhold){
-            callback.goForward();
-        }
-        if(frontLeftSensor < threshhold && frontRightSensor < threshhold && backLeftSensor < threshhold && backRightSensor < threshhold){
-            callback.onLineLost();
+            if(frontLeftSensor > threshhold && frontRightSensor > threshhold && backLeftSensor > threshhold && backRightSensor > threshhold){
+                callback.onCrossroads();
+            }
+            if(frontLeftSensor < threshhold){
+                callback.lineCorrectionRight();
+            }
+            if(frontRightSensor < threshhold){
+                callback.lineCorrectionLeft();
+            }
+            if(frontLeftSensor > threshhold && frontRightSensor > threshhold){
+                callback.goForward();
+            }
+            if(frontLeftSensor < threshhold && frontRightSensor < threshhold && backLeftSensor < threshhold && backRightSensor < threshhold){
+                callback.onLineLost();
+//            }
+//            timer = new Timer(2000);
         }
     }
 }
