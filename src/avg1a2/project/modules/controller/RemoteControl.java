@@ -21,8 +21,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
         this.motionControl = motionControl;
+        this.signalControl = signalControl;
     }
 
     /**
@@ -31,10 +32,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
-    }
-
-    public void setSignalControl(SignalControl signalControl){
-        this.signalControl = signalControl;
     }
 
     /**
@@ -49,12 +46,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Updates the controller, which also updates all of it's own updates.
      */
     public void run() {
-        if (collisionDetection != null) {
-            collisionDetection.update();
-            irConversion.update();
-            motionControl.update();
-            //todo error catching.
-        }
+        collisionDetection.update();
+        irConversion.update();
+        motionControl.update();
+        //todo error catching.
     }
 
     /**
@@ -64,12 +59,13 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         motionControl.setState("Idle");
         motionControl.setAction("None");
         brake(); //Maybe we need to let it brake instead?
+        signalControl.boeBotCollision();
     }
 
     @Override
     public void emergencyCollision() {
         motionControl.setState("Idle");
-        motionControl.setState("None");
+        motionControl.setAction("None");
         emergencyBrake();
         signalControl.boeBotCollision();
     }

@@ -14,19 +14,8 @@ public class SignalControl {
     private LedGroup setLEDs;
     private Component warningSpeaker;
 
-    /**
-     * @param idle The LedGroup to use whenever no collision has been detected.
-     * @param collision The LedGroup to use whenever a collision has been detected.
-     * @param warningSpeaker Speaker to use whenever a collision has been detected.
-     */
-    public SignalControl(LedGroup idle, LedGroup collision, LedGroup turnRightLEDs, LedGroup turnLeftLEDs,  Component warningSpeaker) {
-        this.turnRightLEDs = turnRightLEDs;
-        this.turnLeftLEDs = turnLeftLEDs;
-        this.setLEDs = setLEDs;
-        this.idle = idle;
-        this.collision = collision;
-        this.warningSpeaker = warningSpeaker;
-        idle.on();
+    public SignalControl() {
+        //this.setLEDs = setLEDs;
     }
 
     public void boeBotOn() {
@@ -51,5 +40,30 @@ public class SignalControl {
 
     public void setWarningSpeakerOn() {
         this.warningSpeaker.update();
+    }
+
+    public void setTurnLeftLEDs(LedGroup turnLeftLEDs) {
+        this.turnLeftLEDs = turnLeftLEDs;
+    }
+
+    public void setTurnRightLEDs(LedGroup turnRightLEDs) {
+        this.turnRightLEDs = turnRightLEDs;
+    }
+
+    public void setIdle(LedGroup idle) {
+        this.idle = idle;
+        idle.on();
+    }
+
+    public void setCollision(LedGroup collision) {
+        this.collision = collision;
+    }
+
+    public void setSetLEDs(LedGroup setLEDs) {
+        this.setLEDs = setLEDs;
+    }
+
+    public void setWarningSpeaker(Component warningSpeaker) {
+        this.warningSpeaker = warningSpeaker;
     }
 }
