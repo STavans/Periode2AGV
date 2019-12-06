@@ -1,6 +1,8 @@
 package avg1a2.project.logic;
 
 import TI.BoeBot;
+import avg1a2.project.modules.controller.BlueBotControl;
+import avg1a2.project.modules.controller.RemoteControl;
 import avg1a2.project.modules.data.DataStore;
 
 /**
@@ -8,15 +10,20 @@ import avg1a2.project.modules.data.DataStore;
  */
 class Program {
     private boolean running;
-    private DataStore dataStore;
+    private RemoteControl remoteControl;
+    private BlueBotControl blueBotControl;
+    private State state;
 
     /**
      * Constructor calls the Init "script" and creates the program state.
      */
     Program() {
         running = true;
-        dataStore = Init.buildData();
-        dataStore.getProgramState().setState("Override");
+        DataStore dataStore = Init.buildData();
+        this.state = dataStore.getProgramState();
+        this.remoteControl = dataStore.getRemoteControl();
+        this.blueBotControl = dataStore.getBlueBotControl();
+        state.setState("BlueBot");
     }
 
     /**
@@ -25,11 +32,19 @@ class Program {
      *                          or if the states aren't defined properly, the loop will exit with an Illegal State error.
      */
     void run() throws IllegalStateException{
+        boolean valid = false;
         while (running) {
-            if (dataStore.getProgramState().ifState("Override")) {
-                dataStore.getRemoteControl().run();
-            } else {
-                running = false;
+            switch (state.getState()) {
+                case "Override" :
+                    remoteControl.run();
+                    valid = true;
+                    break;
+                case "BlueBot" :
+                    blueBotControl.run();
+                    valid = true;
+                    break;
+            }
+            if (!valid) {
                 throw new IllegalStateException("Program exited due to an illegal state.");
             }
             BoeBot.wait(1); //BoeBot wait 1 is required for the program to function and not disrupt itself, this is due to BoeBot behaviour.

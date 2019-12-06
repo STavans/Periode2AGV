@@ -8,21 +8,19 @@ public interface IRConversionCallback {
     void forward();
     void rightDiagonal();
     void leftTurn();
-    void stop();
+    void emergencyBrake();
     void rightTurn();
     void leftBackDiagonal();
     void reverse();
     void rightBackDiagonal();
-    void mute();
     void switchOn();
     void infiniteRightTurn();
     void infiniteLeftTurn();
-    void square();
-    void triangle();
     void smoothTurnLeft();
     void smoothTurnRight();
     void speedUp();
     void slowDown();
+    void brake();
 
 
 }

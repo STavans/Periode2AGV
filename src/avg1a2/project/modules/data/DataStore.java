@@ -2,15 +2,18 @@ package avg1a2.project.modules.data;
 
 import TI.Servo;
 import avg1a2.project.hardware.Component;
+import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
+import avg1a2.project.hardware.sensor.linedetection.LineDetection;
 import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
-import avg1a2.project.modules.controller.MotionControl;
-import avg1a2.project.modules.controller.RemoteControl;
+import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.irconversion.IRConversion;
+import sun.misc.Signal;
+
 import java.util.HashMap;
 
 /**
@@ -19,14 +22,19 @@ import java.util.HashMap;
 public class DataStore {
     private MotionControl motionControl;
     private RemoteControl remoteControl;
+    private BlueBotControl blueBotControl;
     private CollisionDetection collisionDetection;
+    private SignalControl signalControl;
+    private RouteControl routeControl;
     private IRConversion irConversion;
     private State programState;
     private State motionState;
     private State motionAction;
     private Component irSensor;
     private Component ultrasonicSensor;
-    private Component speaker;
+    private Component bluetoothSensor;
+    private Component lineDetection;
+    private Component warningSpeaker;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
     private Servo sRight;
@@ -79,6 +87,26 @@ public class DataStore {
     }
 
     /**
+     * Sets the BluetoothControl in the DataStore.
+     */
+    public void setBlueBotControl(BlueBotControl blueBotControl) {
+        this.blueBotControl = blueBotControl;
+    }
+
+    /**
+     * Gets the BlueBotControl from the DataStore.
+     * @return BlueBotControl object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public BlueBotControl getBlueBotControl() throws IllegalArgumentException {
+        if (blueBotControl == null) {
+            throw new IllegalArgumentException("BlueBot Control has not been initialized");
+        } else {
+            return this.blueBotControl;
+        }
+    }
+
+    /**
      * Sets the CollisionDetection in the DataStore.
      */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
@@ -95,6 +123,30 @@ public class DataStore {
             throw new IllegalArgumentException("Collision Detection has not been initialized");
         } else {
             return this.collisionDetection;
+        }
+    }
+
+    public void setSignalControl(SignalControl signalControl){
+        this.signalControl = signalControl;
+    }
+
+    public SignalControl getSignalControl(){
+        if(this.signalControl == null){
+            throw new IllegalArgumentException("The signal controls have not been initialized");
+        } else {
+            return this.signalControl;
+        }
+    }
+
+    public void setRouteControl(RouteControl routeControl){
+        this.routeControl = routeControl;
+    }
+
+    public RouteControl getRouteControl(){
+        if(this.routeControl == null){
+            throw new IllegalArgumentException("The route controls have not been initialized");
+        } else {
+            return this.routeControl;
         }
     }
 
@@ -219,10 +271,50 @@ public class DataStore {
     }
 
     /**
-     * Sets the speaker in the DataStore.
+     * Sets the BluetoothSensor in the DataStore.
      */
-    public void setSpeaker(Speaker speaker) {
-        this.speaker = speaker;
+    public void setBluetoothSensor(BluetoothSensor bluetoothSensor) {
+        this.bluetoothSensor = bluetoothSensor;
+    }
+
+    /**
+     * Gets the BluetoothSensor from the DataStore.
+     * @return BluetoothSensor object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Component getBluetoothSensor() throws IllegalArgumentException {
+        if (bluetoothSensor == null) {
+            throw new IllegalArgumentException("Bluetooth Sensor has not been initialized");
+        } else {
+            return this.bluetoothSensor;
+        }
+    }
+
+    /**
+     * Sets the LineDetection in the DataStore.
+     */
+    public void setLineDetection(LineDetection lineDetection) {
+        this.lineDetection = lineDetection;
+    }
+
+    /**
+     * Gets the LineDetection from the DataStore.
+     * @return LineDetection object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Component getLineDetection() throws IllegalArgumentException {
+        if (lineDetection == null) {
+            throw new IllegalArgumentException("Line detection has not been initialized");
+        } else {
+            return this.lineDetection;
+        }
+    }
+
+    /**
+     * Sets the warningSpeaker in the DataStore.
+     */
+    public void setWarningSpeaker(Speaker speaker) {
+        this.warningSpeaker = speaker;
     }
 
     /**
@@ -230,11 +322,11 @@ public class DataStore {
      * @return speaker object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
-    public Component getSpeaker() throws IllegalArgumentException {
-        if (speaker == null) {
-            throw new IllegalArgumentException("Speaker has not been initialized");
+    public Component getWarningSpeaker() throws IllegalArgumentException {
+        if (warningSpeaker == null) {
+            throw new IllegalArgumentException("WarningSpeaker has not been initialized");
         } else {
-            return this.speaker;
+            return this.warningSpeaker;
         }
     }
 

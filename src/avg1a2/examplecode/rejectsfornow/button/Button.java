@@ -5,7 +5,7 @@ import TI.BoeBot;
 /**
  * A button is a sensor based object which will return true when pressed and false when not.
  */
-public class Button implements Sensor {
+public class Button {
     private ButtonCallback buttonCallBack;
     private int button;
 

@@ -1,5 +1,6 @@
 package avg1a2.project.modules.controller;
 
+import TI.Timer;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.irconversion.IRConversion;
@@ -11,14 +12,18 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
 public class RemoteControl implements CollisionDetectionCallback, IRConversionCallback {
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
+    private SignalControl signalControl;
     private IRConversion irConversion;
+    private Timer timer;
+
 
     /**
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
         this.motionControl = motionControl;
+        this.signalControl = signalControl;
     }
 
     /**
@@ -41,12 +46,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      * Updates the controller, which also updates all of it's own updates.
      */
     public void run() {
-        if (collisionDetection != null) {
-            collisionDetection.update();
-            irConversion.update();
-            motionControl.update();
-            //todo error catching.
-        }
+        collisionDetection.update();
+        irConversion.update();
+        motionControl.update();
+        //todo error catching.
     }
 
     /**
@@ -54,8 +57,17 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void onFrontCollision() {
         motionControl.setState("Idle");
-        motionControl.setAction("");
-        stop(); //Maybe we need to let it brake instead?
+        motionControl.setAction("None");
+        brake(); //Maybe we need to let it brake instead?
+        signalControl.boeBotCollision();
+    }
+
+    @Override
+    public void emergencyCollision() {
+        motionControl.setState("Idle");
+        motionControl.setAction("None");
+        emergencyBrake();
+        signalControl.boeBotCollision();
     }
 
     /**
@@ -63,7 +75,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-45,50);
         }
@@ -75,7 +87,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void forward() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
-            motionControl.setSpeedForward(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
+            motionControl.setTargetSpeed(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
         }
     }
 
@@ -84,9 +96,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(45,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(45,50);
         }
     }
 
@@ -95,19 +107,19 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()){
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-90,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(-90,50);
         }
     }
 
     /**
      * Makes the BoeBot stop.
      */
-    public void stop() { //Stop or brake?
-        if (motionControl.isIdle()) {
+    public void emergencyBrake() { //Stop or brake?
+        if (motionControl.isIdle() && !collisionDetection.isCollision()){
             motionControl.setState("Executing");
-            motionControl.emergencyBrake(); //stop or brake?
+            motionControl.emergencyBrake();
         }
     }
 
@@ -116,9 +128,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(90,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(90,50);
         }
     }
 
@@ -127,9 +140,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(-135,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(-135,50);
         }
     }
 
@@ -139,7 +152,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void reverse() {
         if (motionControl.isIdle()) {
             motionControl.setState("Executing");
-            motionControl.setSpeedForward(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
+            motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
         }
     }
 
@@ -148,24 +161,17 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            stop(); //stop or brake?
+            brake(); //stop or brake?
             motionControl.setState("Executing");
-            motionControl.setTurnDegrees(135,50); //check if this function will be changed.
+            motionControl.setTurnDegrees(135,50);
         }
-    }
-
-    /**
-     * Mutes the BoeBot.
-     */
-    public void mute() {
-        //todo mute button call, also create constant sound.
     }
 
     /**
      * Switches the BoeBot State.
      */
     public void switchOn() {
-        //todo nothing until we have a second controller active.
+        //todo override for following route
     }
 
     /**
@@ -174,6 +180,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteRightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
+            signalControl.turnRightLED();
             motionControl.infRight();
         }
     }
@@ -184,35 +191,8 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     public void infiniteLeftTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
+            signalControl.turnLeftLED();
             motionControl.infLeft();
-        }
-    }
-
-    /**
-     * Makes the BoeBot drive in a square.
-     */
-    public void square() { //todo scrap or fix?
-        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            motionControl.setState("Executing");
-            for (int i = 0; i < 4; i++) {
-                stop();
-                motionControl.setTurnDegrees(90,50);
-                forward();
-            }
-        }
-    }
-
-    /**
-     * Makes the BoeBot drive in a triangle.
-     */
-    public void triangle() { //todo scrap or fix?
-        if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            motionControl.setState("Executing");
-            for (int i = 0; i < 3; i++) {
-                stop();
-                motionControl.setTurnDegrees(60,50);
-                forward();
-            }
         }
     }
 
@@ -232,10 +212,8 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void smoothTurnRight() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-
             motionControl.setState("Executing");
             motionControl.smoothTurnRight();
-
         }
     }
 
@@ -246,7 +224,6 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
             motionControl.setState("Executing");
             motionControl.speedUp();
-
         }
     }
 
@@ -258,5 +235,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
             motionControl.setState("Executing");
             motionControl.slowDown();
         }
+    }
+
+    public void brake(){
+        motionControl.setState("Executing");
+        motionControl.setTargetSpeed(0);
     }
 }
