@@ -12,6 +12,7 @@ import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.data.DataStore;
+import avg1a2.project.modules.data.Route;
 import avg1a2.project.modules.irconversion.IRConversion;
 
 /**
@@ -32,9 +33,11 @@ class Init {
         buildCollisionDetection(dataStore);
         buildIrConversion(dataStore);
         buildSensors(dataStore);
+        buildRoutes(dataStore);
         setSensors(dataStore);
         setModules(dataStore);
         setSignals(dataStore);
+        setRoutes(dataStore);
         return dataStore;
     }
 
@@ -143,6 +146,22 @@ class Init {
     }
 
     /**
+     * Builds the Routes used by the program and adds it to the DataStore.
+     * @param dataStore The DataStore which it needs to fill with new Routes.
+     */
+    private static void buildRoutes(DataStore dataStore) {
+        Route route = new Route();
+        route.addStep("Left");
+        route.addStep("Right");
+        route.addStep("Forward");
+        route.addStep("Forward");
+        route.addStep("Left");
+        route.addStep("Forward");
+        route.addStep("Stop");
+        dataStore.addRoute("Default",route);
+    }
+
+    /**
      * Adds all set sensors to the correct objects inside the DataStore.
      * @param dataStore The DataStore in which to set the Sensors.
      */
@@ -169,5 +188,9 @@ class Init {
         dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
         dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
+    }
+
+    private static void setRoutes(DataStore dataStore) {
+        dataStore.getRouteControl().setRoute(dataStore.getRoute("Default"));
     }
 }

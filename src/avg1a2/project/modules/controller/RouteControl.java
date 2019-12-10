@@ -21,16 +21,6 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
 
     public void runRoute(){
 
-        for(String action : this.route.getRoute()){
-
-            switch(action) {
-
-
-
-
-            }
-
-        }
 
 
     }
