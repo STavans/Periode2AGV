@@ -19,6 +19,12 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
         this.motionControl = motionControl;
     }
 
+    public void runRoute(){
+
+
+
+    }
+
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
     }
@@ -44,17 +50,22 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
 
     @Override
     public void lineCorrectionLeft() {
-        motionControl.updateWheels(0, 10);
+        motionControl.updateWheels(0, 50);
     }
 
     @Override
     public void lineCorrectionRight() {
-        motionControl.updateWheels(10,0);
+        motionControl.updateWheels(50,0);
     }
 
     @Override
     public void onLineLost() {
         motionControl.emergencyBrake();
+    }
+
+    @Override
+    public void goForward() {
+        motionControl.setTargetSpeed(30);
     }
 
     @Override

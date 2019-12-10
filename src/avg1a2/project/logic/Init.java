@@ -12,6 +12,7 @@ import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.data.DataStore;
+import avg1a2.project.modules.data.Route;
 import avg1a2.project.modules.irconversion.IRConversion;
 
 /**
@@ -32,9 +33,11 @@ class Init {
         buildCollisionDetection(dataStore);
         buildIrConversion(dataStore);
         buildSensors(dataStore);
+        buildRoutes(dataStore);
         setSensors(dataStore);
         setModules(dataStore);
         setSignals(dataStore);
+        setRoutes(dataStore);
         return dataStore;
     }
 
@@ -43,8 +46,8 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new servo's.
      */
     private static void buildServos(DataStore dataStore) {
-        dataStore.setSLeft(new Servo(12));
-        dataStore.setSRight(new Servo(13));
+        dataStore.setSLeft(new Servo(13));
+        dataStore.setSRight(new Servo(12));
     }
 
     /**
@@ -128,7 +131,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new IrConversion.
      */
     private static void buildIrConversion(DataStore dataStore) {
-        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl()));
+        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl(),dataStore.getProgramState()));
     }
 
     /**
@@ -137,9 +140,25 @@ class Init {
      */
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(9,8,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(0,1,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(1300,0,1,2,3,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(900,0,1,2,3,dataStore.getRouteControl()));
+    }
+
+    /**
+     * Builds the Routes used by the program and adds it to the DataStore.
+     * @param dataStore The DataStore which it needs to fill with new Routes.
+     */
+    private static void buildRoutes(DataStore dataStore) {
+        Route route = new Route();
+        route.addStep("Left");
+        route.addStep("Right");
+        route.addStep("Forward");
+        route.addStep("Forward");
+        route.addStep("Left");
+        route.addStep("Forward");
+        route.addStep("Stop");
+        dataStore.addRoute("Default",route);
     }
 
     /**
@@ -159,8 +178,10 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
         dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
+        dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
     }
 
     private static void setSignals(DataStore dataStore) {
@@ -169,5 +190,9 @@ class Init {
         dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
         dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
+    }
+
+    private static void setRoutes(DataStore dataStore) {
+        dataStore.getRouteControl().setRoute(dataStore.getRoute("Default"));
     }
 }
