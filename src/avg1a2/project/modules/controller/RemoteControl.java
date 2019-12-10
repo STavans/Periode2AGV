@@ -83,6 +83,9 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         signalControl.boeBotCollision();
     }
 
+    /**
+     * Function the callback calls whenever there is a front collision detected and needs to stop immediately.
+     */
     @Override
     public void emergencyCollision() {
         motionControl.setState("Idle");
