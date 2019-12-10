@@ -7,7 +7,7 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.data.Route;
 
-public class RouteControl implements LineDetectionCallback, CollisionDetectionCallback {
+public class RouteControl implements LineDetectionCallback {
     private SignalControl signalControl;
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
@@ -38,9 +38,14 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
     }
 
     public void run(){
+        signalControl.followRoute();
         motionControl.update();
         lineDetection.update();
         collisionDetection.update();
+        motionControl.onFrontCollision();
+        motionControl.routeCollision();
+        motionControl.routeEmergencyCollision();
+        motionControl.emergencyCollision();
     }
 
     @Override
@@ -68,13 +73,5 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
         motionControl.setTargetSpeed(30);
     }
 
-    @Override
-    public void onFrontCollision() {
-        motionControl.setTargetSpeed(0);
-    }
 
-    @Override
-    public void emergencyCollision() {
-        motionControl.emergencyBrake();
-    }
 }

@@ -3,11 +3,12 @@ package avg1a2.project.modules.controller;
 import TI.Servo;
 import TI.Timer;
 import avg1a2.project.logic.State;
+import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 
 /**
  * Controller to manage any and all actions related to motion and is called/used by the other controllers.
  */
-public class MotionControl  {
+public class MotionControl implements CollisionDetectionCallback {
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
@@ -32,6 +33,7 @@ public class MotionControl  {
         if (state.ifState("Executing")) {
             turnDegrees();
             accelerateToSpeed();
+
         }
     }
 
@@ -217,5 +219,28 @@ public class MotionControl  {
     void updateWheels(int speedLeft, int speedRight){
         this.sLeft.update(1500 + speedLeft);
         this.sRight.update(1500 - speedRight);
+    }
+
+    @Override
+    public void onFrontCollision() {
+        setTargetSpeed(0);
+    }
+
+    @Override
+    public void routeCollision() {
+        setTargetSpeed(0);
+
+    }
+
+    @Override
+    public void routeEmergencyCollision() {
+        emergencyBrake();
+
+    }
+
+    @Override
+    public void emergencyCollision() {
+        emergencyBrake();
+
     }
 }

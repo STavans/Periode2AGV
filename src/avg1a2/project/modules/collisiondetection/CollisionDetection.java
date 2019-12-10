@@ -69,7 +69,7 @@ public class CollisionDetection implements UltraSonicCallback {
     public void onUltraSonic() {
         if (!isCollision) {
             remoteCallback.onFrontCollision(); //todo split up the calls.
-            routeCallback.onFrontCollision();
+            routeCallback.routeCollision();
         }
         this.signalControl.boeBotCollision();
         isCollision = true;
@@ -79,7 +79,7 @@ public class CollisionDetection implements UltraSonicCallback {
     public void closeUltraSonic(){
         if(!isCollision){
             remoteCallback.emergencyCollision(); //todo split up the calls.
-            routeCallback.emergencyCollision();
+            routeCallback.routeEmergencyCollision();
         }
         signalControl.boeBotCollision();
         isCollision = true;

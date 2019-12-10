@@ -9,6 +9,7 @@ import avg1a2.project.hardware.signal.led.LedGroup;
 public class SignalControl {
     private LedGroup turnLeftLEDs;
     private LedGroup turnRightLEDs;
+    private LedGroup followRoute;
     private LedGroup idle;
     private LedGroup collision;
     private LedGroup setLEDs;
@@ -16,6 +17,11 @@ public class SignalControl {
 
     public SignalControl() {
         //this.setLEDs = setLEDs;
+    }
+
+    public void followRoute(){
+        this.followRoute.on();
+
     }
 
     public void boeBotOn() {
@@ -57,6 +63,10 @@ public class SignalControl {
 
     public void setCollision(LedGroup collision) {
         this.collision = collision;
+    }
+
+    public void setFollowRoute(LedGroup followRoute){
+        this.followRoute = followRoute;
     }
 
     public void setSetLEDs(LedGroup setLEDs) {

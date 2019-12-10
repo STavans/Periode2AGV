@@ -5,5 +5,7 @@ package avg1a2.project.modules.collisiondetection;
  */
 public interface CollisionDetectionCallback {
     void onFrontCollision();
+    void routeCollision();
+    void routeEmergencyCollision();
     void emergencyCollision();
 }

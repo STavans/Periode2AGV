@@ -55,7 +55,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         collisionDetection.update();
         irConversion.update();
         motionControl.update();
-        //todo error catching.
+
     }
 
     /**
@@ -66,6 +66,16 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         motionControl.setAction("None");
         brake(); //Maybe we need to let it brake instead?
         signalControl.boeBotCollision();
+    }
+
+    @Override
+    public void routeCollision() {
+
+    }
+
+    @Override
+    public void routeEmergencyCollision() {
+
     }
 
     @Override
@@ -113,17 +123,19 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()){
+            signalControl.turnLeftLED();
             brake(); //stop or brake?
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-90,50);
         }
     }
 
-    /**
+    /**-
      * Makes the BoeBot stop.
      */
     public void emergencyBrake() { //Stop or brake?
         if (motionControl.isIdle() && !collisionDetection.isCollision()){
+            signalControl.boeBotCollision();
             motionControl.setState("Executing");
             motionControl.emergencyBrake();
         }
