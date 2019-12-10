@@ -7,7 +7,7 @@ import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.data.Route;
 
-public class RouteControl implements LineDetectionCallback {
+public class RouteControl implements LineDetectionCallback{
     private SignalControl signalControl;
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
@@ -43,8 +43,6 @@ public class RouteControl implements LineDetectionCallback {
         lineDetection.update();
         collisionDetection.update();
         motionControl.onFrontCollision();
-        motionControl.routeCollision();
-        motionControl.routeEmergencyCollision();
         motionControl.emergencyCollision();
     }
 

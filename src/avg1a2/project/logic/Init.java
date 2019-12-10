@@ -132,7 +132,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getRemoteControl(), dataStore.getRouteControl(), dataStore.getSignalControl()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getMotionControl(),dataStore.getSignalControl()));
     }
 
     /**

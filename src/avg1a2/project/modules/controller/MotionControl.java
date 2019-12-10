@@ -30,10 +30,12 @@ public class MotionControl implements CollisionDetectionCallback {
      * Updates the controller to check if any actions are still in progress and if so, to continue them.
      */
     public void update() {
-        if (state.ifState("Executing")) {
+        if(state.ifState("Collision")){
+            this.targetSpeed = 0;
+            accelerateToSpeed();
+        }else if(state.ifState("Executing")) {
             turnDegrees();
             accelerateToSpeed();
-
         }
     }
 
@@ -223,24 +225,12 @@ public class MotionControl implements CollisionDetectionCallback {
 
     @Override
     public void onFrontCollision() {
-        setTargetSpeed(0);
-    }
-
-    @Override
-    public void routeCollision() {
-        setTargetSpeed(0);
-
-    }
-
-    @Override
-    public void routeEmergencyCollision() {
-        emergencyBrake();
-
+        state.setState("Collision");
     }
 
     @Override
     public void emergencyCollision() {
+        state.setState("Collision");
         emergencyBrake();
-
     }
 }

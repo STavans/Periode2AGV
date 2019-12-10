@@ -69,21 +69,17 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     }
 
     @Override
-    public void routeCollision() {
-
-    }
-
-    @Override
-    public void routeEmergencyCollision() {
-
-    }
-
-    @Override
     public void emergencyCollision() {
         motionControl.setState("Idle");
         motionControl.setAction("None");
         emergencyBrake();
         signalControl.boeBotCollision();
+    }
+
+    @Override
+    public void collisionDone() {
+        motionControl.setState("Idle");
+        motionControl.setAction("None");
     }
 
     /**

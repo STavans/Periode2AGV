@@ -9,22 +9,21 @@ import avg1a2.project.modules.controller.SignalControl;
  * Manages all CollisionDetection in the program, whenever one is detected, this will be signalled to the controllers.
  */
 public class CollisionDetection implements UltraSonicCallback {
-    private CollisionDetectionCallback remoteCallback;
-    private CollisionDetectionCallback routeCallback;
+    private CollisionDetectionCallback callback;
     private SignalControl signalControl;
     private Component ultrasonicSensor;
     private Timer timer;
     private boolean isCollision;
+    //Cleanup maybe use state
 
     /**
      * Constructor sets the required parameters, except for the sensor to use.
-     * @param remoteCallback The controller to which to signal the collision to.
+     * @param callback The controller to which to signal the collision to.
      * @param
      */
-    public CollisionDetection(CollisionDetectionCallback remoteCallback, CollisionDetectionCallback routeCallback,SignalControl signalControl){
+    public CollisionDetection(CollisionDetectionCallback callback,  SignalControl signalControl){
+        this.callback = callback;
         this.signalControl = signalControl;
-        this.remoteCallback = remoteCallback;
-        this.routeCallback = routeCallback;
         this.isCollision = false;
     }
 
@@ -68,22 +67,23 @@ public class CollisionDetection implements UltraSonicCallback {
      **/
     public void onUltraSonic() {
         if (!isCollision) {
-            remoteCallback.onFrontCollision(); //todo split up the calls.
-            routeCallback.routeCollision();
+            callback.onFrontCollision();
         }
         this.signalControl.boeBotCollision();
-        isCollision = true;
+
         timer = new Timer(500);
     }
 
+    /**
+     * TODO Cleanup this code, and fix the collision callbacks
+     * TODO Look at the motionControl class
+     */
     public void closeUltraSonic(){
-        if(!isCollision){
-            remoteCallback.emergencyCollision(); //todo split up the calls.
-            routeCallback.routeEmergencyCollision();
+        if(!isCollision) {
+            callback.emergencyCollision();
         }
         signalControl.boeBotCollision();
         isCollision = true;
         timer = new Timer(500);
-
     }
 }
