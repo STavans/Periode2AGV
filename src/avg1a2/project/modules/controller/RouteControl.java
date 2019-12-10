@@ -4,10 +4,9 @@ import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.linedetection.LineDetectionCallback;
 import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
-import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.data.Route;
 
-public class RouteControl implements LineDetectionCallback, CollisionDetectionCallback {
+public class RouteControl implements LineDetectionCallback {
     private SignalControl signalControl;
     private MotionControl motionControl;
     private CollisionDetection collisionDetection;
@@ -130,17 +129,5 @@ public class RouteControl implements LineDetectionCallback, CollisionDetectionCa
             motionControl.setTargetSpeed(speed);
             state.setState("Idle");
         }
-    }
-
-    @Override
-    public void onFrontCollision() {
-        motionControl.setTargetSpeed(0);
-        state.setState("Collision");
-    }
-
-    @Override
-    public void emergencyCollision() {
-        motionControl.emergencyBrake();
-        state.setState("Collision");
     }
 }
