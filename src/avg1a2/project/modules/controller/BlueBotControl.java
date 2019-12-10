@@ -4,7 +4,6 @@ import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothCallback;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
-import avg1a2.project.modules.data.Route;
 
 public class BlueBotControl implements BluetoothCallback {
     private RouteControl routeControl;

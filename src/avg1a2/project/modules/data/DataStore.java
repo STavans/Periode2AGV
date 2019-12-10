@@ -12,7 +12,6 @@ import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.irconversion.IRConversion;
-import sun.misc.Signal;
 
 import java.util.HashMap;
 
@@ -35,6 +34,7 @@ public class DataStore {
     private Component bluetoothSensor;
     private Component lineDetection;
     private Component warningSpeaker;
+    private HashMap<String, Route> routes;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
     private Servo sRight;
@@ -44,6 +44,7 @@ public class DataStore {
      */
     public DataStore() {
         ledGroups = new HashMap<>();
+        routes = new HashMap<>();
     }
 
     /**
@@ -331,19 +332,6 @@ public class DataStore {
     }
 
     /**
-     * Gets the ledGroups from the DataStore.
-     * @return ledGroups object.
-     * @throws IllegalArgumentException Exception if object is not set.
-     */
-    public HashMap<String, LedGroup> getLedGroups() {
-        if (ledGroups == null) {
-            throw new IllegalArgumentException("LedGroup has not been initialized");
-        } else {
-            return ledGroups;
-        }
-    }
-
-    /**
      * Gets the ledGroup from the DataStore.
      * @param ledGroup Name of the LedGroup to get.
      * @return ledGroup object.
@@ -364,6 +352,29 @@ public class DataStore {
      */
     public void addLedGroup(String groupName, LedGroup ledGroup) {
         ledGroups.put(groupName,ledGroup);
+    }
+
+    /**
+     * Gets the ledGroup from the DataStore.
+     * @param route Name of the LedGroup to get.
+     * @return Route object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Route getRoute(String route) {
+        if (routes.containsKey(route)) {
+            return routes.get(route);
+        } else {
+            throw new IllegalArgumentException("The Route has not been added");
+        }
+    }
+
+    /**
+     * Adds the route to the routes hashMap.
+     * @param name Name of the route to add.
+     * @param route The route itself.
+     */
+    public void addRoute(String name, Route route) {
+        routes.put(name,route);
     }
 
     /**
