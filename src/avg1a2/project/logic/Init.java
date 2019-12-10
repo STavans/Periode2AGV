@@ -131,7 +131,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new IrConversion.
      */
     private static void buildIrConversion(DataStore dataStore) {
-        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl()));
+        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl(),dataStore.getProgramState()));
     }
 
     /**

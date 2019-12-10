@@ -2,6 +2,7 @@ package avg1a2.project.modules.irconversion;
 
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ir.IRCallback;
+import avg1a2.project.logic.State;
 
 /**
  * Converts the IR signal to match it with one of it's callback functions based on the code received.
@@ -10,14 +11,16 @@ public class IRConversion implements IRCallback {
     private IRConversionCallback callback;
     private IROverridable override;
     private Component irSensor;
+    private State programState;
 
     /**
      * Constructor sets the callback to signal on detection.
      * @param callback Callback to signal on detection of a IR signal.
      */
-    public IRConversion(IRConversionCallback callback, IROverridable override){
+    public IRConversion(IRConversionCallback callback, IROverridable override, State programState){
         this.callback = callback;
         this.override = override;
+        this.programState = programState;
     }
 
     /**
@@ -75,8 +78,11 @@ public class IRConversion implements IRCallback {
                 callback.rightBackDiagonal();
                 break;
             case 0b10010101 :
-                callback.changeState();
-                override.override();
+                if (programState.ifState("Override")) {
+                    callback.changeState();
+                } else {
+                    override.override();
+                }
                 break;
             case 0b10011010 :
                 callback.infiniteRightTurn();
