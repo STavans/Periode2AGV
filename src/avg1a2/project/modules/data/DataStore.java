@@ -355,8 +355,8 @@ public class DataStore {
     }
 
     /**
-     * Gets the ledGroup from the DataStore.
-     * @param route Name of the LedGroup to get.
+     * Gets the Route from the DataStore.
+     * @param route Name of the Route to get.
      * @return Route object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
