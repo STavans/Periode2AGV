@@ -1,6 +1,7 @@
 package avg1a2.project.modules.controller;
 
 import TI.Timer;
+import avg1a2.project.logic.State;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 import avg1a2.project.modules.irconversion.IRConversion;
@@ -15,6 +16,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     private SignalControl signalControl;
     private IRConversion irConversion;
     private Timer timer;
+    private State programState;
 
 
     /**
@@ -40,6 +42,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void setIrConversion(IRConversion irConversion) {
         this.irConversion = irConversion;
+    }
+
+    public void setProgramState(State programState) {
+        this.programState = programState;
     }
 
     /**
@@ -170,8 +176,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     /**
      * Switches the BoeBot State.
      */
-    public void switchOn() {
-        //todo override for following route
+    public void changeState() {
+        motionControl.setState("Idle");
+        motionControl.setAction("None");
+        this.programState.setState("BlueBot");
     }
 
     /**
