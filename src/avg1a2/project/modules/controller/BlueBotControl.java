@@ -4,11 +4,14 @@ import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothCallback;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
+import avg1a2.project.logic.State;
+import avg1a2.project.modules.irconversion.IROverridable;
 
-public class BlueBotControl implements BluetoothCallback {
+public class BlueBotControl implements BluetoothCallback, IROverridable {
     private RouteControl routeControl;
     private Component bluetoothSensor;
     private LedGroup neopixels;
+    private State programState;
 
     public BlueBotControl(RouteControl routeControl) {
         this.routeControl = routeControl;
@@ -24,6 +27,10 @@ public class BlueBotControl implements BluetoothCallback {
 
     public void setBluetoothSensor(Component bluetoothSensor) {
         this.bluetoothSensor = bluetoothSensor;
+    }
+
+    public void setProgramState(State programState) {
+        this.programState = programState;
     }
 
     public void run() throws RuntimeException {
@@ -45,5 +52,10 @@ public class BlueBotControl implements BluetoothCallback {
         } else {
             neopixels.off();
         }
+    }
+
+    @Override
+    public void override() {
+        this.programState.setState("Override");
     }
 }

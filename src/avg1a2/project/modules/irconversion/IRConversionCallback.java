@@ -13,7 +13,7 @@ public interface IRConversionCallback {
     void leftBackDiagonal();
     void reverse();
     void rightBackDiagonal();
-    void switchOn();
+    void changeState();
     void infiniteRightTurn();
     void infiniteLeftTurn();
     void smoothTurnLeft();

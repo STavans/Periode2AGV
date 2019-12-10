@@ -131,7 +131,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new IrConversion.
      */
     private static void buildIrConversion(DataStore dataStore) {
-        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl()));
+        dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl()));
     }
 
     /**
@@ -178,8 +178,10 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
         dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
+        dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
     }
 
     private static void setSignals(DataStore dataStore) {

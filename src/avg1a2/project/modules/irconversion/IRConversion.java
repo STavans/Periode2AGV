@@ -8,14 +8,16 @@ import avg1a2.project.hardware.sensor.ir.IRCallback;
  */
 public class IRConversion implements IRCallback {
     private IRConversionCallback callback;
+    private IROverridable override;
     private Component irSensor;
 
     /**
      * Constructor sets the callback to signal on detection.
      * @param callback Callback to signal on detection of a IR signal.
      */
-    public IRConversion(IRConversionCallback callback){
+    public IRConversion(IRConversionCallback callback, IROverridable override){
         this.callback = callback;
+        this.override = override;
     }
 
     /**
@@ -73,7 +75,8 @@ public class IRConversion implements IRCallback {
                 callback.rightBackDiagonal();
                 break;
             case 0b10010101 :
-                callback.switchOn();
+                callback.changeState();
+                override.override();
                 break;
             case 0b10011010 :
                 callback.infiniteRightTurn();
