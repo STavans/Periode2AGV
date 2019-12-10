@@ -42,6 +42,10 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
         this.irConversion = irConversion;
     }
 
+    /**
+     * Sets the programState to use.
+     * @param programState The programState to use.
+     */
     public void setProgramState(State programState) {
         this.programState = programState;
     }
@@ -133,7 +137,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
     /**
      * Makes the BoeBot stop.
      */
-    public void emergencyBrake() { //Stop or brake?
+    public void emergencyBrake() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()){
             motionControl.setState("Executing");
             motionControl.emergencyBrake();
@@ -145,8 +149,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightTurn() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-
-            brake(); //stop or brake?
+            brake();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(90,50);
         }
@@ -157,7 +160,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void leftBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            brake(); //stop or brake?
+            brake();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(-135,50);
         }
@@ -178,7 +181,7 @@ public class RemoteControl implements CollisionDetectionCallback, IRConversionCa
      */
     public void rightBackDiagonal() {
         if (motionControl.isIdle() && !collisionDetection.isCollision()) {
-            brake(); //stop or brake?
+            brake();
             motionControl.setState("Executing");
             motionControl.setTurnDegrees(135,50);
         }
