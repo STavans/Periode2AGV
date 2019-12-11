@@ -5,7 +5,7 @@ import TI.Timer;
 import avg1a2.project.hardware.Component;
 
 public class LineDetection implements Component {
-    private int threshhold;
+    private int threshold;
     private int leftSensor;
     private int backRightSensor;
     private int midSensor;
@@ -14,7 +14,7 @@ public class LineDetection implements Component {
     private Timer timer;
 
     public LineDetection(int threshhold, int leftSensor, int backRightSensor, int midSensor, int frontRightSensor, LineDetectionCallback callback) {
-        this.threshhold = threshhold;
+        this.threshold = threshhold;
         this.leftSensor = leftSensor;
         this.backRightSensor = backRightSensor;
         this.midSensor = midSensor;
@@ -34,24 +34,39 @@ public class LineDetection implements Component {
         int dataFrontRightSensor = BoeBot.analogRead(frontRightSensor);
         int dataBackRightSensor = BoeBot.analogRead(backRightSensor);
 
-        if (dataMidSensor < threshhold && dataFrontRightSensor < threshhold && dataBackRightSensor < threshhold && dataLeftSensor < threshhold && midSensor < dataMidSensor) {
-            if (timer == null || timer.timeout()) {
-                timer = new Timer(50);
-                callback.onLineLost();
-            }
-
-        } else if (dataMidSensor > threshhold && dataBackRightSensor > threshhold) {
-            callback.onCrossroads();
-        } else if (dataMidSensor > threshhold) {
+        if (dataMidSensor > threshold) {
             callback.goForward();
         }
-
-
-        if (dataLeftSensor > threshhold && dataFrontRightSensor < threshhold) {
+        if (dataLeftSensor > threshold && dataFrontRightSensor < threshold) {
             callback.lineCorrectionLeft();
-        } else if (dataFrontRightSensor > threshhold && dataLeftSensor < threshhold) {
+        }
+        if (dataFrontRightSensor > threshold && dataLeftSensor < threshold) {
             callback.lineCorrectionRight();
         }
+        if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
+            callback.onLineLost();
+        }
+        if (dataMidSensor > threshold && dataBackRightSensor > threshold) {
+            callback.onCrossroads();
+        }
+
+        /**
+        if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
+            callback.onLineLost();
+        } else if (dataMidSensor > threshold && dataBackRightSensor > threshold) {
+            callback.onCrossroads();
+        } else if (dataLeftSensor > threshold && dataFrontRightSensor < threshold) {
+            callback.lineCorrectionLeft();
+        } else if (dataFrontRightSensor > threshold && dataLeftSensor < threshold) {
+            callback.lineCorrectionRight();
+        } else if (dataMidSensor > threshold) {
+            callback.goForward();
+        }*/
+
+
+
+
+
 
     }
 }
