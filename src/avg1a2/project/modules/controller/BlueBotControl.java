@@ -35,7 +35,7 @@ public class BlueBotControl implements BluetoothCallback, IROverridable {
 
     public void run() throws RuntimeException {
         routeControl.run();
-        //blueBotScan();
+        blueBotScan();
     }
 
     public void blueBotScan() {

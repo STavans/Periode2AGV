@@ -9,18 +9,19 @@ import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
  * Controller to manage any and all actions related to motion and is called/used by the other controllers.
  */
 public class MotionControl implements CollisionDetectionCallback {
+    private SignalControl signalControl;
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
     private State state;
-    private State action;
     private int currentSpeed;
     private int targetSpeed;
 
     /**
      * Constructor sets it's Servo's and it's currentSpeed at creation.
      */
-    public MotionControl(Servo sLeft, Servo sRight){
+    public MotionControl(Servo sLeft, Servo sRight, SignalControl signalControl){
+        this.signalControl = signalControl;
         this.sLeft = sLeft;
         this.sRight = sRight;
         this.currentSpeed = 0;
@@ -56,10 +57,9 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param targetSpeed Target Speed for the BoeBot to reach.
      */
     void setTargetSpeed(int targetSpeed) {
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             this.targetSpeed = targetSpeed;
-            this.action.setState("Accelerating");
-            this.state.setState("Executing");
+            this.state.setState("Accelerating");
         }
     }
 
@@ -72,26 +72,10 @@ public class MotionControl implements CollisionDetectionCallback {
     }
 
     /**
-     * Insert a new State object, defining all non single run actions for the controller to use.
-     * @param action State containing all actions.
-     */
-    public void newAction(State action) {
-        this.action = action;
-    }
-
-    /**
-     * Sets the current action for the controller to keep checking to execute.
-     * @param action New active action.
-     */
-    void setAction(String action) {
-        this.action.setState(action);
-    }
-
-    /**
      * Function to allow the BoeBot to accelerate to the current target speed.
      */
     private void accelerateToSpeed() {
-        if ((this.action.ifState("Accelerating") && this.state.ifState("Executing")) || (state.ifState("Collision") && targetSpeed == 0)) {
+        if ((this.state.ifState("Accelerating")) || (state.ifState("Collision") && targetSpeed == 0)) {
             if (targetSpeed != currentSpeed) {
                 if (targetSpeed < currentSpeed) {
                     setSpeedForward(currentSpeed - 5);
@@ -99,7 +83,6 @@ public class MotionControl implements CollisionDetectionCallback {
                     setSpeedForward(currentSpeed + 5);
                 }
             } else {
-                setAction("None");
                 setState("Idle");
             }
         }
@@ -110,7 +93,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param speed The new speed of the BoeBot.
      */
     private void setSpeedForward(int speed){
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             this.sLeft.update(1500 + speed);
             this.sRight.update(1500 - speed);
             this.currentSpeed = speed;
@@ -130,10 +113,9 @@ public class MotionControl implements CollisionDetectionCallback {
      * Function to check if the turnDegrees function needs to be ended.
      */
     private void turn() {
-        if (action.ifState("Turning") && state.ifState("Executing") && timer != null && timer.timeout()) {
+        if (state.ifState("Turning") && timer != null && timer.timeout()) {
             updateWheels(1500,1500);
             setTurnDegrees(0,0);
-            setAction("None");
             setState("Idle");
         }
     }
@@ -144,8 +126,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param turnSpeed The speed at which to turn.
      */
     void setTurnDegrees(int degrees, int turnSpeed) {
-        if (!state.ifState("Collision")) {
-            setState("Executing");
+        if (state.ifState("Idle")) {
             boolean reverse = false;
             int pulse;
             int turnDegrees = Math.abs(degrees);
@@ -160,7 +141,7 @@ public class MotionControl implements CollisionDetectionCallback {
                 pulse = 1500 + turnSpeed;
             }
             updateWheels(pulse,pulse);
-            setAction("TurnDegrees");
+            setState("Turning");
             timer = new Timer(turnTime);
         }
     }
@@ -169,7 +150,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * BoeBot turns left smoothly using a certain offset.
      */
     void smoothTurnLeft(){
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             sLeft.update(1575);
             sRight.update(1350);
         }
@@ -179,7 +160,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * BoeBot turns right smoothly using a certain offset.
      */
     void smoothTurnRight(){
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             sLeft.update(1750);
             sRight.update(1425);
         }
@@ -189,7 +170,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot turn right infinitely.
      */
     void infRight(){
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             sLeft.update(1500 + currentSpeed);
             sRight.update(1500 + currentSpeed);
         }
@@ -199,7 +180,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot turn left infinitely.
      */
     void infLeft(){
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             sLeft.update(1500 - currentSpeed);
             sRight.update(1500 - currentSpeed);
         }
@@ -209,7 +190,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot speed up with an increase of 5.
      */
     void speedUp() {
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             setTargetSpeed(currentSpeed + 5);
         }
     }
@@ -218,13 +199,13 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot slow down with a decrease of 5.
      */
     void slowDown() {
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             setTargetSpeed(currentSpeed - 5);
         }
     }
 
     void updateWheels(int speedLeft, int speedRight) {
-        if (!state.ifState("Collision")) {
+        if (state.ifState("Idle")) {
             this.sLeft.update(1500 + speedLeft);
             this.sRight.update(1500 - speedRight);
         }

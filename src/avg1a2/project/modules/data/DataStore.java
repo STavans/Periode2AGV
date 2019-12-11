@@ -28,7 +28,6 @@ public class DataStore {
     private IRConversion irConversion;
     private State programState;
     private State motionState;
-    private State motionAction;
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component bluetoothSensor;
@@ -208,26 +207,6 @@ public class DataStore {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.motionState;
-        }
-    }
-
-    /**
-     * Sets the motionAction in the DataStore.
-     */
-    public void newMotionAction(State motionAction) {
-        this.motionAction = motionAction;
-    }
-
-    /**
-     * Gets the motionAction from the DataStore.
-     * @return motionAction object.
-     * @throws IllegalArgumentException Exception if object is not set.
-     */
-    public State getMotionAction() throws IllegalArgumentException {
-        if (motionAction == null) {
-            throw new IllegalArgumentException("State has not been initialized");
-        } else {
-            return this.motionAction;
         }
     }
 

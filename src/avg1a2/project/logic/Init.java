@@ -57,7 +57,7 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
@@ -73,15 +73,10 @@ class Init {
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
-        dataStore.getMotionState().addState("Executing");
         dataStore.getMotionState().addState("Collision");
+        dataStore.getMotionState().addState("Turning");
+        dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
-
-        dataStore.newMotionAction(new State());
-        dataStore.getMotionAction().addState("Turning");
-        dataStore.getMotionAction().addState("Accelerating");
-        dataStore.getMotionAction().addState("None");
-        dataStore.getMotionControl().newAction(dataStore.getMotionAction());
     }
 
     /**
@@ -187,7 +182,6 @@ class Init {
      * @param dataStore The DataStore in which to set the collisionDetection.
      */
     private static void setModules(DataStore dataStore) {
-        dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
         dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
         dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
