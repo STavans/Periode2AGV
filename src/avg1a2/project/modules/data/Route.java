@@ -15,7 +15,7 @@ public class Route {
     }
 
     public void addStep(String step) throws IllegalArgumentException, IllegalStateException {
-        if (complete) {
+        if (!complete) {
             if (step.equals("Left") || step.equals("Right") || step.equals("Forward")) {
                 this.steps.add(step);
             } else if (step.equals("Stop")) {

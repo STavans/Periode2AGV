@@ -3,12 +3,14 @@ package avg1a2.project.modules.controller;
 import TI.Servo;
 import TI.Timer;
 import avg1a2.project.logic.State;
+import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
 
 /**
  * Controller to manage any and all actions related to motion and is called/used by the other controllers.
  */
 public class MotionControl implements CollisionDetectionCallback {
+    CollisionDetection collisionDetection;
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
@@ -29,8 +31,13 @@ public class MotionControl implements CollisionDetectionCallback {
      * Updates the controller to check if any actions are still in progress and if so, to continue them.
      */
     public void update() {
+        collisionDetection.update();
         turn();
         accelerateToSpeed();
+    }
+
+    public void setCollisionDetection(CollisionDetection collisionDetection) {
+        this.collisionDetection = collisionDetection;
     }
 
     /**
@@ -66,6 +73,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @return True if the controller is idle, false if it's not.
      */
     boolean isIdle() {
+        System.out.println(state.getState());
         return state.ifState("Idle");
     }
 
@@ -73,15 +81,20 @@ public class MotionControl implements CollisionDetectionCallback {
      * Function to allow the BoeBot to accelerate to the current target speed.
      */
     private void accelerateToSpeed() {
-        if ((this.state.ifState("Accelerating")) || (state.ifState("Collision") && targetSpeed == 0)) {
+        if (this.state.ifState("Accelerating") || ((state.ifState("Collision") && targetSpeed == 0))) {
             if (targetSpeed != currentSpeed) {
                 if (targetSpeed < currentSpeed) {
+                    currentSpeed -= 5;
                     setSpeedForward(currentSpeed - 5);
                 } else {
+                    currentSpeed += 5;
                     setSpeedForward(currentSpeed + 5);
                 }
+            } else if (sLeft.getPulseWidth() != sRight.getPulseWidth()) {
+                setSpeedForward(currentSpeed);
+                state.setState("Idle");
             } else {
-                setState("Idle");
+                state.setState("Idle");
             }
         }
     }
@@ -90,8 +103,8 @@ public class MotionControl implements CollisionDetectionCallback {
      * Sets a new speed for the BoeBot.
      * @param speed The new speed of the BoeBot.
      */
-    private void setSpeedForward(int speed){
-        if (state.ifState("Idle")) {
+    void setSpeedForward(int speed){
+        if (state.ifState("Idle") || state.ifState("Accelerating")) {
             this.sLeft.update(1500 + speed);
             this.sRight.update(1500 - speed);
             this.currentSpeed = speed;

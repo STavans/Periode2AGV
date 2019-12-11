@@ -1,8 +1,10 @@
 package avg1a2.project.modules.irconversion;
 
+import TI.Timer;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ir.IRCallback;
 import avg1a2.project.logic.State;
+
 
 /**
  * Converts the IR signal to match it with one of it's callback functions based on the code received.
@@ -12,6 +14,7 @@ public class IRConversion implements IRCallback {
     private IROverridable override;
     private Component irSensor;
     private State programState;
+    private Timer timer;
 
     /**
      * Constructor sets the callback to signal on detection.
@@ -51,59 +54,95 @@ public class IRConversion implements IRCallback {
     public void onSignal(int signal) {
         switch (signal) {
             case 0b10000000 :
-                callback.leftDiagonal();
+                if (programState.ifState("Override")) {
+                    callback.leftDiagonal();
+                }
                 break;
             case 0b10000001 :
-                callback.forward();
+                if (programState.ifState("Override")) {
+                    callback.forward();
+                }
                 break;
             case 0b10000010 :
-                callback.rightDiagonal();
+                if (programState.ifState("Override")) {
+                    callback.rightDiagonal();
+                }
                 break;
             case 0b10000011 :
-                callback.leftTurn();
+                if (programState.ifState("Override")) {
+                    callback.leftTurn();
+                }
                 break;
             case 0b10000100 :
-                callback.brake();
+                if (programState.ifState("Override")) {
+                    callback.brake();
+                }
                 break;
             case 0b10000101 :
-                callback.rightTurn();
+                if (programState.ifState("Override")) {
+                    callback.rightTurn();
+                }
                 break;
             case 0b10000110 :
-                callback.leftBackDiagonal();
+                if (programState.ifState("Override")) {
+                    callback.leftBackDiagonal();
+                }
                 break;
             case 0b10000111 :
-                callback.reverse();
+                if (programState.ifState("Override")) {
+                    callback.reverse();
+                }
                 break;
             case 0b10001000 :
-                callback.rightBackDiagonal();
+                if (programState.ifState("Override")) {
+                    callback.rightBackDiagonal();
+                }
                 break;
             case 0b10010101 :
-                if (programState.ifState("Override")) {
-                    callback.changeState();
-                } else {
-                    override.override();
+                if (timer == null || timer.timeout()) {
+                    if (programState.ifState("Override")) {
+                        callback.changeState();
+                        timer = new Timer(1000);
+                    } else {
+                        override.override();
+                        timer = new Timer(1000);
+                    }
                 }
                 break;
             case 0b10011010 :
-                callback.infiniteRightTurn();
+                if (programState.ifState("Override")) {
+                    callback.infiniteRightTurn();
+                }
                 break;
             case 0b10011011 :
-                callback.infiniteLeftTurn();
+                if (programState.ifState("Override")) {
+                    callback.infiniteLeftTurn();
+                }
                 break;
             case 0b10010011 :
-                callback.smoothTurnLeft();
+                if (programState.ifState("Override")) {
+                    callback.smoothTurnLeft();
+                }
                 break;
             case 0b10010010 :
-                callback.smoothTurnRight();
+                if (programState.ifState("Override")) {
+                    callback.smoothTurnRight();
+                }
                 break;
             case 0b10011110 :
-                callback.speedUp();
+                if (programState.ifState("Override")) {
+                    callback.speedUp();
+                }
                 break;
             case 0b10011111 :
-                callback.slowDown();
+                if (programState.ifState("Override")) {
+                    callback.slowDown();
+                }
                 break;
             case 0b10010001 :
-                callback.emergencyBrake();
+                if (programState.ifState("Override")) {
+                    callback.emergencyBrake();
+                }
                 break;
 
         }
