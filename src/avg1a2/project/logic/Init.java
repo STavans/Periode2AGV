@@ -74,10 +74,12 @@ class Init {
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
         dataStore.getMotionState().addState("Executing");
+        dataStore.getMotionState().addState("Collision");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
         dataStore.newMotionAction(new State());
-        dataStore.getMotionAction().addState("TurnDegrees");
+        dataStore.getMotionAction().addState("Turning");
+        dataStore.getMotionAction().addState("Accelerating");
         dataStore.getMotionAction().addState("None");
         dataStore.getMotionControl().newAction(dataStore.getMotionAction());
     }
