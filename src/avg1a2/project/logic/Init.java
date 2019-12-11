@@ -85,6 +85,7 @@ class Init {
         dataStore.getRoutState().addState("TurnRight");
         dataStore.getRoutState().addState("Turning");
         dataStore.getRoutState().addState("Idle");
+        dataStore.getRoutState().addState("Finished");
         dataStore.getRouteControl().setState(dataStore.getRoutState());
     }
 
@@ -154,10 +155,10 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new Sensors.
      */
     private static void buildSensors(DataStore dataStore) {
-        dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(0,1,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(3,dataStore.getIrConversion()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(900,0,1,2,3,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
     }
 
     /**
@@ -171,7 +172,6 @@ class Init {
         route.addStep("Forward");
         route.addStep("Forward");
         route.addStep("Left");
-        route.addStep("Forward");
         route.addStep("Stop");
         dataStore.addRoute("Default",route);
     }
@@ -195,6 +195,8 @@ class Init {
         dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
+        dataStore.getBlueBotControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getMotionControl().setCollisionDetection(dataStore.getCollisionDetection());
     }
 
     private static void setSignals(DataStore dataStore) {

@@ -114,6 +114,7 @@ public class RemoteControl implements IRConversionCallback {
      * Switches the BoeBot State.
      */
     public void changeState() {
+        System.out.println("BlueBot");
         this.motionControl.setState("Idle");
         this.programState.setState("BlueBot");
     }

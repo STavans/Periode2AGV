@@ -1,5 +1,6 @@
 package avg1a2.project.modules.controller;
 
+import TI.Timer;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.linedetection.LineDetectionCallback;
 import avg1a2.project.logic.State;
@@ -10,11 +11,13 @@ public class RouteControl implements LineDetectionCallback {
     private Component lineDetection;
     private Route route;
     private State state;
+    private Timer timer;
+    private Timer crossRoadsTimer;
     private int speed;
 
     public RouteControl(MotionControl motionControl) {
         this.motionControl = motionControl;
-        this.speed = 20;
+        this.speed = 40;
     }
 
     public void setLineDetection(Component lineDetection) {
@@ -38,24 +41,25 @@ public class RouteControl implements LineDetectionCallback {
             case "GoForward":
                 if (motionControl.isIdle()) {
                     motionControl.setTargetSpeed(speed);
+                    crossRoadsTimer = new Timer(1000);
                     state.setState("Idle");
                 }
                 break;
             case "Stop":
                 motionControl.setTargetSpeed(0);
-                state.setState("Idle");
+                state.setState("Finished");
                 break;
             case "TurnLeft":
-                motionControl.setTargetSpeed(0);
                 if (motionControl.isIdle()) {
                     motionControl.infLeft();
+                    timer = new Timer(300);
                     state.setState("Turning");
                 }
                 break;
             case "TurnRight":
-                motionControl.setTargetSpeed(0);
                 if (motionControl.isIdle()) {
                     motionControl.infRight();
+                    timer = new Timer(300);
                     state.setState("Turning");
                 }
                 break;
@@ -64,48 +68,58 @@ public class RouteControl implements LineDetectionCallback {
 
     @Override
     public void onCrossroads() {
-        switch (route.nextStep()) {
-            case "Left" :
-                state.setState("TurnLeft");
-                break;
-            case "Right" :
-                state.setState("TurnRight");
-                break;
-            case "Forward" :
-                state.setState("GoForward");
-                break;
-            case "Stop" :
-                state.setState("Stop");
-                break;
+        if (state.ifState("Idle") && (crossRoadsTimer == null || crossRoadsTimer.timeout())) {
+            switch (route.nextStep()) {
+                case "Left" :
+                    state.setState("TurnLeft");
+                    break;
+                case "Right" :
+                    state.setState("TurnRight");
+                    break;
+                case "Forward" :
+                    state.setState("GoForward");
+                    break;
+                case "Stop" :
+                    state.setState("Stop");
+                    break;
+            }
         }
     }
 
     @Override
     public void lineCorrectionLeft() {
-        if (!state.ifState("Turning")) {
+        if (state.ifState("Idle")) {
             motionControl.updateWheels(0, speed);
         }
     }
 
     @Override
     public void lineCorrectionRight() {
-        if (!state.ifState("Turning")) {
+        if (state.ifState("Idle")) {
             motionControl.updateWheels(speed,0);
         }
     }
 
     @Override
     public void onLineLost() {
-        if (!state.ifState("Turning")) {
+        if (state.ifState("Idle")) {
             motionControl.setTargetSpeed(0);
         }
     }
 
     @Override
     public void goForward() {
-        if ((state.ifState("Idle") || state.ifState("Turning")) && motionControl.isIdle()) {
+        if (state.ifState("Turning") && motionControl.isIdle() && (timer.timeout())) {
+            motionControl.setTargetSpeed(0);
+            crossRoadsTimer = new Timer(1000);
+            state.setState("Idle");
+        } else if (state.ifState("Idle")) {
             motionControl.setTargetSpeed(speed);
             state.setState("Idle");
         }
+    }
+
+    void stop() {
+        motionControl.setTargetSpeed(0);
     }
 }
