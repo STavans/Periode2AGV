@@ -57,8 +57,8 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -73,13 +73,19 @@ class Init {
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
-        dataStore.getMotionState().addState("Executing");
+        dataStore.getMotionState().addState("Collision");
+        dataStore.getMotionState().addState("Turning");
+        dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
-        dataStore.newMotionAction(new State());
-        dataStore.getMotionAction().addState("TurnDegrees");
-        dataStore.getMotionAction().addState("None");
-        dataStore.getMotionControl().newAction(dataStore.getMotionAction());
+        dataStore.newRouteState(new State());
+        dataStore.getRoutState().addState("GoForward");
+        dataStore.getRoutState().addState("Stop");
+        dataStore.getRoutState().addState("TurnLeft");
+        dataStore.getRoutState().addState("TurnRight");
+        dataStore.getRoutState().addState("Turning");
+        dataStore.getRoutState().addState("Idle");
+        dataStore.getRouteControl().setState(dataStore.getRoutState());
     }
 
     /**
@@ -185,10 +191,8 @@ class Init {
      * @param dataStore The DataStore in which to set the collisionDetection.
      */
     private static void setModules(DataStore dataStore) {
-        dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
         dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
-        dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
     }

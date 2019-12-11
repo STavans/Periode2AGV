@@ -3,27 +3,18 @@ package avg1a2.project.modules.controller;
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.linedetection.LineDetectionCallback;
 import avg1a2.project.logic.State;
-import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.data.Route;
 
 public class RouteControl implements LineDetectionCallback {
-    private SignalControl signalControl;
     private MotionControl motionControl;
-    private CollisionDetection collisionDetection;
     private Component lineDetection;
     private Route route;
     private State state;
-    private State action;
     private int speed;
 
-    public RouteControl(SignalControl signalControl, MotionControl motionControl) {
-        this.signalControl = signalControl;
+    public RouteControl(MotionControl motionControl) {
         this.motionControl = motionControl;
         this.speed = 20;
-    }
-
-    public void setCollisionDetection(CollisionDetection collisionDetection) {
-        this.collisionDetection = collisionDetection;
     }
 
     public void setLineDetection(Component lineDetection) {
@@ -34,53 +25,40 @@ public class RouteControl implements LineDetectionCallback {
         this.route = route;
     }
 
-    public void run(){
-        if (!state.ifState("Collision")) {
-            motionControl.update();
-            lineDetection.update();
-            collisionDetection.update();
+    public void setState(State state) {
+        this.state = state;
+        this.state.setState("Idle");
+    }
 
-            switch (state.getState()) {
-                case "GoForward":
-                    if (motionControl.isIdle()) {
-                        motionControl.setTargetSpeed(speed);
-                        state.setState("Idle");
-                    }
-                    break;
-                case "Stop":
-                    motionControl.setTargetSpeed(0);
+    public void run() {
+        motionControl.update();
+        lineDetection.update();
+
+        switch (state.getState()) {
+            case "GoForward":
+                if (motionControl.isIdle()) {
+                    motionControl.setTargetSpeed(speed);
                     state.setState("Idle");
-                    break;
-                case "TurnLeft":
-                    switch (action.getState()) {
-                        case "Brake":
-                            motionControl.setTargetSpeed(0);
-                            action.setState("Turn");
-                            break;
-                        case "Turn":
-                            if (motionControl.isIdle()) {
-                                motionControl.infLeft();
-                                action.setState("None");
-                                state.setState("Turning");
-                            }
-                            break;
-                    }
-                    break;
-                case "TurnRight":
-                    switch (action.getState()) {
-                        case "Brake":
-                            motionControl.setTargetSpeed(0);
-                            action.setState("Turn");
-                            break;
-                        case "Turn":
-                            if (motionControl.isIdle()) {
-                                motionControl.infRight();
-                                action.setState("None");
-                                state.setState("Turning");
-                            }
-                            break;
-                    }
-            }
+                }
+                break;
+            case "Stop":
+                motionControl.setTargetSpeed(0);
+                state.setState("Idle");
+                break;
+            case "TurnLeft":
+                motionControl.setTargetSpeed(0);
+                if (motionControl.isIdle()) {
+                    motionControl.infLeft();
+                    state.setState("Turning");
+                }
+                break;
+            case "TurnRight":
+                motionControl.setTargetSpeed(0);
+                if (motionControl.isIdle()) {
+                    motionControl.infRight();
+                    state.setState("Turning");
+                }
+                break;
         }
     }
 

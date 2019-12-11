@@ -28,7 +28,7 @@ public class DataStore {
     private IRConversion irConversion;
     private State programState;
     private State motionState;
-    private State motionAction;
+    private State routeState;
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component bluetoothSensor;
@@ -212,22 +212,22 @@ public class DataStore {
     }
 
     /**
-     * Sets the motionAction in the DataStore.
+     * Sets the routeState in the DataStore.
      */
-    public void newMotionAction(State motionAction) {
-        this.motionAction = motionAction;
+    public void newRouteState(State routeState) {
+        this.routeState = routeState;
     }
 
     /**
-     * Gets the motionAction from the DataStore.
-     * @return motionAction object.
+     * Gets the routeState from the DataStore.
+     * @return routeState object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
-    public State getMotionAction() throws IllegalArgumentException {
-        if (motionAction == null) {
+    public State getRoutState() throws IllegalArgumentException {
+        if (routeState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
-            return this.motionAction;
+            return this.routeState;
         }
     }
 
