@@ -58,7 +58,7 @@ class Init {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -77,6 +77,15 @@ class Init {
         dataStore.getMotionState().addState("Turning");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
+
+        dataStore.newRouteState(new State());
+        dataStore.getRoutState().addState("GoForward");
+        dataStore.getRoutState().addState("Stop");
+        dataStore.getRoutState().addState("TurnLeft");
+        dataStore.getRoutState().addState("TurnRight");
+        dataStore.getRoutState().addState("Turning");
+        dataStore.getRoutState().addState("Idle");
+        dataStore.getRouteControl().setState(dataStore.getRoutState());
     }
 
     /**
@@ -184,7 +193,6 @@ class Init {
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
         dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
-        dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
     }

@@ -9,7 +9,6 @@ import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
  * Controller to manage any and all actions related to motion and is called/used by the other controllers.
  */
 public class MotionControl implements CollisionDetectionCallback {
-    private SignalControl signalControl;
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
@@ -20,8 +19,7 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * Constructor sets it's Servo's and it's currentSpeed at creation.
      */
-    public MotionControl(Servo sLeft, Servo sRight, SignalControl signalControl){
-        this.signalControl = signalControl;
+    public MotionControl(Servo sLeft, Servo sRight){
         this.sLeft = sLeft;
         this.sRight = sRight;
         this.currentSpeed = 0;
@@ -57,7 +55,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param targetSpeed Target Speed for the BoeBot to reach.
      */
     void setTargetSpeed(int targetSpeed) {
-        if (state.ifState("Idle")) {
+        if (state.ifState("Idle") || targetSpeed == 0) {
             this.targetSpeed = targetSpeed;
             this.state.setState("Accelerating");
         }

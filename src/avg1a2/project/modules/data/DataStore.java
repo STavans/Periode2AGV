@@ -28,6 +28,7 @@ public class DataStore {
     private IRConversion irConversion;
     private State programState;
     private State motionState;
+    private State routeState;
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component bluetoothSensor;
@@ -207,6 +208,26 @@ public class DataStore {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.motionState;
+        }
+    }
+
+    /**
+     * Sets the routeState in the DataStore.
+     */
+    public void newRouteState(State routeState) {
+        this.routeState = routeState;
+    }
+
+    /**
+     * Gets the routeState from the DataStore.
+     * @return routeState object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public State getRoutState() throws IllegalArgumentException {
+        if (routeState == null) {
+            throw new IllegalArgumentException("State has not been initialized");
+        } else {
+            return this.routeState;
         }
     }
 
