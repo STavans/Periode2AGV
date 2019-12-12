@@ -233,7 +233,10 @@ public class MotionControl implements CollisionDetectionCallback {
     public void emergencyCollision() {
         state.setState("Collision");
         signalControl.boeBotCollision();
-        signalControl.setWarningSpeakerOn();
+        if(speakerTime == null || speakerTime.timeout()) {
+            signalControl.setWarningSpeakerOn();
+            speakerTime = new Timer(500);
+        }
         emergencyBrake();
     }
 
