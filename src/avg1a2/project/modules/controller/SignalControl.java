@@ -9,13 +9,21 @@ import avg1a2.project.hardware.signal.led.LedGroup;
 public class SignalControl {
     private LedGroup turnLeftLEDs;
     private LedGroup turnRightLEDs;
+    private LedGroup followRoute;
     private LedGroup idle;
     private LedGroup collision;
     private LedGroup setLEDs;
+    private LedGroup forward;
+    private  LedGroup reverse;
     private Component warningSpeaker;
 
     public SignalControl() {
         //this.setLEDs = setLEDs;
+    }
+
+    public void followRoute(){
+        this.followRoute.on();
+
     }
 
     public void boeBotOn() {
@@ -59,11 +67,23 @@ public class SignalControl {
         this.collision = collision;
     }
 
+    public void setFollowRoute(LedGroup followRoute){
+        this.followRoute = followRoute;
+    }
+
     public void setSetLEDs(LedGroup setLEDs) {
         this.setLEDs = setLEDs;
     }
 
     public void setWarningSpeaker(Component warningSpeaker) {
         this.warningSpeaker = warningSpeaker;
+    }
+
+    public void setForward(LedGroup forward) {
+        this.forward = forward;
+    }
+
+    public void setReverse(LedGroup reverse) {
+        this.reverse = reverse;
     }
 }

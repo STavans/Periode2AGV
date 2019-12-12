@@ -3,7 +3,7 @@ package avg1a2.project.logic;
 import java.util.ArrayList;
 
 /**
- * Class uses Strings to identify States, each state object will keep track of all set states and throw an error at all rejectsfornow ones as a safety measure.
+ * Class uses Strings to identify States, each state object will keep track of all set states and throw an error at all undefined ones as a safety measure.
  */
 public class State {
     private ArrayList<String> states;
@@ -20,7 +20,7 @@ public class State {
      * Adds a state to the ArrayList and makes it available as a proper state.
      * @param state The State to add.
      */
-    public void addState(String state) {
+    void addState(String state) {
         states.add(state);
     }
 
@@ -58,10 +58,6 @@ public class State {
         if (!states.contains(state)) {
             throw new IllegalArgumentException("The requested state has not been set.");
         }
-        if (state.equals(currentState)) {
-            return true;
-        } else {
-            return false;
-        }
+        return state.equals(currentState);
     }
 }

@@ -1,13 +1,12 @@
-package avg1a2.project.hardware.sensor.ultrasonic;
+package avg1a2.examplecode.maze.ultrasonic;
 
 import TI.BoeBot;
 import TI.Timer;
-import avg1a2.project.hardware.Component;
 
 /**
  * UltraSonic sensor is the sensor which will calculate distance towards an object in front of it, based on sound pulses.
  */
-public class UltrasonicSensor implements Component {
+public class UltrasonicSensor {
     private int pin1;
     private int pin2;
     private Timer timer;
@@ -59,12 +58,15 @@ public class UltrasonicSensor implements Component {
     public void update() {
         if (timer == null || timer.timeout()) {
             int scan = ultraSonicPulse();
+            //System.out.println(scan);
             if (scan > 100) {
                 int distance = calculateDistance(scan);
-                if (distance < 20 && distance > 10) {
+                if (distance < 20 && distance > 5) {
                     ultraSonicCallback.onUltraSonic();
-                }  else if (distance <= 10){
+                }  else if (distance <= 5){
                     ultraSonicCallback.closeUltraSonic();
+                } else {
+                    ultraSonicCallback.onNoCollision();
                 }
             }
             timer = new Timer(50);
