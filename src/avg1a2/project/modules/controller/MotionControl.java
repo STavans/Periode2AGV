@@ -226,10 +226,6 @@ public class MotionControl implements CollisionDetectionCallback {
     public void onFrontCollision() {
         state.setState("Collision");
         signalControl.boeBotCollision();
-        if(speakerTime == null || speakerTime.timeout()) {
-            signalControl.setWarningSpeakerOn();
-            speakerTime = new Timer(500);
-        }
         this.targetSpeed = 0;
     }
 
