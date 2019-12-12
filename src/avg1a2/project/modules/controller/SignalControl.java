@@ -13,6 +13,8 @@ public class SignalControl {
     private LedGroup idle;
     private LedGroup collision;
     private LedGroup setLEDs;
+    private LedGroup forward;
+    private  LedGroup reverse;
     private Component warningSpeaker;
 
     public SignalControl() {
@@ -75,5 +77,13 @@ public class SignalControl {
 
     public void setWarningSpeaker(Component warningSpeaker) {
         this.warningSpeaker = warningSpeaker;
+    }
+
+    public void setForward(LedGroup forward) {
+        this.forward = forward;
+    }
+
+    public void setReverse(LedGroup reverse) {
+        this.reverse = reverse;
     }
 }

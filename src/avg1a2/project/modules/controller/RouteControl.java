@@ -13,10 +13,12 @@ public class RouteControl implements LineDetectionCallback {
     private State state;
     private Timer timer;
     private Timer crossRoadsTimer;
+    private SignalControl signalControl;
     private int speed;
 
-    public RouteControl(MotionControl motionControl) {
+    public RouteControl(MotionControl motionControl, SignalControl signalControl) {
         this.motionControl = motionControl;
+        this.signalControl = signalControl;
         this.speed = 40;
     }
 
@@ -36,6 +38,7 @@ public class RouteControl implements LineDetectionCallback {
     public void run() {
         motionControl.update();
         lineDetection.update();
+        signalControl.followRoute();
 
         switch (state.getState()) {
             case "GoForward":

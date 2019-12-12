@@ -58,7 +58,7 @@ class Init {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -111,6 +111,18 @@ class Init {
         collision.addLed("collision5", new NeoPixel(4, 255,0,0));
         collision.addLed("collision6", new NeoPixel(5, 255,0,0));
         dataStore.addLedGroup("collision",collision);
+
+        LedGroup forward = new LedGroup();
+        forward.addLed("forwardLED1", new NeoPixel(3, 0, 255, 0));
+        forward.addLed("forwardLED2", new NeoPixel(4, 0, 255, 0));
+        forward.addLed("forwardLED3", new NeoPixel(5, 0, 255, 0));
+        dataStore.addLedGroup("forward", forward);
+
+        LedGroup reverse = new LedGroup();
+        reverse.addLed("reverseLED1", new NeoPixel(0, 255, 229, 204));
+        reverse.addLed("reverseLED2", new NeoPixel(1, 255, 229, 204));
+        reverse.addLed("reverseLED3", new NeoPixel(2, 255, 229, 204));
+        dataStore.addLedGroup("reverse", reverse);
 
         LedGroup turnLeft = new LedGroup();
         turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
@@ -205,6 +217,8 @@ class Init {
         dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
         dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
         dataStore.getSignalControl().setFollowRoute(dataStore.getLedGroup("followRouteLEDs"));
+        dataStore.getSignalControl().setForward(dataStore.getLedGroup("forward"));
+        dataStore.getSignalControl().setReverse(dataStore.getLedGroup("reverse"));
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 
