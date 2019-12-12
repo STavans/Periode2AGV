@@ -27,25 +27,7 @@ public class Speaker implements Component {
         BoeBot.freqOut(pin,frequency,time);
     }
 
-    /**
-     * Set method to change to frequency.
-     * @param frequency Frequency of the sound created by the beeps.
-     */
-    public void SetFrequency(int frequency) {
-        this.frequency = frequency;
-        System.out.println(this.frequency);
-    }
-
-    public int getFrequency() {
-        return this.frequency;
-    }
-
-    public void mute(){
-        this.frequency = 0;
-    }
-
     public void update() {
         Beep();
-        //todo
     }
 }

@@ -57,8 +57,8 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getSignalControl(),dataStore.getMotionControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -73,13 +73,20 @@ class Init {
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
-        dataStore.getMotionState().addState("Executing");
+        dataStore.getMotionState().addState("Collision");
+        dataStore.getMotionState().addState("Turning");
+        dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
-        dataStore.newMotionAction(new State());
-        dataStore.getMotionAction().addState("TurnDegrees");
-        dataStore.getMotionAction().addState("None");
-        dataStore.getMotionControl().newAction(dataStore.getMotionAction());
+        dataStore.newRouteState(new State());
+        dataStore.getRoutState().addState("GoForward");
+        dataStore.getRoutState().addState("Stop");
+        dataStore.getRoutState().addState("TurnLeft");
+        dataStore.getRoutState().addState("TurnRight");
+        dataStore.getRoutState().addState("Turning");
+        dataStore.getRoutState().addState("Idle");
+        dataStore.getRoutState().addState("Finished");
+        dataStore.getRouteControl().setState(dataStore.getRoutState());
     }
 
     /**
@@ -104,6 +111,18 @@ class Init {
         collision.addLed("collision5", new NeoPixel(4, 255,0,0));
         collision.addLed("collision6", new NeoPixel(5, 255,0,0));
         dataStore.addLedGroup("collision",collision);
+
+        LedGroup forward = new LedGroup();
+        forward.addLed("forwardLED1", new NeoPixel(3, 0, 255, 0));
+        forward.addLed("forwardLED2", new NeoPixel(4, 0, 255, 0));
+        forward.addLed("forwardLED3", new NeoPixel(5, 0, 255, 0));
+        dataStore.addLedGroup("forward", forward);
+
+        LedGroup reverse = new LedGroup();
+        reverse.addLed("reverseLED1", new NeoPixel(0, 255, 229, 204));
+        reverse.addLed("reverseLED2", new NeoPixel(1, 255, 229, 204));
+        reverse.addLed("reverseLED3", new NeoPixel(2, 255, 229, 204));
+        dataStore.addLedGroup("reverse", reverse);
 
         LedGroup turnLeft = new LedGroup();
         turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
@@ -148,10 +167,10 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new Sensors.
      */
     private static void buildSensors(DataStore dataStore) {
-        dataStore.setIrSensor(new IRSensor(15,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(0,1,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(3,dataStore.getIrConversion()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(900,0,1,2,3,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
     }
 
     /**
@@ -165,7 +184,6 @@ class Init {
         route.addStep("Forward");
         route.addStep("Forward");
         route.addStep("Left");
-        route.addStep("Forward");
         route.addStep("Stop");
         dataStore.addRoute("Default",route);
     }
@@ -185,12 +203,12 @@ class Init {
      * @param dataStore The DataStore in which to set the collisionDetection.
      */
     private static void setModules(DataStore dataStore) {
-        dataStore.getRemoteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
         dataStore.getRemoteControl().setProgramState(dataStore.getProgramState());
-        dataStore.getRouteControl().setCollisionDetection(dataStore.getCollisionDetection());
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
+        dataStore.getBlueBotControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getMotionControl().setCollisionDetection(dataStore.getCollisionDetection());
     }
 
     private static void setSignals(DataStore dataStore) {
@@ -199,6 +217,8 @@ class Init {
         dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
         dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
         dataStore.getSignalControl().setFollowRoute(dataStore.getLedGroup("followRouteLEDs"));
+        dataStore.getSignalControl().setForward(dataStore.getLedGroup("forward"));
+        dataStore.getSignalControl().setReverse(dataStore.getLedGroup("reverse"));
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 

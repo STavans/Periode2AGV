@@ -5,7 +5,7 @@ import TI.Servo;
 import TI.Timer;
 import avg1a2.examplecode.maze.ultrasonic.*;
 
-public class Controller implements LineDetectionCallback, UltraSonicCallback {
+/**public class Controller implements LineDetectionCallback, UltraSonicCallback {
     private State state;
     private State state2;
     private Servo servoLeft;
@@ -17,7 +17,7 @@ public class Controller implements LineDetectionCallback, UltraSonicCallback {
     private boolean collision;
     private Timer timer;
 
-     public Controller(Servo servoLeft, Servo servoRight) {
+     /public Controller(Servo servoLeft, Servo servoRight) {
          this.servoLeft = servoLeft;
          this.servoRight = servoRight;
          this.state = new State();
@@ -129,4 +129,4 @@ public class Controller implements LineDetectionCallback, UltraSonicCallback {
         this.path = true;
         this.collision = false;
     }
-}
+}*/

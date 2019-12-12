@@ -6,7 +6,7 @@ public class State {
     private ArrayList<String> states;
     private String currentState;
 
-    State() {
+   /**State() {
         this.states = new ArrayList<>();
     }
 
@@ -39,5 +39,5 @@ public class State {
         } else {
             return false;
         }
-    }
+    }*/
 }
