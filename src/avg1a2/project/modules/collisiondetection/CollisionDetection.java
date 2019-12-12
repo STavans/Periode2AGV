@@ -70,7 +70,7 @@ public class CollisionDetection implements UltraSonicCallback {
             callback.onFrontCollision();
         }
         this.signalControl.boeBotCollision();
-
+        isCollision = true;
         timer = new Timer(500);
     }
 
@@ -79,9 +79,7 @@ public class CollisionDetection implements UltraSonicCallback {
      * TODO Look at the motionControl class
      */
     public void closeUltraSonic(){
-        if(!isCollision) {
-            callback.emergencyCollision();
-        }
+        callback.emergencyCollision();
         signalControl.boeBotCollision();
         isCollision = true;
         timer = new Timer(500);

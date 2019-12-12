@@ -13,8 +13,8 @@ public class LineDetection implements Component {
     private LineDetectionCallback callback;
     private Timer timer;
 
-    public LineDetection(int threshhold, int leftSensor, int backRightSensor, int midSensor, int frontRightSensor, LineDetectionCallback callback) {
-        this.threshold = threshhold;
+    public LineDetection(int threshold, int leftSensor, int backRightSensor, int midSensor, int frontRightSensor, LineDetectionCallback callback) {
+        this.threshold = threshold;
         this.leftSensor = leftSensor;
         this.backRightSensor = backRightSensor;
         this.midSensor = midSensor;

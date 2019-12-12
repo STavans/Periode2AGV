@@ -45,7 +45,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go left diagonally,.
      */
     public void leftDiagonal() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(-45,50);
     }
 
@@ -60,7 +60,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes to BoeBot go right diagonally.
      */
     public void rightDiagonal() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(45,50);
     }
 
@@ -68,7 +68,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left.
      */
     public void leftTurn() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(-90,50);
     }
 
@@ -83,7 +83,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right.
      */
     public void rightTurn() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(90,50);
     }
 
@@ -91,7 +91,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go left back diagonally.
      */
     public void leftBackDiagonal() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(-135,50);
     }
 
@@ -106,7 +106,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go back diagonally.
      */
     public void rightBackDiagonal() {
-        brake();
+        //brake();
         motionControl.setTurnDegrees(135,50);
     }
 
