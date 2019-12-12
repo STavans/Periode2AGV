@@ -59,7 +59,6 @@ public class UltrasonicSensor implements Component {
     public void update() {
         if (timer == null || timer.timeout()) {
             int scan = ultraSonicPulse();
-            System.out.println(scan);
             if (scan > 100) {
                 int distance = calculateDistance(scan);
                 if (distance < 20 && distance > 10) {

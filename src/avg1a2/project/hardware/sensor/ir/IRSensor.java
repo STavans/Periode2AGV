@@ -60,7 +60,6 @@ public class IRSensor implements Component {
             }
             counter++;
         }
-        System.out.println(id);
         return id;
     }
 
