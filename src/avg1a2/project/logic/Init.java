@@ -55,9 +55,9 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new controllers.
      */
     private static void buildControllers(DataStore dataStore) {
-        dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
+        dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
         dataStore.setSignalControl(new SignalControl());
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
@@ -151,7 +151,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getMotionControl(),dataStore.getSignalControl()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getMotionControl()));
     }
 
     /**

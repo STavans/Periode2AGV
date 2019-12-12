@@ -9,6 +9,7 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
  */
 public class RemoteControl implements IRConversionCallback {
     private MotionControl motionControl;
+    private SignalControl signalControl;
     private IRConversion irConversion;
     private State programState;
 
@@ -17,7 +18,8 @@ public class RemoteControl implements IRConversionCallback {
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
+        this.signalControl = signalControl;
         this.motionControl = motionControl;
     }
 
@@ -53,6 +55,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go forward.
      */
     public void forward() {
+        signalControl.forward();
         motionControl.setTargetSpeed(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
     }
 
@@ -69,6 +72,7 @@ public class RemoteControl implements IRConversionCallback {
      */
     public void leftTurn() {
         //brake();
+        signalControl.turnLeftLED();
         motionControl.setTurnDegrees(-90,50);
     }
 
@@ -84,6 +88,7 @@ public class RemoteControl implements IRConversionCallback {
      */
     public void rightTurn() {
         //brake();
+        signalControl.turnRightLED();
         motionControl.setTurnDegrees(90,50);
     }
 
@@ -99,6 +104,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go backwards.
      */
     public void reverse() {
+        signalControl.backward();
         motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
     }
 
@@ -123,6 +129,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right infinitely.
      */
     public void infiniteRightTurn() {
+        signalControl.turnRightLED();
         motionControl.infRight();
     }
 
@@ -130,6 +137,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left infinitely.
      */
     public void infiniteLeftTurn() {
+        signalControl.turnLeftLED();
         motionControl.infLeft();
     }
 
@@ -137,6 +145,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left smoothly.
      */
     public void smoothTurnLeft() {
+        signalControl.turnLeftLED();
         motionControl.smoothTurnLeft();
     }
 
@@ -144,6 +153,7 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right smoothly.
      */
     public void smoothTurnRight() {
+        signalControl.turnRightLED();
         motionControl.smoothTurnRight();
     }
 

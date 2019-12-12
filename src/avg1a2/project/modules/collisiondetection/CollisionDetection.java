@@ -10,9 +10,7 @@ import avg1a2.project.modules.controller.SignalControl;
  */
 public class CollisionDetection implements UltraSonicCallback {
     private CollisionDetectionCallback callback;
-    private SignalControl signalControl;
     private Component ultrasonicSensor;
-    private Timer timer;
     private boolean isCollision;
     //Cleanup maybe use state
 
@@ -21,10 +19,8 @@ public class CollisionDetection implements UltraSonicCallback {
      * @param callback The controller to which to signal the collision to.
      * @param
      */
-    public CollisionDetection(CollisionDetectionCallback callback,  SignalControl signalControl){
+    public CollisionDetection(CollisionDetectionCallback callback){
         this.callback = callback;
-        this.signalControl = signalControl;
-        this.isCollision = false;
     }
 
     /**
@@ -36,42 +32,21 @@ public class CollisionDetection implements UltraSonicCallback {
     }
 
     /**
-     * Function to easily check if there is a collision.
-     * @return true if collision is detected, false if not.
-     */
-    public boolean isCollision() {
-        return isCollision;
-    }
-
-    /**
      *This updates the ultrasonic sensor
      **/
-    public void update(){
+    public void update() {
         if (ultrasonicSensor == null) {
             throw new RuntimeException("Ultrasonic sensor has not been assigned");
         } else {
             ultrasonicSensor.update();
         }
-        if (isCollision) {
-            if (timer != null && timer.timeout()) {
-                isCollision = false;
-                signalControl.boeBotOn();
-            }
-            signalControl.setWarningSpeakerOn(); // needs to be updated to support the update functionality.
-        }
-
     }
 
     /**
      *Calls the collisionDetectionCallback
      **/
     public void onUltraSonic() {
-        if (!isCollision) {
-            callback.onFrontCollision();
-        }
-        this.signalControl.boeBotCollision();
-        isCollision = true;
-        timer = new Timer(500);
+        callback.onFrontCollision();
     }
 
     /**
@@ -80,8 +55,7 @@ public class CollisionDetection implements UltraSonicCallback {
      */
     public void closeUltraSonic(){
         callback.emergencyCollision();
-        signalControl.boeBotCollision();
-        isCollision = true;
-        timer = new Timer(500);
+
+
     }
 }
