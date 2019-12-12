@@ -11,9 +11,11 @@ import avg1a2.project.modules.collisiondetection.CollisionDetectionCallback;
  */
 public class MotionControl implements CollisionDetectionCallback {
     private CollisionDetection collisionDetection;
+    private SignalControl signalControl;
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
+    private Timer speakerTime;
     private State state;
     private int currentSpeed;
     private int targetSpeed;
@@ -21,7 +23,8 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * Constructor sets it's Servo's and it's currentSpeed at creation.
      */
-    public MotionControl(Servo sLeft, Servo sRight){
+    public MotionControl(Servo sLeft, Servo sRight, SignalControl signalControl){
+        this.signalControl = signalControl;
         this.sLeft = sLeft;
         this.sRight = sRight;
         this.currentSpeed = 0;
@@ -222,12 +225,19 @@ public class MotionControl implements CollisionDetectionCallback {
     @Override
     public void onFrontCollision() {
         state.setState("Collision");
+        signalControl.boeBotCollision();
+        if(speakerTime == null || speakerTime.timeout()) {
+            signalControl.setWarningSpeakerOn();
+            speakerTime = new Timer(500);
+        }
         this.targetSpeed = 0;
     }
 
     @Override
     public void emergencyCollision() {
         state.setState("Collision");
+        signalControl.boeBotCollision();
+        signalControl.setWarningSpeakerOn();
         emergencyBrake();
     }
 
@@ -235,6 +245,7 @@ public class MotionControl implements CollisionDetectionCallback {
     public void collisionDone() {
         if (state.ifState("Collision")) {
             state.setState("Idle");
+            signalControl.boeBotOn();
         }
     }
 }
