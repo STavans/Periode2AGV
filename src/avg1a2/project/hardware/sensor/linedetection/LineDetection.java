@@ -48,6 +48,7 @@ public class LineDetection implements Component {
             timer = new Timer(500);
         }
         if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
+            callback.lineCorrectionLeft();
             if (timer.timeout()) {
                 callback.onLineLost();
             }
