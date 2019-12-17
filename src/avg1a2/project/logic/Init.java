@@ -167,8 +167,9 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new Sensors.
      */
     private static void buildSensors(DataStore dataStore) {
-        dataStore.setIrSensor(new IRSensor(3,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor(7,8,dataStore.getCollisionDetection()));
+        dataStore.setBackUltrasonicSensor(new UltrasonicSensor(4,5,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
         dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
     }
@@ -194,6 +195,7 @@ class Init {
      */
     private static void setSensors(DataStore dataStore) {
         dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
+        dataStore.getCollisionDetection().setBackUltrasonicSensor(dataStore.getBackUltrasonicSensor());
         dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
         dataStore.getBlueBotControl().setBluetoothSensor(dataStore.getBluetoothSensor());
     }

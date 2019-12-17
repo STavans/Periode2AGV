@@ -31,6 +31,7 @@ public class DataStore {
     private State routeState;
     private Component irSensor;
     private Component ultrasonicSensor;
+    private Component backUltraSonicSensor;
     private Component bluetoothSensor;
     private Component lineDetection;
     private Component warningSpeaker;
@@ -268,6 +269,26 @@ public class DataStore {
             throw new IllegalArgumentException("Ultrasonic Sensor has not been initialized");
         } else {
             return this.ultrasonicSensor;
+        }
+    }
+
+    /**
+     * Sets the UltrasonicSensor in the DataStore.
+     */
+    public void setBackUltrasonicSensor(UltrasonicSensor backUltraSonicSensor) {
+        this.backUltraSonicSensor = backUltraSonicSensor;
+    }
+
+    /**
+     * Gets the UltrasonicSensor from the DataStore.
+     * @return UltrasonicSensor object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public Component getBackUltrasonicSensor() throws IllegalArgumentException {
+        if (backUltraSonicSensor == null) {
+            throw new IllegalArgumentException("Ultrasonic Sensor has not been initialized");
+        } else {
+            return this.backUltraSonicSensor;
         }
     }
 
