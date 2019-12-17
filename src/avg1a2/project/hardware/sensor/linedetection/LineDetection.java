@@ -48,30 +48,11 @@ public class LineDetection implements Component {
             timer = new Timer(500);
         }
         if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
-            callback.lineCorrectionLeft();
             if (timer.timeout()) {
                 callback.onLineLost();
+            } else {
+                callback.lineCorrectionLeft();
             }
         }
-
-
-        /**
-        if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
-            callback.onLineLost();
-        } else if (dataMidSensor > threshold && dataBackRightSensor > threshold) {
-            callback.onCrossroads();
-        } else if (dataLeftSensor > threshold && dataFrontRightSensor < threshold) {
-            callback.lineCorrectionLeft();
-        } else if (dataFrontRightSensor > threshold && dataLeftSensor < threshold) {
-            callback.lineCorrectionRight();
-        } else if (dataMidSensor > threshold) {
-            callback.goForward();
-        }*/
-
-
-
-
-
-
     }
 }
