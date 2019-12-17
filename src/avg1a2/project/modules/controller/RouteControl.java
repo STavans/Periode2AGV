@@ -38,7 +38,7 @@ public class RouteControl implements LineDetectionCallback {
     public void run() {
         motionControl.update();
         lineDetection.update();
-        signalControl.followRoute();
+        //signalControl.followRoute();
 
         switch (state.getState()) {
             case "GoForward":

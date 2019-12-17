@@ -65,6 +65,8 @@ public class UltrasonicSensor implements Component {
                     ultraSonicCallback.onUltraSonic();
                 }  else if (distance <= 10){
                     ultraSonicCallback.closeUltraSonic();
+                } else {
+                    ultraSonicCallback.farUltraSonic();
                 }
             }
             timer = new Timer(50);

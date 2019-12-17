@@ -92,9 +92,10 @@ public class MotionControl implements CollisionDetectionCallback {
                 }
             } else if (sLeft.getPulseWidth() != sRight.getPulseWidth()) {
                 setSpeedForward(currentSpeed);
-                state.setState("Idle");
             } else {
-                state.setState("Idle");
+                if (state.ifState("Accelerating")) {
+                    state.setState("Idle");
+                }
             }
         }
     }
@@ -243,6 +244,7 @@ public class MotionControl implements CollisionDetectionCallback {
     @Override
     public void collisionDone() {
         if (state.ifState("Collision")) {
+            System.out.println("Done");
             state.setState("Idle");
             signalControl.boeBotOn();
         }

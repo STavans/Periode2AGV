@@ -62,4 +62,9 @@ public class CollisionDetection implements UltraSonicCallback {
     public void closeUltraSonic(){
         callback.emergencyCollision();
     }
+
+    @Override
+    public void farUltraSonic() {
+        callback.collisionDone();
+    }
 }
