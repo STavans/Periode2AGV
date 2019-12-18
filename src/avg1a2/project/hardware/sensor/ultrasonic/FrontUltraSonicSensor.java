@@ -2,11 +2,14 @@ package avg1a2.project.hardware.sensor.ultrasonic;
 
 import TI.Timer;
 
-public class BackUltraSonicSensor extends UltraSonicSensor {
-    private BackUltraSonicCallback callback;
+/**
+ * UltraSonic sensor is the sensor which will calculate distance towards an object in front of it, based on sound pulses.
+ */
+public class FrontUltraSonicSensor extends UltraSonicSensor {
+    private FrontUltraSonicCallback callback;
     private Timer timer;
 
-    public BackUltraSonicSensor(int trigger, int echo, BackUltraSonicCallback callback) {
+    public FrontUltraSonicSensor(int trigger, int echo, FrontUltraSonicCallback callback) {
         super(trigger, echo);
         this.callback = callback;
     }
@@ -18,11 +21,11 @@ public class BackUltraSonicSensor extends UltraSonicSensor {
             if (scan > 100) {
                 int distance = super.calculateDistance(scan);
                 if (distance < 20 && distance > 10) {
-                    callback.onBackUltraSonic();
+                    callback.onFrontUltraSonic();
                 }  else if (distance <= 10){
-                    callback.onBackCloseUltraSonic();
+                    callback.onFrontCloseUltraSonic();
                 } else {
-                    callback.onBackFarUltraSonic();
+                    callback.onFrontFarUltraSonic();
                 }
             }
             timer = new Timer(50);

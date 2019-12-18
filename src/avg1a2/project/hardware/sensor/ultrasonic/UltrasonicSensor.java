@@ -1,13 +1,11 @@
 package avg1a2.project.hardware.sensor.ultrasonic;
 
 import TI.BoeBot;
-import TI.Timer;
 import avg1a2.project.hardware.Component;
 
-public class UltraSonicSensor implements Component {
+public abstract class UltraSonicSensor implements Component {
     private int trigger;
     private int echo;
-    private Timer timer;
 
     public UltraSonicSensor(int trigger, int echo) {
         this.trigger = trigger;
@@ -18,7 +16,7 @@ public class UltraSonicSensor implements Component {
      This method calculates the distance of the ultrasonic sensor's pulse length, if the pulse is greater than 100 it returns a zero.
      That is to test if the sensor works correctly
      **/
-    private int calculateDistance(int pulse) {
+    protected int calculateDistance(int pulse) {
         if (pulse > 100) {
             return pulse / 58;
         }
@@ -30,7 +28,7 @@ public class UltraSonicSensor implements Component {
      and returning the value of it
 
      **/
-    private int ultraSonicPulse() {
+    protected int ultraSonicPulse() {
         BoeBot.digitalWrite(this.trigger, true);
         BoeBot.uwait(1);
         BoeBot.digitalWrite(this.trigger, false);
@@ -42,8 +40,5 @@ public class UltraSonicSensor implements Component {
         }
     }
 
-    @Override
-    public void update() {
-        
-    }
+    public abstract void update();
 }

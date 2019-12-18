@@ -2,12 +2,12 @@ package avg1a2.project.modules.collisiondetection;
 
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicCallback;
-import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
+import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicCallback;
 
 /**
  * Manages all CollisionDetection in the program, whenever one is detected, this will be signalled to the controllers.
  */
-public class CollisionDetection implements UltraSonicCallback, BackUltraSonicCallback {
+public class CollisionDetection implements FrontUltraSonicCallback, BackUltraSonicCallback {
     private CollisionDetectionCallback callback;
     private Component ultrasonicSensor;
     private Component backUltrasonicSensor;
@@ -46,25 +46,40 @@ public class CollisionDetection implements UltraSonicCallback, BackUltraSonicCal
             ultrasonicSensor.update();
         }
 
-        //if (backUltrasonicSensor == null) {
-        //    throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
-        //} else {
-        //    backUltrasonicSensor.update();
-        //}
+        if (backUltrasonicSensor == null) {
+            throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
+        } else {
+            backUltrasonicSensor.update();
+        }
     }
 
-    /**
-     *Calls the collisionDetectionCallback
-     **/
-    public void onUltraSonic() {
+    @Override
+    public void onBackUltraSonic() {
+        callback.onBackCollision();
+    }
+
+    @Override
+    public void onBackCloseUltraSonic() {
+        callback.onBackEmergencyCollision();
+    }
+
+    @Override
+    public void onBackFarUltraSonic() {
+        callback.collisionDone();
+    }
+
+    @Override
+    public void onFrontUltraSonic() {
         callback.onFrontCollision();
     }
 
-    public void closeUltraSonic(){
-        callback.emergencyCollision();
+    @Override
+    public void onFrontCloseUltraSonic() {
+        callback.onFrontEmergencyCollision();
     }
 
-    public void farUltraSonic() {
+    @Override
+    public void onFrontFarUltraSonic() {
         callback.collisionDone();
     }
 }

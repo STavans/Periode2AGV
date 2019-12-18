@@ -244,7 +244,24 @@ public class MotionControl implements CollisionDetectionCallback {
     }
 
     @Override
-    public void emergencyCollision() {
+    public void onFrontEmergencyCollision() {
+        state.setState("Collision");
+        emergencyBrake();
+        signalControl.boeBotCollision();
+        if (speakerTime == null || speakerTime.timeout()) {
+            signalControl.setWarningSpeakerOn();
+            speakerTime = new Timer(500);
+        }
+    }
+
+    @Override
+    public void onBackCollision() {
+        state.setState("Collision");
+        signalControl.boeBotCollision();
+    }
+
+    @Override
+    public void onBackEmergencyCollision() {
         state.setState("Collision");
         emergencyBrake();
         signalControl.boeBotCollision();
