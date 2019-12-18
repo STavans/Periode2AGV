@@ -1,12 +1,13 @@
 package avg1a2.project.modules.collisiondetection;
 
 import avg1a2.project.hardware.Component;
+import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicCallback;
 import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
 
 /**
  * Manages all CollisionDetection in the program, whenever one is detected, this will be signalled to the controllers.
  */
-public class CollisionDetection implements UltraSonicCallback {
+public class CollisionDetection implements UltraSonicCallback, BackUltraSonicCallback {
     private CollisionDetectionCallback callback;
     private Component ultrasonicSensor;
     private Component backUltrasonicSensor;
@@ -45,11 +46,11 @@ public class CollisionDetection implements UltraSonicCallback {
             ultrasonicSensor.update();
         }
 
-        if (backUltrasonicSensor == null) {
-            throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
-        } else {
-            backUltrasonicSensor.update();
-        }
+        //if (backUltrasonicSensor == null) {
+        //    throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
+        //} else {
+        //    backUltrasonicSensor.update();
+        //}
     }
 
     /**
@@ -63,7 +64,6 @@ public class CollisionDetection implements UltraSonicCallback {
         callback.emergencyCollision();
     }
 
-    @Override
     public void farUltraSonic() {
         callback.collisionDone();
     }

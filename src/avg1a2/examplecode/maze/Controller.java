@@ -11,7 +11,7 @@ import avg1a2.examplecode.maze.ultrasonic.*;
     private Servo servoLeft;
     private Servo servoRight;
     private LineDetection lineDetection;
-    private UltrasonicSensor ultrasonicSensor;
+    private UltrasonicSensor2 ultrasonicSensor;
     private Memory memory;
     private boolean path;
     private boolean collision;
@@ -28,7 +28,7 @@ import avg1a2.examplecode.maze.ultrasonic.*;
          this.state2.addState("Turning");
          this.state2.setState("Riding");
          this.lineDetection = new LineDetection(new LightSensor(2),new LightSensor(1), new LightSensor(0), new LightSensor(3),this);
-         this.ultrasonicSensor = new UltrasonicSensor(1,0,this);
+         this.ultrasonicSensor = new UltrasonicSensor2(1,0,this);
          this.memory = new Memory();
      }
 

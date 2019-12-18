@@ -5,7 +5,7 @@ import TI.Servo;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.linedetection.LineDetection;
-import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
+import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor2;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
@@ -168,8 +168,8 @@ class Init {
      */
     private static void buildSensors(DataStore dataStore) {
         dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(7,8,dataStore.getCollisionDetection()));
-        dataStore.setBackUltrasonicSensor(new UltrasonicSensor(4,5,dataStore.getCollisionDetection()));
+        dataStore.setUltrasonicSensor(new UltrasonicSensor2(7,8,dataStore.getCollisionDetection()));
+        dataStore.setBackUltrasonicSensor(new UltrasonicSensor2(4,5,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
         dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
     }
