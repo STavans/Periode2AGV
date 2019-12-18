@@ -65,7 +65,7 @@ public class CollisionDetection implements FrontUltraSonicCallback, BackUltraSon
 
     @Override
     public void onBackFarUltraSonic() {
-        callback.collisionDone();
+        callback.backCollisionDone();
     }
 
     @Override
@@ -80,6 +80,6 @@ public class CollisionDetection implements FrontUltraSonicCallback, BackUltraSon
 
     @Override
     public void onFrontFarUltraSonic() {
-        callback.collisionDone();
+        callback.frontCollisionDone();
     }
 }

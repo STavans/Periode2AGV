@@ -74,7 +74,8 @@ class Init {
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
-        dataStore.getMotionState().addState("Collision");
+        dataStore.getMotionState().addState("BackCollision");
+        dataStore.getMotionState().addState("FrontCollision");
         dataStore.getMotionState().addState("Turning");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
