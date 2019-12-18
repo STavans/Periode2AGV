@@ -8,5 +8,6 @@ public interface CollisionDetectionCallback {
     void onBackCollision();
     void onFrontEmergencyCollision();
     void onBackEmergencyCollision();
-    void collisionDone();
+    void frontCollisionDone();
+    void backCollisionDone();
 }
