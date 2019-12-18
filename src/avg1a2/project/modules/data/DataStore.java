@@ -5,7 +5,8 @@ import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.linedetection.LineDetection;
-import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
+import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicSensor;
+import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
@@ -253,15 +254,15 @@ public class DataStore {
     }
 
     /**
-     * Sets the UltrasonicSensor in the DataStore.
+     * Sets the FrontUltraSonicSensor in the DataStore.
      */
-    public void setUltrasonicSensor(UltrasonicSensor ultrasonicSensor) {
+    public void setUltrasonicSensor(FrontUltraSonicSensor ultrasonicSensor) {
         this.ultrasonicSensor = ultrasonicSensor;
     }
 
     /**
-     * Gets the UltrasonicSensor from the DataStore.
-     * @return UltrasonicSensor object.
+     * Gets the FrontUltraSonicSensor from the DataStore.
+     * @return FrontUltraSonicSensor object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getUltrasonicSensor() throws IllegalArgumentException {
@@ -273,15 +274,15 @@ public class DataStore {
     }
 
     /**
-     * Sets the UltrasonicSensor in the DataStore.
+     * Sets the FrontUltraSonicSensor in the DataStore.
      */
-    public void setBackUltrasonicSensor(UltrasonicSensor backUltraSonicSensor) {
+    public void setBackUltrasonicSensor(BackUltraSonicSensor backUltraSonicSensor) {
         this.backUltraSonicSensor = backUltraSonicSensor;
     }
 
     /**
-     * Gets the UltrasonicSensor from the DataStore.
-     * @return UltrasonicSensor object.
+     * Gets the FrontUltraSonicSensor from the DataStore.
+     * @return FrontUltraSonicSensor object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getBackUltrasonicSensor() throws IllegalArgumentException {

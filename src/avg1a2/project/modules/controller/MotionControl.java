@@ -37,6 +37,7 @@ public class MotionControl implements CollisionDetectionCallback {
         collisionDetection.update();
         turn();
         accelerateToSpeed();
+        brake();
     }
 
     public void setCollisionDetection(CollisionDetection collisionDetection) {
@@ -83,19 +84,17 @@ public class MotionControl implements CollisionDetectionCallback {
      * Function to allow the BoeBot to accelerate to the current target speed.
      */
     private void accelerateToSpeed() {
-        if (this.state.ifState("Accelerating") || (state.ifState("Collision") && targetSpeed == 0)) {
+        if (this.state.ifState("Accelerating")) {
             if (targetSpeed != currentSpeed) {
                 if (targetSpeed < currentSpeed) {
-                    setSpeedForward(currentSpeed - 5);
+                    setSpeedForward(currentSpeed - 10);
                 } else {
-                    setSpeedForward(currentSpeed + 5);
+                    setSpeedForward(currentSpeed + 10);
                 }
-            } else if (sLeft.getPulseWidth() != sRight.getPulseWidth()) {
+            } else if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
                 setSpeedForward(currentSpeed);
             } else {
-                if (state.ifState("Accelerating")) {
-                    state.setState("Idle");
-                }
+                state.setState("Idle");
             }
         }
     }
@@ -105,7 +104,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param speed The new speed of the BoeBot.
      */
     private void setSpeedForward(int speed){
-        if (state.ifState("Idle") || state.ifState("Accelerating") || (state.ifState("Collision") && targetSpeed == 0)) {
+        if (state.ifState("Idle") || state.ifState("Accelerating")) {
             this.sLeft.update(1500 + speed);
             this.sRight.update(1500 - speed);
             this.currentSpeed = speed;
@@ -216,8 +215,23 @@ public class MotionControl implements CollisionDetectionCallback {
         }
     }
 
+    private void brake() {
+        if (state.ifState("Collision")) {
+            System.out.println(sLeft.getPulseWidth() - currentSpeed);
+            System.out.println(sRight.getPulseWidth() + currentSpeed);
+
+            if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
+                updateWheels(currentSpeed,currentSpeed);
+            } else if (currentSpeed != 0) {
+                System.out.println("HAAI");
+                updateWheels(currentSpeed - 5, currentSpeed - 5);
+                this.currentSpeed -= 5;
+            }
+        }
+    }
+
     void updateWheels(int speedLeft, int speedRight) {
-        if (state.ifState("Idle") || state.ifState("Turning")) {
+        if (state.ifState("Idle") || state.ifState("Turning") || state.ifState("Collision")) {
             this.sLeft.update(1500 + speedLeft);
             this.sRight.update(1500 - speedRight);
         }
@@ -227,24 +241,39 @@ public class MotionControl implements CollisionDetectionCallback {
     public void onFrontCollision() {
         state.setState("Collision");
         signalControl.boeBotCollision();
-        this.targetSpeed = 0;
     }
 
     @Override
-    public void emergencyCollision() {
+    public void onFrontEmergencyCollision() {
         state.setState("Collision");
+        emergencyBrake();
         signalControl.boeBotCollision();
-        if(speakerTime == null || speakerTime.timeout()) {
+        if (speakerTime == null || speakerTime.timeout()) {
             signalControl.setWarningSpeakerOn();
             speakerTime = new Timer(500);
         }
+    }
+
+    @Override
+    public void onBackCollision() {
+        state.setState("Collision");
+        signalControl.boeBotCollision();
+    }
+
+    @Override
+    public void onBackEmergencyCollision() {
+        state.setState("Collision");
         emergencyBrake();
+        signalControl.boeBotCollision();
+        if (speakerTime == null || speakerTime.timeout()) {
+            signalControl.setWarningSpeakerOn();
+            speakerTime = new Timer(500);
+        }
     }
 
     @Override
     public void collisionDone() {
         if (state.ifState("Collision")) {
-            System.out.println("Done");
             state.setState("Idle");
             signalControl.boeBotOn();
         }
