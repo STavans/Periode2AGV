@@ -19,10 +19,10 @@ public class RemoteControl implements IRConversionCallback {
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl, SignalControl signalControl, State state) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
         this.signalControl = signalControl;
         this.motionControl = motionControl;
-        this.state = state;
+
     }
 
     /**
@@ -31,6 +31,10 @@ public class RemoteControl implements IRConversionCallback {
      */
     public void setIrConversion(IRConversion irConversion) {
         this.irConversion = irConversion;
+    }
+
+    public void setState(State state){
+        this.state = state;
     }
 
     public void setProgramState(State programState) {
@@ -43,7 +47,7 @@ public class RemoteControl implements IRConversionCallback {
     public void run() {
         irConversion.update();
         motionControl.update();
-        if(state.ifState("idle")){
+        if(state.ifState("Idle")){
             signalControl.boeBotOn();
         }
     }
