@@ -30,6 +30,7 @@ public class DataStore {
     private State programState;
     private State motionState;
     private State routeState;
+    private State signalState;
     private Component irSensor;
     private Component ultrasonicSensor;
     private Component backUltraSonicSensor;
@@ -210,6 +211,18 @@ public class DataStore {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.motionState;
+        }
+    }
+
+    public void newSignalState(State signalState){
+        this.signalState = signalState;
+    }
+
+    public State getSignalState(){
+        if(this.signalState == null){
+            throw new IllegalArgumentException("SignalState has not been initialized");
+        } else {
+            return this.signalState;
         }
     }
 
