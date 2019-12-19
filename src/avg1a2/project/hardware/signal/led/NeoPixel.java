@@ -4,7 +4,7 @@ import TI.BoeBot;
 import TI.Timer;
 
 /**
- * Class to control the neopixel leds on the BoeBot.
+ * Class to control the NeoPixel LEDs on the BoeBot.
  */
 public class NeoPixel implements LED{
     private int pin;
@@ -17,15 +17,15 @@ public class NeoPixel implements LED{
     private Timer timer;
 
     /**
-     * The constructor only sets the used attributes, but doesn't automatically run the neopixel.
-     * @param pin The pin the neopixel is connected to.
-     * @param delay The amount of delay (in milliseconds) the neopixel will stay on.
-     * @param offset The amount of delay (in milliseconds) the neopixel will stay off.
+     * The constructor only sets the used attributes, but doesn't automatically run the NeoPixel.
+     * @param pin The pin the NeoPixel is connected to.
+     * @param delay The amount of delay (in milliseconds) the NeoPixel will stay on.
+     * @param offset The amount of delay (in milliseconds) the NeoPixel will stay off.
      * @param r The amount of red in the rgb standard.
      * @param g The amount of green in the rgb standard.
      * @param b The amount of blue in the rgb standard.
      */
-    public NeoPixel(int pin, int delay, int offset, int r, int g, int b){
+    private NeoPixel(int pin, int delay, int offset, int r, int g, int b){
         this.pin = pin;
         this.delay = delay;
         this.offset = offset;
@@ -34,28 +34,31 @@ public class NeoPixel implements LED{
         this.b = b;
     }
 
+    /**
+     * The constructor only sets the used attributes, but doesn't automatically run the NeoPixel.
+     * @param pin The pin the NeoPixel is connected to.
+     * @param delay The amount of delay (in milliseconds) the NeoPixel will stay on.
+     * @param r The amount of red in the rgb standard.
+     * @param g The amount of green in the rgb standard.
+     * @param b The amount of blue in the rgb standard.
+     */
     public NeoPixel(int pin, int delay, int r, int g, int b){
         this(pin,delay,delay,r,g,b);
     }
 
-    public NeoPixel(int pin, int delay, int offset){
-        this(pin,delay,offset,255,255,255); //rgb default is white.
-    }
-
-    public NeoPixel(int pin, int delay){
-        this(pin,delay,delay,255,255,255);
-    }
-
+    /**
+     * The constructor only sets the used attributes, but doesn't automatically run the NeoPixel.
+     * @param pin The pin the NeoPixel is connected to.
+     * @param r The amount of red in the rgb standard.
+     * @param g The amount of green in the rgb standard.
+     * @param b The amount of blue in the rgb standard.
+     */
     public NeoPixel(int pin, int r, int g, int b){
         this(pin,0,0,r,g,b); //delay default is 0;
     }
 
-    public NeoPixel(int pin){
-        this(pin,0,0,255,255,255);
-    }
-
     /**
-     * Turns the neopixel on;
+     * Turns the NeoPixel on;
      */
     public void on() {
         BoeBot.rgbSet(pin,r,g,b);
@@ -64,28 +67,12 @@ public class NeoPixel implements LED{
     }
 
     /**
-     * Turn the neopixel off;
+     * Turn the NeoPixel off;
      */
     public void off() {
         BoeBot.rgbSet(pin,0,0,0);
         BoeBot.rgbShow();
         this.isOn = false;
-    }
-
-    /**
-     * Sets the delay to be used by the neopixel (time for it to remain on with each loop).
-     * @param delay delay in milliseconds.
-     */
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
-    /**
-     * Sets the offset to be used by the neopixel (time for it to remain off with each loop).
-     * @param offset offset in milliseconds.
-     */
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     /**
@@ -111,7 +98,7 @@ public class NeoPixel implements LED{
     }
 
     /**
-     * Toggles the current state of the neopixel saved in a boolean attribute.
+     * Toggles the current state of the NeoPixel saved in a boolean attribute.
      * Sets the new timer in order for each toggle to be set to a different delay.
      */
     private void toggle() {

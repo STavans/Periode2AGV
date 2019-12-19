@@ -28,7 +28,7 @@ public class IRSensor implements Component {
      * @return returns the reversed IR signal array
      */
     private int[] scan(){
-        int pulse[] = new int[12];
+        int[] pulse = new int[12];
         for (int i = 0; i <12; i++) {
             pulse[i] = BoeBot.pulseIn(pin,false,20000);
         }
@@ -40,16 +40,15 @@ public class IRSensor implements Component {
      * @param signal uses the
      * @return returns the converted id for each individual button when pressed
      */
-    private int converter (int signal[]) {
-
+    private int converter (int[] signal) {
         int id = 0;
         int bit;
         int counter = 0;
 
-        for (int i = 0; i < signal.length; i++) {
-            if (signal[i] > 1000) {
+        for (int i : signal) {
+            if (i > 1000) { //1000 has been selected as the threshold to separate true and false from analog values.
                 bit = 1;
-            } else if (signal[i] < 0){
+            } else if (i < 0){
                 return -1;
             } else {
                 bit = 0;
