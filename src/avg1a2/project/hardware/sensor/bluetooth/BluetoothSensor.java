@@ -20,6 +20,9 @@ public class BluetoothSensor implements Component {
         this.callback = callback;
     }
 
+    /**
+     * Updatable function to be called continuously.
+     */
     @Override
     public void update() {
         if (connection.available() > 0) {
