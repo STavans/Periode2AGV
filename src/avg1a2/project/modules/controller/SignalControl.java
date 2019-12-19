@@ -12,14 +12,15 @@ public class SignalControl {
     private LedGroup followRoute;
     private LedGroup idle;
     private LedGroup collision;
-    private LedGroup setLEDs;
     private LedGroup forward;
     private  LedGroup reverse;
     private Component warningSpeaker;
 
     public SignalControl() {
-        //this.setLEDs = setLEDs;
+
     }
+
+
 
     public void followRoute(){
         this.followRoute.on();
@@ -28,10 +29,6 @@ public class SignalControl {
 
     public void boeBotOn() {
         this.idle.on();
-    }
-
-    public void setLed(){
-        this.setLEDs.on();
     }
 
     public void boeBotCollision() {
@@ -77,10 +74,6 @@ public class SignalControl {
 
     public void setFollowRoute(LedGroup followRoute){
         this.followRoute = followRoute;
-    }
-
-    public void setSetLEDs(LedGroup setLEDs) {
-        this.setLEDs = setLEDs;
     }
 
     public void setWarningSpeaker(Component warningSpeaker) {
