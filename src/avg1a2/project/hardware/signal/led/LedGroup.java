@@ -8,23 +8,27 @@ import java.util.HashMap;
  */
 public class LedGroup implements LED{
     private HashMap<String,LED> group = new HashMap<>();
-    private boolean isOn = false;
     private Timer timer;
     private int delay;
     private int offset;
+    private boolean isOn = false;
 
     /**
      * Constructor sets a delay and offset to use, but does not automatically run.
      * @param delay The amount of delay (in milliseconds) the led will stay on.
      * @param offset The amount of delay (in milliseconds) the led will stay off.
      */
-    public LedGroup(int delay, int offset){
+    private LedGroup(int delay, int offset){
         this.delay = delay;
-        this.offset = delay;
+        this.offset = offset;
     }
 
+    /**
+     * Constructor sets a delay and offset to use, but does not automatically run.
+     * @param delay The amount of delay (in milliseconds) the led will stay on.
+     */
     public LedGroup(int delay){
-        this(delay,delay);
+        this(delay,delay); //If no offset is given, it is set the same value as the delay for equal timings.
     }
 
     public LedGroup() {
@@ -38,14 +42,6 @@ public class LedGroup implements LED{
      */
     public void addLed(String name, LED led){
         this.group.put(name,led);
-    }
-
-    /**
-     * Searches and removes the given led from the group.
-     * @param name Name of the led.
-     */
-    public void removeLed(String name){
-        this.group.remove(name);
     }
 
     /**
@@ -66,22 +62,6 @@ public class LedGroup implements LED{
             group.get(led).off();
         }
         this.isOn = false;
-    }
-
-    /**
-     * Sets the delay to be used by the group (time for it to remain on with each loop).
-     * @param delay delay in milliseconds.
-     */
-    public void setDelay(int delay){
-        this.delay = delay;
-    }
-
-    /**
-     * Sets the offset to be used by the group (time for it to remain off with each loop).
-     * @param offset offset in milliseconds.
-     */
-    public void setOffset(int offset){
-        this.offset = offset;
     }
 
     /**
