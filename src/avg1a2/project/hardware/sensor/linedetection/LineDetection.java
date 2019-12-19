@@ -13,31 +13,32 @@ public class LineDetection implements Component {
     private int backRightSensor;
     private int midSensor;
     private int frontRightSensor;
-    private int delay;
     private LineDetectionCallback callback;
     private Timer timer;
 
     /**
      * Constructor sets the Attributes.
-     * @param threshold
-     * @param leftSensor
-     * @param backRightSensor
-     * @param midSensor
-     * @param frontRightSensor
-     * @param callback
-     * @param delay
+     * @param leftSensor The LightSensor pin and the front left of the BoeBot.
+     * @param midSensor The LightSensor pin and the front middle of the BoeBot.
+     * @param frontRightSensor The LightSensor pin and the front right of the BoeBot.
+     * @param backRightSensor The LightSensor pin and the back right of the BoeBot.
+     * @param threshold The value which will separate black from white in order to detect lines.
+     * @param delay The delay which the LineSensor should use to detect line lost.
+     * @param callback The callback which to signal if an event is detected.
      */
-    public LineDetection(int threshold, int leftSensor, int backRightSensor, int midSensor, int frontRightSensor, LineDetectionCallback callback, int delay) {
+    public LineDetection(int leftSensor, int midSensor, int frontRightSensor, int backRightSensor, int threshold,  int delay, LineDetectionCallback callback) {
         this.threshold = threshold;
         this.leftSensor = leftSensor;
         this.backRightSensor = backRightSensor;
         this.midSensor = midSensor;
         this.frontRightSensor = frontRightSensor;
         this.callback = callback;
-        this.delay = delay;
-        this.timer = new Timer(this.delay);
+        this.timer = new Timer(delay);
     }
 
+    /**
+     * Updatable to be continuously run. Will also immediately check the situation and call the proper callbacks.
+     */
     @Override
     public void update() {
         int dataLeftSensor = BoeBot.analogRead(leftSensor);
@@ -47,22 +48,22 @@ public class LineDetection implements Component {
 
         if (dataMidSensor > threshold && dataBackRightSensor > threshold) {
             callback.onCrossroads();
-            timer = new Timer(delay);
+            timer.mark();
         }
         if (dataMidSensor > threshold) {
             callback.goForward();
-            timer = new Timer(delay);
+            timer.mark();
         }
         if (dataLeftSensor > threshold && dataFrontRightSensor < threshold) {
             callback.lineCorrectionLeft();
-            timer = new Timer(delay);
+            timer.mark();
         }
         if (dataFrontRightSensor > threshold && dataLeftSensor < threshold) {
             callback.lineCorrectionRight();
-            timer = new Timer(delay);
+            timer.mark();
         }
         if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
-            if (timer.timeout()) {
+            if (timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
                 callback.onLineLost();
             } else {
                 callback.lineCorrectionLeft();
