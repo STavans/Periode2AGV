@@ -3,6 +3,9 @@ package avg1a2.project.hardware.signal;
 import TI.BoeBot;
 import avg1a2.project.hardware.Component;
 
+/**
+ * A sound making device which can be used to signal states or events.
+ */
 public class Speaker implements Component {
     private int frequency;
     private int time;
@@ -10,7 +13,7 @@ public class Speaker implements Component {
 
     /**
      * Constructor sets the pin of the speaker, the frequency and the time frame.
-     * @param pin The pin the boebot.modules.Speaker is connected to.
+     * @param pin The pin the Speaker is connected to.
      * @param frequency Frequency of the sound created by the beeps.
      * @param time Time of each beep in milliseconds.
      */
@@ -23,11 +26,14 @@ public class Speaker implements Component {
     /**
      * Call to sound a beep with the set parameters.
      */
-    public void Beep() {
+    public void beep() {
         BoeBot.freqOut(pin,frequency,time);
     }
 
+    /**
+     * Updatable function which can be called continuously.
+     */
     public void update() {
-        Beep();
+        beep();
     }
 }
