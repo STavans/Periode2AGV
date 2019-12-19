@@ -174,6 +174,7 @@ public class MotionControl implements CollisionDetectionCallback {
         if (state.ifState("Idle")) {
             sLeft.update(1750);
             sRight.update(1425);
+
         }
     }
 
