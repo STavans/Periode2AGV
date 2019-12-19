@@ -3,6 +3,7 @@ package avg1a2.project.modules.controller;
 
 import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.signal.led.LedGroup;
+import avg1a2.project.logic.State;
 
 //TO DO
 //
@@ -12,14 +13,40 @@ public class SignalControl {
     private LedGroup followRoute;
     private LedGroup idle;
     private LedGroup collision;
-    private LedGroup setLEDs;
     private LedGroup forward;
-    private  LedGroup reverse;
+    private LedGroup reverse;
+    private State state;
     private Component warningSpeaker;
 
     public SignalControl() {
-        //this.setLEDs = setLEDs;
+
     }
+
+    public void update(){
+        switch(state.getState()){
+            case "Idle":
+                boeBotOn();
+                break;
+            case "driveFW":
+                forward();
+                break;
+            case "driveBW":
+                backward();
+                break;
+            case "turnL":
+                turnLeftLED();
+                break;
+            case "turnR":
+                turnRightLED();
+                break;
+
+        }
+    }
+
+    public void setState(State state){
+        this.state = state;
+    }
+
 
     public void followRoute(){
         this.followRoute.on();
@@ -28,10 +55,6 @@ public class SignalControl {
 
     public void boeBotOn() {
         this.idle.on();
-    }
-
-    public void setLed(){
-        this.setLEDs.on();
     }
 
     public void boeBotCollision() {
@@ -77,10 +100,6 @@ public class SignalControl {
 
     public void setFollowRoute(LedGroup followRoute){
         this.followRoute = followRoute;
-    }
-
-    public void setSetLEDs(LedGroup setLEDs) {
-        this.setLEDs = setLEDs;
     }
 
     public void setWarningSpeaker(Component warningSpeaker) {

@@ -72,11 +72,21 @@ class Init {
         dataStore.getProgramState().addState("Override");
         dataStore.getProgramState().addState("BlueBot");
 
+        dataStore.newSignalState(new State());
+        dataStore.getSignalState().addState("Idle");
+        dataStore.getSignalState().addState("driveFW");
+        dataStore.getSignalState().addState("driveBW");
+        dataStore.getSignalState().addState("turnL");
+        dataStore.getSignalState().addState("turnR");
+        dataStore.getSignalControl().setState(dataStore.getSignalState());
+
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
         dataStore.getMotionState().addState("BackCollision");
         dataStore.getMotionState().addState("FrontCollision");
         dataStore.getMotionState().addState("Turning");
+        dataStore.getMotionState().addState("TurningLeft");
+        dataStore.getMotionState().addState("TurningRight");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
