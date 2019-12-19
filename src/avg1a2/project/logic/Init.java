@@ -58,7 +58,7 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setSignalControl(new SignalControl());
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl(), dataStore.getMotionState()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
@@ -79,6 +79,7 @@ class Init {
         dataStore.getMotionState().addState("Turning");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
+        dataStore.getRemoteControl().setState(dataStore.getMotionState());
 
         dataStore.newRouteState(new State());
         dataStore.getRoutState().addState("GoForward");
