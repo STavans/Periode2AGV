@@ -46,6 +46,14 @@ public class SignalControl {
         this.turnRightLEDs.on();
     }
 
+    public void forward(){
+        this.forward.on();
+    }
+
+    public void backward(){
+        this.reverse.on();
+    }
+
     public void setWarningSpeakerOn() {
         this.warningSpeaker.update();
     }

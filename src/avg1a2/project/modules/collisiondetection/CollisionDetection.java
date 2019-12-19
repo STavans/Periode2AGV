@@ -1,30 +1,23 @@
 package avg1a2.project.modules.collisiondetection;
 
-import TI.Timer;
 import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.ultrasonic.UltraSonicCallback;
-import avg1a2.project.modules.controller.SignalControl;
+import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicCallback;
+import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicCallback;
 
 /**
  * Manages all CollisionDetection in the program, whenever one is detected, this will be signalled to the controllers.
  */
-public class CollisionDetection implements UltraSonicCallback {
+public class CollisionDetection implements FrontUltraSonicCallback, BackUltraSonicCallback {
     private CollisionDetectionCallback callback;
-    private SignalControl signalControl;
     private Component ultrasonicSensor;
-    private Timer timer;
-    private boolean isCollision;
-    //Cleanup maybe use state
+    private Component backUltrasonicSensor;
 
     /**
      * Constructor sets the required parameters, except for the sensor to use.
      * @param callback The controller to which to signal the collision to.
-     * @param
      */
-    public CollisionDetection(CollisionDetectionCallback callback,  SignalControl signalControl){
+    public CollisionDetection(CollisionDetectionCallback callback){
         this.callback = callback;
-        this.signalControl = signalControl;
-        this.isCollision = false;
     }
 
     /**
@@ -36,52 +29,57 @@ public class CollisionDetection implements UltraSonicCallback {
     }
 
     /**
-     * Function to easily check if there is a collision.
-     * @return true if collision is detected, false if not.
+     * Set the ultrasonic sensor to use while scanning for detections..
+     * @param backUltrasonicSensor The sensor to update in order to check for collisions.
      */
-    public boolean isCollision() {
-        return isCollision;
+    public void setBackUltrasonicSensor(Component backUltrasonicSensor) {
+        this.backUltrasonicSensor = backUltrasonicSensor;
     }
 
     /**
      *This updates the ultrasonic sensor
      **/
-    public void update(){
+    public void update() {
         if (ultrasonicSensor == null) {
             throw new RuntimeException("Ultrasonic sensor has not been assigned");
         } else {
             ultrasonicSensor.update();
         }
-        if (isCollision) {
-            if (timer != null && timer.timeout()) {
-                isCollision = false;
-                signalControl.boeBotOn();
-            }
-            signalControl.setWarningSpeakerOn(); // needs to be updated to support the update functionality.
-        }
 
+        if (backUltrasonicSensor == null) {
+            throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
+        } else {
+            backUltrasonicSensor.update();
+        }
     }
 
-    /**
-     *Calls the collisionDetectionCallback
-     **/
-    public void onUltraSonic() {
-        if (!isCollision) {
-            callback.onFrontCollision();
-        }
-        this.signalControl.boeBotCollision();
-        isCollision = true;
-        timer = new Timer(500);
+    @Override
+    public void onBackUltraSonic() {
+        callback.onBackCollision();
     }
 
-    /**
-     * TODO Cleanup this code, and fix the collision callbacks
-     * TODO Look at the motionControl class
-     */
-    public void closeUltraSonic(){
-        callback.emergencyCollision();
-        signalControl.boeBotCollision();
-        isCollision = true;
-        timer = new Timer(500);
+    @Override
+    public void onBackCloseUltraSonic() {
+        callback.onBackEmergencyCollision();
+    }
+
+    @Override
+    public void onBackFarUltraSonic() {
+        callback.backCollisionDone();
+    }
+
+    @Override
+    public void onFrontUltraSonic() {
+        callback.onFrontCollision();
+    }
+
+    @Override
+    public void onFrontCloseUltraSonic() {
+        callback.onFrontEmergencyCollision();
+    }
+
+    @Override
+    public void onFrontFarUltraSonic() {
+        callback.frontCollisionDone();
     }
 }

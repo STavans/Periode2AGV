@@ -5,7 +5,8 @@ import TI.Servo;
 import avg1a2.project.hardware.sensor.bluetooth.BluetoothSensor;
 import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.linedetection.LineDetection;
-import avg1a2.project.hardware.sensor.ultrasonic.UltrasonicSensor;
+import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicSensor;
+import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
@@ -55,9 +56,9 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new controllers.
      */
     private static void buildControllers(DataStore dataStore) {
-        dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight()));
         dataStore.setSignalControl(new SignalControl());
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
+        dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
@@ -73,7 +74,8 @@ class Init {
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
-        dataStore.getMotionState().addState("Collision");
+        dataStore.getMotionState().addState("BackCollision");
+        dataStore.getMotionState().addState("FrontCollision");
         dataStore.getMotionState().addState("Turning");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
@@ -151,7 +153,7 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with a new CollisionDetection.
      */
     private static void buildCollisionDetection(DataStore dataStore) {
-        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getMotionControl(),dataStore.getSignalControl()));
+        dataStore.setCollisionDetection(new CollisionDetection(dataStore.getMotionControl()));
     }
 
     /**
@@ -167,8 +169,9 @@ class Init {
      * @param dataStore The DataStore which it needs to fill with new Sensors.
      */
     private static void buildSensors(DataStore dataStore) {
-        dataStore.setIrSensor(new IRSensor(3,dataStore.getIrConversion()));
-        dataStore.setUltrasonicSensor(new UltrasonicSensor(1,0,dataStore.getCollisionDetection()));
+        dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
+        dataStore.setUltrasonicSensor(new FrontUltraSonicSensor(7,8,dataStore.getCollisionDetection()));
+        dataStore.setBackUltrasonicSensor(new BackUltraSonicSensor(4,5,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
         dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
     }
@@ -194,6 +197,7 @@ class Init {
      */
     private static void setSensors(DataStore dataStore) {
         dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
+        dataStore.getCollisionDetection().setBackUltrasonicSensor(dataStore.getBackUltrasonicSensor());
         dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
         dataStore.getBlueBotControl().setBluetoothSensor(dataStore.getBluetoothSensor());
     }

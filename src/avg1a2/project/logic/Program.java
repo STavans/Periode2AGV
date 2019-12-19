@@ -23,7 +23,7 @@ class Program {
         this.state = dataStore.getProgramState();
         this.remoteControl = dataStore.getRemoteControl();
         this.blueBotControl = dataStore.getBlueBotControl();
-        state.setState("BlueBot");
+        state.setState("Override");
     }
 
     /**
