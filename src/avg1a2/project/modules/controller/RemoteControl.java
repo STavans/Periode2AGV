@@ -47,7 +47,7 @@ public class RemoteControl implements IRConversionCallback {
     public void run() {
         irConversion.update();
         motionControl.update();
-        if(state.ifState("idle")){
+        if(state.ifState("Idle")){
             signalControl.boeBotOn();
         }
     }
