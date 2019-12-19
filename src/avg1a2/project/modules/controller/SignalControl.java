@@ -43,8 +43,13 @@ public class SignalControl {
         }
     }
 
-    public void setState(State state){
+    public void newState(State state){
         this.state = state;
+    }
+
+    public void setState(String state){
+        this.state.setState(state);
+
     }
 
 
