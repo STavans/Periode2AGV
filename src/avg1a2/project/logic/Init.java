@@ -183,7 +183,7 @@ class Init {
         dataStore.setUltrasonicSensor(new FrontUltraSonicSensor(7,8,dataStore.getCollisionDetection()));
         dataStore.setBackUltrasonicSensor(new BackUltraSonicSensor(4,5,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
-        dataStore.setLineDetection(new LineDetection(900,0,3,1,2,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(0,1,2,3,900,500,dataStore.getRouteControl()));
     }
 
     /**
