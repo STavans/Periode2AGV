@@ -10,6 +10,7 @@ import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.data.DataStore;
@@ -32,7 +33,7 @@ class Init {
         buildState(dataStore);
         buildSignals(dataStore);
         buildCollisionDetection(dataStore);
-        buildIrConversion(dataStore);
+        buildConversions(dataStore);
         buildSensors(dataStore);
         buildRoutes(dataStore);
         setSensors(dataStore);
@@ -170,11 +171,12 @@ class Init {
     }
 
     /**
-     * Builds the IrConversion object and adds it to the dataStore.
-     * @param dataStore The DataStore which it needs to fill with a new IrConversion.
+     * Builds the Conversion object and adds it to the dataStore.
+     * @param dataStore The DataStore which it needs to fill with a new Conversions.
      */
-    private static void buildIrConversion(DataStore dataStore) {
+    private static void buildConversions(DataStore dataStore) {
         dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl(),dataStore.getProgramState()));
+        dataStore.setBluetoothConversion(new BluetoothConversion(dataStore.getBlueBotControl()));
     }
 
     /**
@@ -185,7 +187,7 @@ class Init {
         dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new FrontUltraSonicSensor(7,8,dataStore.getCollisionDetection()));
         dataStore.setBackUltrasonicSensor(new BackUltraSonicSensor(4,5,dataStore.getCollisionDetection()));
-        dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
+        dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBluetoothConversion()));
         dataStore.setLineDetection(new LineDetection(0,1,2,3,900,500,dataStore.getRouteControl()));
     }
 
@@ -212,7 +214,7 @@ class Init {
         dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
         dataStore.getCollisionDetection().setBackUltrasonicSensor(dataStore.getBackUltrasonicSensor());
         dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
-        dataStore.getBlueBotControl().setBluetoothSensor(dataStore.getBluetoothSensor());
+        dataStore.getBluetoothConversion().setBluetoothSensor(dataStore.getBluetoothSensor());
     }
 
     /**
@@ -225,6 +227,7 @@ class Init {
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
         dataStore.getBlueBotControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getBlueBotControl().setBluetoothConversion(dataStore.getBluetoothConversion());
         dataStore.getMotionControl().setCollisionDetection(dataStore.getCollisionDetection());
     }
 

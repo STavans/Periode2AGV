@@ -1,15 +1,16 @@
 package avg1a2.project.modules.controller;
 
-import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.bluetooth.BluetoothCallback;
 import avg1a2.project.logic.State;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversionCallback;
+import avg1a2.project.modules.data.Route;
 import avg1a2.project.modules.irconversion.IRConversion;
 import avg1a2.project.modules.irconversion.IROverridable;
 
-public class BlueBotControl implements BluetoothCallback, IROverridable {
+public class BlueBotControl implements BluetoothConversionCallback, IROverridable {
     private IRConversion irConversion;
     private RouteControl routeControl;
-    private Component bluetoothSensor;
+    private BluetoothConversion bluetoothConversion;
     private State programState;
 
     public BlueBotControl(RouteControl routeControl) {
@@ -20,8 +21,8 @@ public class BlueBotControl implements BluetoothCallback, IROverridable {
         this.irConversion = irConversion;
     }
 
-    public void setBluetoothSensor(Component bluetoothSensor) {
-        this.bluetoothSensor = bluetoothSensor;
+    public void setBluetoothConversion(BluetoothConversion bluetoothConversion) {
+        this.bluetoothConversion = bluetoothConversion;
     }
 
     public void setProgramState(State programState) {
@@ -39,23 +40,40 @@ public class BlueBotControl implements BluetoothCallback, IROverridable {
         }
         irConversion.update();
 
-        if (this.bluetoothSensor == null) {
-            throw new RuntimeException("BluetoothSensor has not been initialized");
+        if (this.bluetoothConversion == null) {
+            throw new RuntimeException("BluetoothConversion has not been initialized");
         }
-        bluetoothSensor.update();
-    }
-
-    @Override
-    public void onSignal(int data) {
-        if (data == 119) {
-            routeControl.startRoute();
-        }
+        bluetoothConversion.update();
     }
 
     @Override
     public void override() {
-        System.out.println("Override");
         this.routeControl.stop();
         this.programState.setState("Override");
+    }
+
+    @Override
+    public void startRoute() {
+        routeControl.start();
+    }
+
+    @Override
+    public void cancelRoute() {
+        routeControl.stop();
+    }
+
+    @Override
+    public void resumeRoute() {
+        routeControl.resume();
+    }
+
+    @Override
+    public void pauseRoute() {
+        routeControl.pause();
+    }
+
+    @Override
+    public void newRoute(Route route) {
+        routeControl.setRoute(route);
     }
 }

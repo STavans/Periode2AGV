@@ -35,6 +35,7 @@ public class RouteControl implements LineDetectionCallback {
 
     public void run() {
         if (state.ifState("Running")) {
+            System.out.println("Running");
             motionControl.update();
             lineDetection.update();
             switch (state.getState()) {
@@ -71,10 +72,30 @@ public class RouteControl implements LineDetectionCallback {
         }
     }
 
-    void startRoute() {
-        if (!state.ifState("Finished")) {
-            route.reset();
+    void start() {
+        System.out.println("Start");
+        route.reset();
+        state.setState("Running");
+    }
+
+    void stop() {
+        System.out.println("Stop");
+        motionControl.setTargetSpeed(0);
+        state.setState("Finished");
+    }
+
+    void resume() {
+        System.out.println("Resume");
+        if (state.ifState("Idle") && !state.ifState("Finished")) {
             state.setState("Running");
+        }
+    }
+
+    void pause() {
+        System.out.println("Pause");
+        if (state.ifState("Running")) {
+            motionControl.setTargetSpeed(0);
+            state.setState("Idle");
         }
     }
 
@@ -131,9 +152,5 @@ public class RouteControl implements LineDetectionCallback {
             motionControl.setTargetSpeed(speed);
             state.setState("Running");
         }
-    }
-
-    void stop() {
-        motionControl.setTargetSpeed(0);
     }
 }

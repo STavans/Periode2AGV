@@ -10,6 +10,7 @@ import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.irconversion.IRConversion;
@@ -27,6 +28,7 @@ public class DataStore {
     private SignalControl signalControl;
     private RouteControl routeControl;
     private IRConversion irConversion;
+    private BluetoothConversion bluetoothConversion;
     private State programState;
     private State motionState;
     private State routeState;
@@ -171,6 +173,26 @@ public class DataStore {
             throw new IllegalArgumentException("Ir Conversion has not been initialized");
         } else {
             return this.irConversion;
+        }
+    }
+
+    /**
+     * Sets the BluetoothSensor in the DataStore.
+     */
+    public void setBluetoothConversion(BluetoothConversion bluetoothConversion) {
+        this.bluetoothConversion = bluetoothConversion;
+    }
+
+    /**
+     * Gets the BluetoothSensor from the DataStore.
+     * @return BluetoothSensor object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
+    public BluetoothConversion getBluetoothConversion() throws IllegalArgumentException {
+        if (bluetoothConversion == null) {
+            throw new IllegalArgumentException("Bluetooth Conversion has not been initialized");
+        } else {
+            return this.bluetoothConversion;
         }
     }
 
