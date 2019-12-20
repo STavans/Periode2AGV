@@ -273,13 +273,17 @@ public class MotionControl implements CollisionDetectionCallback {
 
     @Override
     public void onFrontCollision() {
-        state.setState("FrontCollision");
+        if(!state.ifState("BackCollision")) {
+            state.setState("FrontCollision");
+        }
         signalControl.boeBotCollision();
     }
 
     @Override
     public void onFrontEmergencyCollision() {
-        state.setState("FrontCollision");
+        if(!state.ifState("BackCollision")){
+            state.setState("FrontCollision");
+        }
         emergencyBrake();
         signalControl.boeBotCollision();
         if (speakerTime == null || speakerTime.timeout()) {
@@ -290,13 +294,17 @@ public class MotionControl implements CollisionDetectionCallback {
 
     @Override
     public void onBackCollision() {
-        state.setState("BackCollision");
+        if(!state.ifState("FrontCollision")) {
+            state.setState("BackCollision");
+        }
         signalControl.boeBotCollision();
     }
 
     @Override
     public void onBackEmergencyCollision() {
-        state.setState("BackCollision");
+        if(!state.ifState("FrontCollision")) {
+            state.setState("BackCollision");
+        }
         emergencyBrake();
         signalControl.boeBotCollision();
         if (speakerTime == null || speakerTime.timeout()) {
