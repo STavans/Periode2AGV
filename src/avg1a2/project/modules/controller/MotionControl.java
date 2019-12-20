@@ -17,6 +17,7 @@ public class MotionControl implements CollisionDetectionCallback {
     private Timer timer;
     private Timer speakerTime;
     private State state;
+    private int turningCount;
     private int currentSpeed;
     private int targetSpeed;
 
@@ -28,6 +29,7 @@ public class MotionControl implements CollisionDetectionCallback {
         this.sLeft = sLeft;
         this.sRight = sRight;
         this.currentSpeed = 0;
+        this.turningCount = 0;
     }
 
     /**
@@ -35,9 +37,39 @@ public class MotionControl implements CollisionDetectionCallback {
      */
     public void update() {
         collisionDetection.update();
+        signalState();
+        signalControl.update();
         turn();
         accelerateToSpeed();
         brake();
+    }
+
+
+    public void signalState(){
+
+        if(!state.getState().equals("Turning")) {
+            if (this.currentSpeed == 0) {
+
+                signalControl.setState("Idle");
+            } else if (this.currentSpeed > 0) {
+
+                signalControl.setState("driveFW");
+            } else {
+
+                signalControl.setState("driveBW");
+            }
+        }
+        else {
+
+            if(this.turningCount == 1){
+                signalControl.setState("turnR");
+
+            } else if(this.turningCount == -1) {
+                signalControl.setState("turnL");
+            }
+
+        }
+
     }
 
     public void setCollisionDetection(CollisionDetection collisionDetection) {
@@ -148,8 +180,10 @@ public class MotionControl implements CollisionDetectionCallback {
             }
             if (reverse) {
                 pulse = -turnSpeed;
+                this.turningCount = -1;
             } else {
                 pulse = turnSpeed;
+                this.turningCount = 1;
             }
             updateWheels(pulse,-pulse);
             timer = new Timer(turnTime);

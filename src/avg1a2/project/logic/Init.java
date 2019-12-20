@@ -78,7 +78,7 @@ class Init {
         dataStore.getSignalState().addState("driveBW");
         dataStore.getSignalState().addState("turnL");
         dataStore.getSignalState().addState("turnR");
-        dataStore.getSignalControl().setState(dataStore.getSignalState());
+        dataStore.getSignalControl().newState(dataStore.getSignalState());
 
         dataStore.newMotionState(new State());
         dataStore.getMotionState().addState("Idle");
@@ -131,19 +131,19 @@ class Init {
         dataStore.addLedGroup("forward", forward);
 
         LedGroup reverse = new LedGroup();
-        reverse.addLed("reverseLED1", new NeoPixel(0, 255, 229, 204));
-        reverse.addLed("reverseLED2", new NeoPixel(1, 255, 229, 204));
-        reverse.addLed("reverseLED3", new NeoPixel(2, 255, 229, 204));
+        reverse.addLed("reverseLED1", new NeoPixel(0, 176, 112, 23));
+        reverse.addLed("reverseLED2", new NeoPixel(1, 176, 112, 23));
+        reverse.addLed("reverseLED3", new NeoPixel(2, 176, 112, 23));
         dataStore.addLedGroup("reverse", reverse);
 
         LedGroup turnLeft = new LedGroup();
         turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
-        turnLeft.addLed("turnLED2", new NeoPixel(3, 255, 255, 0));
+        turnLeft.addLed("turnLED2", new NeoPixel(5, 255, 255, 0));
         dataStore.addLedGroup("turnLeftLEDs", turnLeft);
 
         LedGroup turnRight = new LedGroup();
         turnRight.addLed("turnRightLED1", new NeoPixel(2, 255, 255, 0));
-        turnRight.addLed("turnRightLED2", new NeoPixel(5, 255, 255, 0));
+        turnRight.addLed("turnRightLED2", new NeoPixel(3, 255, 255, 0));
         dataStore.addLedGroup("turnRightLEDs", turnRight);
 
         LedGroup followRoute = new LedGroup();
@@ -213,7 +213,7 @@ class Init {
     }
 
     /**
-     * Sets the required modules to the correct controllers.
+     * Sets the required modules & states to the correct controllers.
      * @param dataStore The DataStore in which to set the collisionDetection.
      */
     private static void setModules(DataStore dataStore) {
@@ -224,6 +224,12 @@ class Init {
         dataStore.getBlueBotControl().setIrConversion(dataStore.getIrConversion());
         dataStore.getMotionControl().setCollisionDetection(dataStore.getCollisionDetection());
     }
+
+    /**
+     * sets the led groups to the signal Control
+     *
+     * @param dataStore
+     */
 
     private static void setSignals(DataStore dataStore) {
         dataStore.getSignalControl().setIdle(dataStore.getLedGroup("idle"));
