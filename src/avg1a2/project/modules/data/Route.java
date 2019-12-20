@@ -16,9 +16,9 @@ public class Route {
 
     public void addStep(String step) throws IllegalArgumentException, IllegalStateException {
         if (!complete) {
-            if (step.equals("Left") || step.equals("Right") || step.equals("Forward")) {
+            if (step.equals("Left") || step.equals("Right") || step.equals("Forward") || step.equals("Stop")) {
                 this.steps.add(step);
-            } else if (step.equals("Stop")) {
+            } else if (step.equals("End")) {
                 this.steps.add(step);
                 this.complete = true;
             } else {
@@ -38,7 +38,7 @@ public class Route {
             throw new IllegalStateException("The requested step does not exist.");
         }
         String step = steps.get(currentStep);
-        if (step.equals("Stop")) {
+        if (step.equals("End")) {
             this.finished = true;
         } else {
             this.currentStep++;

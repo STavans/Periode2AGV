@@ -238,7 +238,7 @@ public class DataStore {
      * @return routeState object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
-    public State getRoutState() throws IllegalArgumentException {
+    public State getRouteState() throws IllegalArgumentException {
         if (routeState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
