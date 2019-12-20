@@ -59,7 +59,7 @@ class Init {
         dataStore.setSignalControl(new SignalControl());
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -91,14 +91,17 @@ class Init {
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
         dataStore.newRouteState(new State());
-        dataStore.getRoutState().addState("GoForward");
-        dataStore.getRoutState().addState("Stop");
-        dataStore.getRoutState().addState("TurnLeft");
-        dataStore.getRoutState().addState("TurnRight");
-        dataStore.getRoutState().addState("Turning");
-        dataStore.getRoutState().addState("Idle");
-        dataStore.getRoutState().addState("Finished");
-        dataStore.getRouteControl().setState(dataStore.getRoutState());
+        dataStore.getRouteState().addState("GoForward");
+        dataStore.getRouteState().addState("Stop");
+        dataStore.getRouteState().addState("TurnLeft");
+        dataStore.getRouteState().addState("TurnRight");
+        dataStore.getRouteState().addState("Turning");
+        dataStore.getRouteState().addState("Idle");
+        dataStore.getRouteState().addState("Running");
+        dataStore.getRouteState().addState("Servicing");
+        dataStore.getRouteState().addState("Finished");
+        dataStore.getRouteState().addState("End");
+        dataStore.getRouteControl().setState(dataStore.getRouteState());
     }
 
     /**
@@ -214,7 +217,7 @@ class Init {
 
     /**
      * Sets the required modules & states to the correct controllers.
-     * @param dataStore The DataStore in which to set the collisionDetection.
+     * @param dataStore The DataStore in which to set the Modules.
      */
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
@@ -227,8 +230,7 @@ class Init {
 
     /**
      * sets the led groups to the signal Control
-     *
-     * @param dataStore
+     * @param dataStore The DataStore in which to set the Signals.
      */
 
     private static void setSignals(DataStore dataStore) {
@@ -242,6 +244,10 @@ class Init {
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 
+    /**
+     * Sets the default route to the SignalControl.
+     * @param dataStore The DataStore in which to set the Routes.
+     */
     private static void setRoutes(DataStore dataStore) {
         dataStore.getRouteControl().setRoute(dataStore.getRoute("Default"));
     }
