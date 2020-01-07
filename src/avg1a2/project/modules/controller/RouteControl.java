@@ -117,6 +117,7 @@ public class RouteControl implements LineDetectionCallback {
                     break;
                 case "End" :
                     state.setState("End");
+                    break;
             }
         }
     }

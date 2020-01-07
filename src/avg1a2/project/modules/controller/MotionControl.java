@@ -252,8 +252,6 @@ public class MotionControl implements CollisionDetectionCallback {
 
     private void brake() {
         if (state.ifState("FrontCollision") || state.ifState("BackCollision")) {
-            System.out.println(sLeft.getPulseWidth() - currentSpeed);
-            System.out.println(sRight.getPulseWidth() + currentSpeed);
 
             if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
                 updateWheels(currentSpeed,currentSpeed);
