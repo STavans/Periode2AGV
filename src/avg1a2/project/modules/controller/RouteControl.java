@@ -37,13 +37,13 @@ public class RouteControl implements LineDetectionCallback {
         if (!state.ifState("Idle")) {
             motionControl.update();
             lineDetection.update();
-            System.out.println(state.getState());
             switch (state.getState()) {
                 case "GoForward":
                     if (motionControl.isIdle()) {
                         System.out.println("Going forward!");
                         motionControl.setTargetSpeed(speed);
                         crossRoadsTimer = new Timer(1000);
+                        System.out.println("na dat de nieuwe timer gezet is");
                         state.setState("Running");
                     }
                     break;
@@ -74,26 +74,22 @@ public class RouteControl implements LineDetectionCallback {
     }
 
     void start() {
-        System.out.println("Start");
         route.reset();
         state.setState("Running");
     }
 
     void stop() {
-        System.out.println("Stop");
         motionControl.setTargetSpeed(0);
         state.setState("Finished");
     }
 
     void resume() {
-        System.out.println("Resume");
         if (state.ifState("Idle") && !state.ifState("Finished")) {
             state.setState("Running");
         }
     }
 
     void pause() {
-        System.out.println("Pause");
         if (state.ifState("Running")) {
             motionControl.setTargetSpeed(0);
             state.setState("Idle");
