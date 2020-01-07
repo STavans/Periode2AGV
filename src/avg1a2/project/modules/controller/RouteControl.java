@@ -34,13 +34,14 @@ public class RouteControl implements LineDetectionCallback {
     }
 
     public void run() {
-        if (state.ifState("Running")) {
-            System.out.println("Running");
+        if (!state.ifState("Idle")) {
             motionControl.update();
             lineDetection.update();
+            System.out.println(state.getState());
             switch (state.getState()) {
                 case "GoForward":
                     if (motionControl.isIdle()) {
+                        System.out.println("Going forward!");
                         motionControl.setTargetSpeed(speed);
                         crossRoadsTimer = new Timer(1000);
                         state.setState("Running");
