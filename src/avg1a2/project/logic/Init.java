@@ -10,6 +10,7 @@ import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
 import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
 import avg1a2.project.modules.collisiondetection.CollisionDetection;
 import avg1a2.project.modules.controller.*;
 import avg1a2.project.modules.data.DataStore;
@@ -32,7 +33,7 @@ class Init {
         buildState(dataStore);
         buildSignals(dataStore);
         buildCollisionDetection(dataStore);
-        buildIrConversion(dataStore);
+        buildConversions(dataStore);
         buildSensors(dataStore);
         buildRoutes(dataStore);
         setSensors(dataStore);
@@ -59,7 +60,7 @@ class Init {
         dataStore.setSignalControl(new SignalControl());
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
         dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
-        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
+        dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
 
@@ -91,14 +92,17 @@ class Init {
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
         dataStore.newRouteState(new State());
-        dataStore.getRoutState().addState("GoForward");
-        dataStore.getRoutState().addState("Stop");
-        dataStore.getRoutState().addState("TurnLeft");
-        dataStore.getRoutState().addState("TurnRight");
-        dataStore.getRoutState().addState("Turning");
-        dataStore.getRoutState().addState("Idle");
-        dataStore.getRoutState().addState("Finished");
-        dataStore.getRouteControl().setState(dataStore.getRoutState());
+        dataStore.getRouteState().addState("GoForward");
+        dataStore.getRouteState().addState("Stop");
+        dataStore.getRouteState().addState("TurnLeft");
+        dataStore.getRouteState().addState("TurnRight");
+        dataStore.getRouteState().addState("Turning");
+        dataStore.getRouteState().addState("Idle");
+        dataStore.getRouteState().addState("Running");
+        dataStore.getRouteState().addState("Servicing");
+        dataStore.getRouteState().addState("Finished");
+        dataStore.getRouteState().addState("End");
+        dataStore.getRouteControl().setState(dataStore.getRouteState());
     }
 
     /**
@@ -167,11 +171,12 @@ class Init {
     }
 
     /**
-     * Builds the IrConversion object and adds it to the dataStore.
-     * @param dataStore The DataStore which it needs to fill with a new IrConversion.
+     * Builds the Conversion object and adds it to the dataStore.
+     * @param dataStore The DataStore which it needs to fill with a new Conversions.
      */
-    private static void buildIrConversion(DataStore dataStore) {
+    private static void buildConversions(DataStore dataStore) {
         dataStore.setIrConversion(new IRConversion(dataStore.getRemoteControl(),dataStore.getBlueBotControl(),dataStore.getProgramState()));
+        dataStore.setBluetoothConversion(new BluetoothConversion(dataStore.getBlueBotControl()));
     }
 
     /**
@@ -182,7 +187,7 @@ class Init {
         dataStore.setIrSensor(new IRSensor(1,dataStore.getIrConversion()));
         dataStore.setUltrasonicSensor(new FrontUltraSonicSensor(7,8,dataStore.getCollisionDetection()));
         dataStore.setBackUltrasonicSensor(new BackUltraSonicSensor(4,5,dataStore.getCollisionDetection()));
-        dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBlueBotControl()));
+        dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBluetoothConversion()));
         dataStore.setLineDetection(new LineDetection(0,1,2,3,900,500,dataStore.getRouteControl()));
     }
 
@@ -209,12 +214,12 @@ class Init {
         dataStore.getCollisionDetection().setUltrasonicSensor(dataStore.getUltrasonicSensor());
         dataStore.getCollisionDetection().setBackUltrasonicSensor(dataStore.getBackUltrasonicSensor());
         dataStore.getIrConversion().setIrSensor(dataStore.getIrSensor());
-        dataStore.getBlueBotControl().setBluetoothSensor(dataStore.getBluetoothSensor());
+        dataStore.getBluetoothConversion().setBluetoothSensor(dataStore.getBluetoothSensor());
     }
 
     /**
      * Sets the required modules & states to the correct controllers.
-     * @param dataStore The DataStore in which to set the collisionDetection.
+     * @param dataStore The DataStore in which to set the Modules.
      */
     private static void setModules(DataStore dataStore) {
         dataStore.getRemoteControl().setIrConversion(dataStore.getIrConversion());
@@ -222,13 +227,13 @@ class Init {
         dataStore.getRouteControl().setLineDetection(dataStore.getLineDetection());
         dataStore.getBlueBotControl().setProgramState(dataStore.getProgramState());
         dataStore.getBlueBotControl().setIrConversion(dataStore.getIrConversion());
+        dataStore.getBlueBotControl().setBluetoothConversion(dataStore.getBluetoothConversion());
         dataStore.getMotionControl().setCollisionDetection(dataStore.getCollisionDetection());
     }
 
     /**
      * sets the led groups to the signal Control
-     *
-     * @param dataStore
+     * @param dataStore The DataStore in which to set the Signals.
      */
 
     private static void setSignals(DataStore dataStore) {
@@ -242,6 +247,10 @@ class Init {
         dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
     }
 
+    /**
+     * Sets the default route to the SignalControl.
+     * @param dataStore The DataStore in which to set the Routes.
+     */
     private static void setRoutes(DataStore dataStore) {
         dataStore.getRouteControl().setRoute(dataStore.getRoute("Default"));
     }

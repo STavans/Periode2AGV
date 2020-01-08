@@ -1,38 +1,28 @@
 package avg1a2.project.modules.controller;
 
-import avg1a2.project.hardware.Component;
-import avg1a2.project.hardware.sensor.bluetooth.BluetoothCallback;
-import avg1a2.project.hardware.signal.led.LedGroup;
-import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.logic.State;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
+import avg1a2.project.modules.bluetoothconversion.BluetoothConversionCallback;
+import avg1a2.project.modules.data.Route;
 import avg1a2.project.modules.irconversion.IRConversion;
 import avg1a2.project.modules.irconversion.IROverridable;
 
-public class BlueBotControl implements BluetoothCallback, IROverridable {
+public class BlueBotControl implements BluetoothConversionCallback, IROverridable {
     private IRConversion irConversion;
     private RouteControl routeControl;
-    private Component bluetoothSensor;
-    private LedGroup neoPixels;
+    private BluetoothConversion bluetoothConversion;
     private State programState;
 
     public BlueBotControl(RouteControl routeControl) {
         this.routeControl = routeControl;
-
-        neoPixels = new LedGroup();
-        neoPixels.addLed("pixel1",new NeoPixel(0,0,0,255));
-        neoPixels.addLed("pixel2",new NeoPixel(1,0,0,255));
-        neoPixels.addLed("pixel3",new NeoPixel(2,0,0,255));
-        neoPixels.addLed("pixel4",new NeoPixel(3,0,0,255));
-        neoPixels.addLed("pixel5",new NeoPixel(4,0,0,255));
-        neoPixels.addLed("pixel6",new NeoPixel(5,0,0,255));
     }
 
     public void setIrConversion(IRConversion irConversion) {
         this.irConversion = irConversion;
     }
 
-    public void setBluetoothSensor(Component bluetoothSensor) {
-        this.bluetoothSensor = bluetoothSensor;
+    public void setBluetoothConversion(BluetoothConversion bluetoothConversion) {
+        this.bluetoothConversion = bluetoothConversion;
     }
 
     public void setProgramState(State programState) {
@@ -40,35 +30,50 @@ public class BlueBotControl implements BluetoothCallback, IROverridable {
     }
 
     public void run() throws RuntimeException {
-        try {
-            routeControl.run();
-        } catch (IllegalStateException ex) {
-            System.out.println(ex);
+        if (routeControl == null) {
+            throw new RuntimeException("Route Control has not been initialized");
+        }
+        routeControl.run();
+
+        if (irConversion == null) {
+            throw new RuntimeException("IrConversion has not been initialized");
         }
         irConversion.update();
-        blueBotScan();
-    }
 
-    private void blueBotScan() {
-        if (this.bluetoothSensor == null) {
-            throw new RuntimeException();
+        if (this.bluetoothConversion == null) {
+            throw new RuntimeException("BluetoothConversion has not been initialized");
         }
-        bluetoothSensor.update();
-    }
-
-    @Override
-    public void onSignal(int data) {
-        if (data == 119) {
-            neoPixels.on();
-        } else {
-            neoPixels.off();
-        }
+        bluetoothConversion.update();
     }
 
     @Override
     public void override() {
-        System.out.println("Override");
         this.routeControl.stop();
         this.programState.setState("Override");
+    }
+
+    @Override
+    public void startRoute() {
+        routeControl.start();
+    }
+
+    @Override
+    public void cancelRoute() {
+        routeControl.stop();
+    }
+
+    @Override
+    public void resumeRoute() {
+        routeControl.resume();
+    }
+
+    @Override
+    public void pauseRoute() {
+        routeControl.pause();
+    }
+
+    @Override
+    public void newRoute(Route route) {
+        routeControl.setRoute(route);
     }
 }

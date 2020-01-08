@@ -26,7 +26,7 @@ public class BluetoothSensor implements Component {
     @Override
     public void update() {
         if (connection.available() > 0) {
-            callback.onSignal(connection.readByte());
+            callback.onSignal(Character.toString((char) connection.readByte()));
         }
     }
 }

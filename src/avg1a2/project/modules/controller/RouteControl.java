@@ -13,12 +13,10 @@ public class RouteControl implements LineDetectionCallback {
     private State state;
     private Timer timer;
     private Timer crossRoadsTimer;
-    private SignalControl signalControl;
     private int speed;
 
-    public RouteControl(MotionControl motionControl, SignalControl signalControl) {
+    public RouteControl(MotionControl motionControl) {
         this.motionControl = motionControl;
-        this.signalControl = signalControl;
         this.speed = 40;
     }
 
@@ -36,42 +34,71 @@ public class RouteControl implements LineDetectionCallback {
     }
 
     public void run() {
-        motionControl.update();
-        lineDetection.update();
-        //signalControl.followRoute();
+        if (!state.ifState("Idle")) {
+            motionControl.update();
+            lineDetection.update();
+            switch (state.getState()) {
+                case "GoForward":
+                    if (motionControl.isIdle()) {
+                        System.out.println("Going forward!");
+                        motionControl.setTargetSpeed(speed);
+                        crossRoadsTimer = new Timer(1000);
+                        System.out.println("na dat de nieuwe timer gezet is");
+                        state.setState("Running");
+                    }
+                    break;
+                case "Stop":
+                    motionControl.setTargetSpeed(0);
+                    state.setState("Servicing");
+                    break;
+                case "TurnLeft":
+                    if (motionControl.isIdle()) {
+                        motionControl.infLeft();
+                        timer = new Timer(300);
+                        state.setState("Turning");
+                    }
+                    break;
+                case "TurnRight":
+                    if (motionControl.isIdle()) {
+                        motionControl.infRight();
+                        timer = new Timer(300);
+                        state.setState("Turning");
+                    }
+                    break;
+                case "End":
+                    motionControl.setTargetSpeed(0);
+                    state.setState("Finished");
+                    break;
+            }
+        }
+    }
 
-        switch (state.getState()) {
-            case "GoForward":
-                if (motionControl.isIdle()) {
-                    motionControl.setTargetSpeed(speed);
-                    crossRoadsTimer = new Timer(1000);
-                    state.setState("Idle");
-                }
-                break;
-            case "Stop":
-                motionControl.setTargetSpeed(0);
-                state.setState("Finished");
-                break;
-            case "TurnLeft":
-                if (motionControl.isIdle()) {
-                    motionControl.infLeft();
-                    timer = new Timer(300);
-                    state.setState("Turning");
-                }
-                break;
-            case "TurnRight":
-                if (motionControl.isIdle()) {
-                    motionControl.infRight();
-                    timer = new Timer(300);
-                    state.setState("Turning");
-                }
-                break;
+    void start() {
+        route.reset();
+        state.setState("Running");
+    }
+
+    void stop() {
+        motionControl.setTargetSpeed(0);
+        state.setState("Finished");
+    }
+
+    void resume() {
+        if (state.ifState("Idle") && !state.ifState("Finished")) {
+            state.setState("Running");
+        }
+    }
+
+    void pause() {
+        if (state.ifState("Running")) {
+            motionControl.setTargetSpeed(0);
+            state.setState("Idle");
         }
     }
 
     @Override
     public void onCrossroads() {
-        if (state.ifState("Idle") && (crossRoadsTimer == null || crossRoadsTimer.timeout())) {
+        if (state.ifState("Running") && (crossRoadsTimer == null || crossRoadsTimer.timeout())) {
             switch (route.nextStep()) {
                 case "Left" :
                     state.setState("TurnLeft");
@@ -85,27 +112,30 @@ public class RouteControl implements LineDetectionCallback {
                 case "Stop" :
                     state.setState("Stop");
                     break;
+                case "End" :
+                    state.setState("End");
+                    break;
             }
         }
     }
 
     @Override
     public void lineCorrectionLeft() {
-        if (state.ifState("Idle")) {
+        if (state.ifState("Running")) {
             motionControl.updateWheels(0, speed);
         }
     }
 
     @Override
     public void lineCorrectionRight() {
-        if (state.ifState("Idle")) {
+        if (state.ifState("Running")) {
             motionControl.updateWheels(speed,0);
         }
     }
 
     @Override
     public void onLineLost() {
-        if (state.ifState("Idle")) {
+        if (state.ifState("Running")) {
             motionControl.setTargetSpeed(0);
         }
     }
@@ -115,14 +145,10 @@ public class RouteControl implements LineDetectionCallback {
         if (state.ifState("Turning") && motionControl.isIdle() && (timer.timeout())) {
             motionControl.setTargetSpeed(0);
             crossRoadsTimer = new Timer(1000);
-            state.setState("Idle");
-        } else if (state.ifState("Idle")) {
+            state.setState("Running");
+        } else if (state.ifState("Running")) {
             motionControl.setTargetSpeed(speed);
-            state.setState("Idle");
+            state.setState("Running");
         }
-    }
-
-    void stop() {
-        motionControl.setTargetSpeed(0);
     }
 }
