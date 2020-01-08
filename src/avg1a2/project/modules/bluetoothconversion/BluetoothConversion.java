@@ -27,32 +27,25 @@ public class BluetoothConversion implements BluetoothCallback {
 
     @Override
     public void onSignal(String command) {
-        System.out.println(command);
         switch (command) {
             case "B" :
-                System.out.println("Begin");
                 route = new Route();
                 break;
             case "w" :
-                System.out.println("Forward");
                 buildRoute(command);
                 break;
             case "a" :
-                System.out.println("Left");
                 buildRoute(command);
                 break;
             case "d" :
-                System.out.println("Right");
                 buildRoute(command);
                 break;
             case "s" :
-                System.out.println("Stop");
                 buildRoute(command);
                 break;
             case "e" :
                 route.addStep("End");
                 callback.newRoute(route);
-                System.out.println("End");
                 break;
             case "S" :
                 callback.startRoute();

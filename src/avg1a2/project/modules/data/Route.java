@@ -48,6 +48,7 @@ public class Route {
 
     public void reset() {
         this.finished = false;
+        this.currentStep = 0;
     }
 
     public void clearSteps() {

@@ -109,6 +109,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @return True if the controller is idle, false if it's not.
      */
     boolean isIdle() {
+        System.out.println(state.getState());
         return state.ifState("Idle");
     }
 
@@ -252,9 +253,6 @@ public class MotionControl implements CollisionDetectionCallback {
 
     private void brake() {
         if (state.ifState("FrontCollision") || state.ifState("BackCollision")) {
-            System.out.println(sLeft.getPulseWidth() - currentSpeed);
-            System.out.println(sRight.getPulseWidth() + currentSpeed);
-
             if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
                 updateWheels(currentSpeed,currentSpeed);
             } else if (currentSpeed != 0) {
