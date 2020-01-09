@@ -79,6 +79,7 @@ class Init {
         dataStore.getSignalState().addState("driveBW");
         dataStore.getSignalState().addState("turnL");
         dataStore.getSignalState().addState("turnR");
+        dataStore.getSignalState().addState("Collision");
         dataStore.getSignalControl().newState(dataStore.getSignalState());
 
         dataStore.newMotionState(new State());
@@ -159,7 +160,7 @@ class Init {
         followRoute.addLed("followRoute6", new NeoPixel(5, 0,255,255));
         dataStore.addLedGroup("followRouteLEDs", followRoute);
 
-        dataStore.setWarningSpeaker(new Speaker(2, 1000, 500));
+        dataStore.setWarningSpeaker(new Speaker(2, 10, 500));
     }
 
     /**
@@ -188,7 +189,7 @@ class Init {
         dataStore.setUltrasonicSensor(new FrontUltraSonicSensor(7,8,dataStore.getCollisionDetection()));
         dataStore.setBackUltrasonicSensor(new BackUltraSonicSensor(4,5,dataStore.getCollisionDetection()));
         dataStore.setBluetoothSensor(new BluetoothSensor(new SerialConnection(115200),dataStore.getBluetoothConversion()));
-        dataStore.setLineDetection(new LineDetection(0,1,2,3,900,500,dataStore.getRouteControl()));
+        dataStore.setLineDetection(new LineDetection(3,2,1,0,900,500,dataStore.getRouteControl()));
     }
 
     /**
