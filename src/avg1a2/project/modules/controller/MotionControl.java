@@ -109,7 +109,6 @@ public class MotionControl implements CollisionDetectionCallback {
      * @return True if the controller is idle, false if it's not.
      */
     boolean isIdle() {
-        System.out.println(state.getState());
         return state.ifState("Idle");
     }
 
@@ -273,12 +272,14 @@ public class MotionControl implements CollisionDetectionCallback {
     public void onFrontCollision() {
         if(!state.ifState("BackCollision")) {
             state.setState("FrontCollision");
+            System.out.println("ik kom in de front coll if statement ");
         }
         signalControl.boeBotCollision();
     }
 
     @Override
     public void onFrontEmergencyCollision() {
+        System.out.println("front emergency");
         if(!state.ifState("BackCollision")){
             state.setState("FrontCollision");
         }
@@ -287,6 +288,7 @@ public class MotionControl implements CollisionDetectionCallback {
         if (speakerTime == null || speakerTime.timeout()) {
             signalControl.setWarningSpeakerOn();
             speakerTime = new Timer(500);
+            //TODO speakerTime verstoord deels het branden van de rode collision LEDS
         }
     }
 
@@ -300,6 +302,7 @@ public class MotionControl implements CollisionDetectionCallback {
 
     @Override
     public void onBackEmergencyCollision() {
+        System.out.println("back emergency");
         if(!state.ifState("FrontCollision")) {
             state.setState("BackCollision");
         }
@@ -308,6 +311,8 @@ public class MotionControl implements CollisionDetectionCallback {
         if (speakerTime == null || speakerTime.timeout()) {
             signalControl.setWarningSpeakerOn();
             speakerTime = new Timer(500);
+            //TODO speakerTime verstoord deels het branden van de rode collision LEDS
+
         }
     }
 

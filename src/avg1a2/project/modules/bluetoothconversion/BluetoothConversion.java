@@ -27,6 +27,7 @@ public class BluetoothConversion implements BluetoothCallback {
 
     @Override
     public void onSignal(String command) {
+        System.out.println("Got a bluetooth command: " + command);
         switch (command) {
             case "B" :
                 route = new Route();
