@@ -29,13 +29,14 @@ public class BackUltraSonicSensor extends UltraSonicSensor {
             int scan = super.ultraSonicPulse();
             if (scan > 100) {
                 int distance = super.calculateDistance(scan);
-                if (distance < 20 && distance > 10) {
-                    callback.onBackUltraSonic();
-                }  else if (distance <= 10){
-                    callback.onBackCloseUltraSonic();
-                } else {
-                    callback.onBackFarUltraSonic();
-                }
+               //TODO
+//                if (distance < 20 && distance > 10) {
+//                    callback.onBackUltraSonic();
+//                }  else if (distance <= 10){
+//                    callback.onBackCloseUltraSonic();
+//                } else {
+//                    callback.onBackFarUltraSonic();
+//                }
             }
             timer = new Timer(50);
         }

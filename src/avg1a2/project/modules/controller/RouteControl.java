@@ -53,15 +53,17 @@ public class RouteControl implements LineDetectionCallback {
                     break;
                 case "TurnLeft":
                     if (motionControl.isIdle()) {
+                        System.out.println("Starting to turn left");
                         motionControl.infLeft();
-                        timer = new Timer(300);
+                        timer = new Timer(350);
                         state.setState("Turning");
                     }
                     break;
                 case "TurnRight":
                     if (motionControl.isIdle()) {
+                        System.out.println("Starting to turn right");
                         motionControl.infRight();
-                        timer = new Timer(300);
+                        timer = new Timer(350);
                         state.setState("Turning");
                     }
                     break;
@@ -99,6 +101,7 @@ public class RouteControl implements LineDetectionCallback {
     @Override
     public void onCrossroads() {
         if (state.ifState("Running") && (crossRoadsTimer == null || crossRoadsTimer.timeout())) {
+            System.out.println("Crossroad detected");
             switch (route.nextStep()) {
                 case "Left" :
                     state.setState("TurnLeft");
@@ -122,14 +125,16 @@ public class RouteControl implements LineDetectionCallback {
     @Override
     public void lineCorrectionLeft() {
         if (state.ifState("Running")) {
-            motionControl.updateWheels(0, speed);
+            System.out.println("Correcting left");
+            motionControl.updateWheels(0, 30);
         }
     }
 
     @Override
     public void lineCorrectionRight() {
         if (state.ifState("Running")) {
-            motionControl.updateWheels(speed,0);
+            System.out.println("Correcting right");
+            motionControl.updateWheels(30,0);
         }
     }
 
@@ -147,6 +152,7 @@ public class RouteControl implements LineDetectionCallback {
             crossRoadsTimer = new Timer(1000);
             state.setState("Running");
         } else if (state.ifState("Running")) {
+            System.out.println("Forward");
             motionControl.setTargetSpeed(speed);
             state.setState("Running");
         }
