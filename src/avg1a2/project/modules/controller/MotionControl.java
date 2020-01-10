@@ -116,7 +116,7 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param targetSpeed Target Speed for the BoeBot to reach.
      */
     void setTargetSpeed(int targetSpeed) {
-        if (state.ifState("Idle")) {
+        if (state.ifState("Idle") || state.ifState("Accelerating")) {
             this.targetSpeed = targetSpeed;
             state.setState("Accelerating");
         }

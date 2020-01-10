@@ -50,7 +50,7 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
 
     @Override
     public void override() {
-        this.routeControl.stop();
+        this.routeControl.pause();
         this.programState.setState("Override");
         this.signalControl.remoteControl();
     }
