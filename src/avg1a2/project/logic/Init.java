@@ -59,7 +59,7 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setSignalControl(new SignalControl());
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
         dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
     }
@@ -75,10 +75,10 @@ class Init {
 
         dataStore.newSignalState(new State());
         dataStore.getSignalState().addState("Idle");
-        dataStore.getSignalState().addState("driveFW");
-        dataStore.getSignalState().addState("driveBW");
-        dataStore.getSignalState().addState("turnL");
-        dataStore.getSignalState().addState("turnR");
+        dataStore.getSignalState().addState("DriveFW");
+        dataStore.getSignalState().addState("DriveBW");
+        dataStore.getSignalState().addState("TurnL");
+        dataStore.getSignalState().addState("TurnR");
         dataStore.getSignalState().addState("Collision");
         dataStore.getSignalControl().newState(dataStore.getSignalState());
 
@@ -86,9 +86,8 @@ class Init {
         dataStore.getMotionState().addState("Idle");
         dataStore.getMotionState().addState("BackCollision");
         dataStore.getMotionState().addState("FrontCollision");
+        dataStore.getMotionState().addState("FullCollision");
         dataStore.getMotionState().addState("Turning");
-        dataStore.getMotionState().addState("TurningLeft");
-        dataStore.getMotionState().addState("TurningRight");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 

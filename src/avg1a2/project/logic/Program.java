@@ -1,7 +1,6 @@
 package avg1a2.project.logic;
 
 import TI.BoeBot;
-import TI.Timer;
 import avg1a2.project.modules.controller.BlueBotControl;
 import avg1a2.project.modules.controller.RemoteControl;
 import avg1a2.project.modules.data.DataStore;
@@ -34,11 +33,7 @@ class Program {
      */
     void run() throws IllegalStateException{
         boolean valid = false;
-        Timer ping = new Timer(5000);
         while (running) {
-            if(ping.timeout()) {
-                System.out.println("Keeping alive");
-            }
             switch (state.getState()) {
                 case "Override" :
                     remoteControl.run();

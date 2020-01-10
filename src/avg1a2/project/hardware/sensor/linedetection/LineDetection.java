@@ -4,8 +4,6 @@ import TI.BoeBot;
 import TI.Timer;
 import avg1a2.project.hardware.Component;
 
-import java.awt.*;
-
 /**
  * Composition of several light sensitive sensors, which will work together to detect a line and crossroads.
  */

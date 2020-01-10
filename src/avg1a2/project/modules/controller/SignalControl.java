@@ -24,28 +24,24 @@ public class SignalControl {
 
     public void update(){
         switch(state.getState()){
-//           TODO
-//            case "Collision":
-//                boeBotCollision();
-//                break;
-//            kijken of het knipperen van de IDLE leds tijdens een collision detection met een state switch opgelost kan worden?
             case "Idle":
-                //System.out.println("HALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 boeBotOn();
                 break;
-            case "driveFW":
+            case "Collision" :
+                boeBotCollision();
+                break;
+            case "DriveFW":
                 forward();
                 break;
-            case "driveBW":
+            case "DriveBW":
                 backward();
                 break;
-            case "turnL":
+            case "TurnL":
                 turnLeftLED();
                 break;
-            case "turnR":
+            case "TurnR":
                 turnRightLED();
                 break;
-
         }
     }
 
