@@ -9,6 +9,7 @@ import avg1a2.project.modules.irconversion.IRConversionCallback;
  */
 public class RemoteControl implements IRConversionCallback {
     private MotionControl motionControl;
+    private SignalControl signalControl;
     private IRConversion irConversion;
     private State programState;
 
@@ -17,8 +18,9 @@ public class RemoteControl implements IRConversionCallback {
      * Constructor sets the motionController to use.
      * @param motionControl the MotionControl to use.
      */
-    public RemoteControl(MotionControl motionControl) {
+    public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
         this.motionControl = motionControl;
+        this.signalControl = signalControl;
     }
 
     /**
@@ -45,7 +47,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go left diagonally,.
      */
     public void leftDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(-45,50);
     }
 
@@ -60,7 +61,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes to BoeBot go right diagonally.
      */
     public void rightDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(45,50);
     }
 
@@ -68,7 +68,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left.
      */
     public void leftTurn() {
-        //brake();
         motionControl.setTurnDegrees(-90,50);
     }
 
@@ -83,7 +82,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right.
      */
     public void rightTurn() {
-        //brake();
         motionControl.setTurnDegrees(90,50);
     }
 
@@ -91,7 +89,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go left back diagonally.
      */
     public void leftBackDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(-135,50);
     }
 
@@ -106,7 +103,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go back diagonally.
      */
     public void rightBackDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(135,50);
     }
 
@@ -116,6 +112,7 @@ public class RemoteControl implements IRConversionCallback {
     public void changeState() {
         this.motionControl.setState("Idle");
         this.programState.setState("BlueBot");
+        this.signalControl.blueBot();
     }
 
     /**

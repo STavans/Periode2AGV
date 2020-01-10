@@ -68,9 +68,9 @@ public class LineDetection implements Component {
             if (timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
                 callback.onLineLost();
             }
-//            else {
-//                callback.lineCorrectionLeft();
-//            }
+            else {
+                callback.goForward();
+            }
 //            */ Gives problems with correction after right turn*/
         }
     }
