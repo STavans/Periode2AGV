@@ -43,7 +43,6 @@ public class RouteControl implements LineDetectionCallback {
                         System.out.println("Going forward!");
                         motionControl.setTargetSpeed(speed);
                         crossRoadsTimer = new Timer(1000);
-                        System.out.println("na dat de nieuwe timer gezet is");
                         state.setState("Running");
                     }
                     break;
@@ -61,7 +60,6 @@ public class RouteControl implements LineDetectionCallback {
                     break;
                 case "TurnRight":
                     if (motionControl.isIdle()) {
-                        System.out.println("Starting to turn right");
                         motionControl.infRight();
                         timer = new Timer(350);
                         state.setState("Turning");
@@ -140,7 +138,7 @@ public class RouteControl implements LineDetectionCallback {
 
     @Override
     public void onLineLost() {
-        if (state.ifState("Running") && !state.ifState("Turning")) {
+        if (state.ifState("Running")) {
             motionControl.setTargetSpeed(0);
         }
     }
