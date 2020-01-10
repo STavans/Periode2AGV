@@ -140,7 +140,7 @@ public class RouteControl implements LineDetectionCallback {
 
     @Override
     public void onLineLost() {
-        if (state.ifState("Running")) {
+        if (state.ifState("Running") && !state.ifState("Turning")) {
             motionControl.setTargetSpeed(0);
         }
     }
