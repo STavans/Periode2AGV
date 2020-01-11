@@ -4,8 +4,6 @@ import TI.BoeBot;
 import TI.Timer;
 import avg1a2.project.hardware.Component;
 
-import java.awt.*;
-
 /**
  * Composition of several light sensitive sensors, which will work together to detect a line and crossroads.
  */
@@ -70,9 +68,9 @@ public class LineDetection implements Component {
             if (timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
                 callback.onLineLost();
             }
-//            else {
-//                callback.lineCorrectionLeft();
-//            }
+            //else {
+            //    callback.goForward();
+            //}
 //            */ Gives problems with correction after right turn*/
         }
     }

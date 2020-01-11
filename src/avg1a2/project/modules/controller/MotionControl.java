@@ -1,5 +1,6 @@
 package avg1a2.project.modules.controller;
 
+import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
 import avg1a2.project.logic.State;
@@ -15,7 +16,6 @@ public class MotionControl implements CollisionDetectionCallback {
     private Servo sLeft;
     private Servo sRight;
     private Timer timer;
-    private Timer speakerTime;
     private State state;
     private int turningCount;
     private int currentSpeed;
@@ -24,7 +24,7 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * Constructor sets it's Servo's and it's currentSpeed at creation.
      */
-    public MotionControl(Servo sLeft, Servo sRight, SignalControl signalControl){
+    public MotionControl(Servo sLeft, Servo sRight, SignalControl signalControl) {
         this.signalControl = signalControl;
         this.sLeft = sLeft;
         this.sRight = sRight;
@@ -37,39 +37,54 @@ public class MotionControl implements CollisionDetectionCallback {
      */
     public void update() {
         collisionDetection.update();
-        signalState();
+        updateUpdatable();
+        updateSignals();
         signalControl.update();
+    }
+
+    private void updateSignals() {
+        switch (state.getState()) {
+            case "Idle":
+                if (currentSpeed > 0) {
+                    signalControl.setState("DriveFW");
+                } else if (currentSpeed < 0) {
+                    signalControl.setState("DriveBW");
+                } else {
+                    signalControl.setState("Idle");
+                }
+                break;
+            case "Accelerating":
+                if (currentSpeed > 0) {
+                    signalControl.setState("DriveFW");
+                } else if (currentSpeed < 0) {
+                    signalControl.setState("DriveBW");
+                } else {
+                    signalControl.setState("Idle");
+                }
+                break;
+            case "FrontCollision":
+                signalControl.setState("Collision");
+                break;
+            case "BackCollision":
+                signalControl.setState("Collision");
+                break;
+            case "FullCollision":
+                signalControl.setState("Collision");
+                break;
+            case "Turning":
+                if (this.turningCount == 1) {
+                    signalControl.setState("TurnR");
+                } else if (this.turningCount == -1) {
+                    signalControl.setState("TurnL");
+                }
+                break;
+        }
+    }
+
+    private void updateUpdatable() {
         turn();
         accelerateToSpeed();
         brake();
-    }
-
-
-    public void signalState(){
-
-        if(!state.getState().equals("Turning")) {
-            if (this.currentSpeed == 0) {
-
-                signalControl.setState("Idle");
-            } else if (this.currentSpeed > 0) {
-
-                signalControl.setState("driveFW");
-            } else {
-
-                signalControl.setState("driveBW");
-            }
-        }
-        else {
-
-            if(this.turningCount == 1){
-                signalControl.setState("turnR");
-
-            } else if(this.turningCount == -1) {
-                signalControl.setState("turnL");
-            }
-
-        }
-
     }
 
     public void setCollisionDetection(CollisionDetection collisionDetection) {
@@ -78,6 +93,7 @@ public class MotionControl implements CollisionDetectionCallback {
 
     /**
      * Insert a new State object for the controller to use.
+     *
      * @param state The State for the controller to use.
      */
     public void newState(State state) {
@@ -87,6 +103,7 @@ public class MotionControl implements CollisionDetectionCallback {
 
     /**
      * Set the current active state of the controller.
+     *
      * @param state The new state the controller needs to be in.
      */
     public void setState(String state) {
@@ -95,12 +112,13 @@ public class MotionControl implements CollisionDetectionCallback {
 
     /**
      * Sets the targetSpeed for the BoeBot.
+     *
      * @param targetSpeed Target Speed for the BoeBot to reach.
      */
     void setTargetSpeed(int targetSpeed) {
-        if (state.ifState("Idle") || targetSpeed == 0) {
+        if (state.ifState("Idle") || state.ifState("Accelerating")) {
             this.targetSpeed = targetSpeed;
-            this.state.setState("Accelerating");
+            state.setState("Accelerating");
         }
     }
 
@@ -174,7 +192,7 @@ public class MotionControl implements CollisionDetectionCallback {
             int pulse;
             int turnDegrees = Math.abs(degrees);
             turnSpeed = Math.abs(turnSpeed);
-            int turnTime = (int)(turnDegrees / (double)turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn 90 degrees.
+            int turnTime = (int) (turnDegrees / (double) turnSpeed * 427); //multiplying by 427, after experimentation seemed to give an accurate time in milliseconds to turn 90 degrees.
             if (degrees < 0) {
                 reverse = true;
             }
@@ -185,7 +203,7 @@ public class MotionControl implements CollisionDetectionCallback {
                 pulse = turnSpeed;
                 this.turningCount = 1;
             }
-            updateWheels(pulse,-pulse);
+            updateWheels(pulse, -pulse);
             timer = new Timer(turnTime);
             setState("Turning");
         }
@@ -251,7 +269,7 @@ public class MotionControl implements CollisionDetectionCallback {
     }
 
     private void brake() {
-        if (state.ifState("FrontCollision") || state.ifState("BackCollision")) {
+        if (state.ifState("FrontCollision") || state.ifState("BackCollision") || state.ifState("FullCollision")) {
             if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
                 updateWheels(currentSpeed,currentSpeed);
             } else if (currentSpeed != 0) {
@@ -270,65 +288,63 @@ public class MotionControl implements CollisionDetectionCallback {
 
     @Override
     public void onFrontCollision() {
-        if(!state.ifState("BackCollision")) {
+        if(!state.ifState("BackCollision") && !state.ifState("FullCollision")) {
             state.setState("FrontCollision");
-            System.out.println("ik kom in de front coll if statement ");
+        } else if (state.ifState("BackCollision")) {
+            state.setState("FullCollision");
         }
-        signalControl.boeBotCollision();
     }
 
     @Override
     public void onFrontEmergencyCollision() {
-        System.out.println("front emergency");
-        if(!state.ifState("BackCollision")){
+        if(!state.ifState("BackCollision") && !state.ifState("FullCollision")){
             state.setState("FrontCollision");
+        } else if (state.ifState("BackCollision")) {
+            state.setState("FullCollision");
         }
         emergencyBrake();
-        signalControl.boeBotCollision();
-        if (speakerTime == null || speakerTime.timeout()) {
-            signalControl.setWarningSpeakerOn();
-            speakerTime = new Timer(500);
-            //TODO speakerTime verstoord deels het branden van de rode collision LEDS
-        }
     }
 
     @Override
     public void onBackCollision() {
-        if(!state.ifState("FrontCollision")) {
+        if(!state.ifState("FrontCollision") && !state.ifState("FullCollision")) {
             state.setState("BackCollision");
+        } else if (state.ifState("FrontCollision")) {
+            state.setState("FullCollision");
         }
-        signalControl.boeBotCollision();
     }
 
     @Override
     public void onBackEmergencyCollision() {
-        System.out.println("back emergency");
-        if(!state.ifState("FrontCollision")) {
+        if(!state.ifState("FrontCollision") && !state.ifState("FullCollision")) {
             state.setState("BackCollision");
+        } else if (state.ifState("FrontCollision")) {
+            state.setState("FullCollision");
         }
         emergencyBrake();
-        signalControl.boeBotCollision();
-        if (speakerTime == null || speakerTime.timeout()) {
-            signalControl.setWarningSpeakerOn();
-            speakerTime = new Timer(500);
-            //TODO speakerTime verstoord deels het branden van de rode collision LEDS
-
-        }
     }
 
     @Override
     public void frontCollisionDone() {
-        if (state.ifState("FrontCollision")) {
-            state.setState("Idle");
-            signalControl.boeBotOn();
+        switch (state.getState()) {
+            case "FrontCollision" :
+                setState("Idle");
+                break;
+            case "FullCollision" :
+                setState("BackCollision");
+                break;
         }
     }
 
     @Override
     public void backCollisionDone() {
-        if (state.ifState("BackCollision")) {
-            state.setState("Idle");
-            signalControl.boeBotOn();
+        switch (state.getState()) {
+            case "BackCollision":
+                setState("Idle");
+                break;
+            case "FullCollision":
+                setState("FrontCollision");
+                break;
         }
     }
 }

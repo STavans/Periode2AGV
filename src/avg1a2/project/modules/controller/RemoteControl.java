@@ -11,7 +11,6 @@ public class RemoteControl implements IRConversionCallback {
     private MotionControl motionControl;
     private SignalControl signalControl;
     private IRConversion irConversion;
-    private State state;
     private State programState;
 
 
@@ -20,9 +19,8 @@ public class RemoteControl implements IRConversionCallback {
      * @param motionControl the MotionControl to use.
      */
     public RemoteControl(MotionControl motionControl, SignalControl signalControl) {
-        this.signalControl = signalControl;
         this.motionControl = motionControl;
-
+        this.signalControl = signalControl;
     }
 
     /**
@@ -31,10 +29,6 @@ public class RemoteControl implements IRConversionCallback {
      */
     public void setIrConversion(IRConversion irConversion) {
         this.irConversion = irConversion;
-    }
-
-    public void setState(State state){
-        this.state = state;
     }
 
     public void setProgramState(State programState) {
@@ -47,16 +41,12 @@ public class RemoteControl implements IRConversionCallback {
     public void run() {
         irConversion.update();
         motionControl.update();
-//        if(state.ifState("Idle")){
-//            signalControl.boeBotOn();
-//        }
     }
 
     /**
      * Makes the BoeBot go left diagonally,.
      */
     public void leftDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(-45,50);
     }
 
@@ -64,8 +54,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go forward.
      */
     public void forward() {
-        signalControl.boeBotOn();
-        signalControl.forward();
         motionControl.setTargetSpeed(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
     }
 
@@ -73,7 +61,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes to BoeBot go right diagonally.
      */
     public void rightDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(45,50);
     }
 
@@ -81,9 +68,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left.
      */
     public void leftTurn() {
-        signalControl.boeBotOn();
-        //brake();
-        signalControl.turnLeftLED();
         motionControl.setTurnDegrees(-90,50);
     }
 
@@ -98,9 +82,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right.
      */
     public void rightTurn() {
-        //brake();
-        signalControl.boeBotOn();
-        signalControl.turnRightLED();
         motionControl.setTurnDegrees(90,50);
     }
 
@@ -108,7 +89,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go left back diagonally.
      */
     public void leftBackDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(-135,50);
     }
 
@@ -116,7 +96,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go backwards.
      */
     public void reverse() {
-        signalControl.backward();
         motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
     }
 
@@ -124,7 +103,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot go back diagonally.
      */
     public void rightBackDiagonal() {
-        //brake();
         motionControl.setTurnDegrees(135,50);
     }
 
@@ -134,13 +112,13 @@ public class RemoteControl implements IRConversionCallback {
     public void changeState() {
         this.motionControl.setState("Idle");
         this.programState.setState("BlueBot");
+        this.signalControl.blueBot();
     }
 
     /**
      * Makes the BoeBot turn right infinitely.
      */
     public void infiniteRightTurn() {
-        signalControl.turnRightLED();
         motionControl.infRight();
     }
 
@@ -148,7 +126,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left infinitely.
      */
     public void infiniteLeftTurn() {
-        signalControl.turnLeftLED();
         motionControl.infLeft();
     }
 
@@ -156,7 +133,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn left smoothly.
      */
     public void smoothTurnLeft() {
-        signalControl.turnLeftLED();
         motionControl.smoothTurnLeft();
     }
 
@@ -164,7 +140,6 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right smoothly.
      */
     public void smoothTurnRight() {
-        signalControl.turnRightLED();
         motionControl.smoothTurnRight();
     }
 

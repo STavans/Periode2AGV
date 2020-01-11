@@ -7,7 +7,6 @@ import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.linedetection.LineDetection;
 import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicSensor;
 import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
-import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.hardware.signal.led.NeoPixel;
 import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
@@ -59,9 +58,9 @@ class Init {
     private static void buildControllers(DataStore dataStore) {
         dataStore.setSignalControl(new SignalControl());
         dataStore.setMotionControl(new MotionControl(dataStore.getSLeft(),dataStore.getSRight(), dataStore.getSignalControl()));
-        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(), dataStore.getSignalControl()));
+        dataStore.setRemoteControl(new RemoteControl(dataStore.getMotionControl(),dataStore.getSignalControl()));
         dataStore.setRouteControl(new RouteControl(dataStore.getMotionControl()));
-        dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl()));
+        dataStore.setBlueBotControl(new BlueBotControl(dataStore.getRouteControl(),dataStore.getSignalControl()));
     }
 
     /**
@@ -75,10 +74,10 @@ class Init {
 
         dataStore.newSignalState(new State());
         dataStore.getSignalState().addState("Idle");
-        dataStore.getSignalState().addState("driveFW");
-        dataStore.getSignalState().addState("driveBW");
-        dataStore.getSignalState().addState("turnL");
-        dataStore.getSignalState().addState("turnR");
+        dataStore.getSignalState().addState("DriveFW");
+        dataStore.getSignalState().addState("DriveBW");
+        dataStore.getSignalState().addState("TurnL");
+        dataStore.getSignalState().addState("TurnR");
         dataStore.getSignalState().addState("Collision");
         dataStore.getSignalControl().newState(dataStore.getSignalState());
 
@@ -86,9 +85,8 @@ class Init {
         dataStore.getMotionState().addState("Idle");
         dataStore.getMotionState().addState("BackCollision");
         dataStore.getMotionState().addState("FrontCollision");
+        dataStore.getMotionState().addState("FullCollision");
         dataStore.getMotionState().addState("Turning");
-        dataStore.getMotionState().addState("TurningLeft");
-        dataStore.getMotionState().addState("TurningRight");
         dataStore.getMotionState().addState("Accelerating");
         dataStore.getMotionControl().newState(dataStore.getMotionState());
 
@@ -142,13 +140,13 @@ class Init {
         dataStore.addLedGroup("reverse", reverse);
 
         LedGroup turnLeft = new LedGroup();
-        turnLeft.addLed("turnLED1", new NeoPixel(0, 255, 255, 0));
-        turnLeft.addLed("turnLED2", new NeoPixel(5, 255, 255, 0));
+        turnLeft.addLed("turnLED1", new NeoPixel(2, 255, 255, 0));
+        turnLeft.addLed("turnLED2", new NeoPixel(3, 255, 255, 0));
         dataStore.addLedGroup("turnLeftLEDs", turnLeft);
 
         LedGroup turnRight = new LedGroup();
-        turnRight.addLed("turnRightLED1", new NeoPixel(2, 255, 255, 0));
-        turnRight.addLed("turnRightLED2", new NeoPixel(3, 255, 255, 0));
+        turnRight.addLed("turnRightLED1", new NeoPixel(0, 255, 255, 0));
+        turnRight.addLed("turnRightLED2", new NeoPixel(5, 255, 255, 0));
         dataStore.addLedGroup("turnRightLEDs", turnRight);
 
         LedGroup followRoute = new LedGroup();
@@ -159,8 +157,6 @@ class Init {
         followRoute.addLed("followRoute5", new NeoPixel(4, 0,255,255));
         followRoute.addLed("followRoute6", new NeoPixel(5, 0,255,255));
         dataStore.addLedGroup("followRouteLEDs", followRoute);
-
-        dataStore.setWarningSpeaker(new Speaker(2, 10, 500));
     }
 
     /**
@@ -238,14 +234,15 @@ class Init {
      */
 
     private static void setSignals(DataStore dataStore) {
-        dataStore.getSignalControl().setIdle(dataStore.getLedGroup("idle"));
+        dataStore.getSignalControl().setRemoteControl(dataStore.getLedGroup("idle"));
         dataStore.getSignalControl().setCollision(dataStore.getLedGroup("collision"));
         dataStore.getSignalControl().setTurnLeftLEDs(dataStore.getLedGroup("turnLeftLEDs"));
         dataStore.getSignalControl().setTurnRightLEDs(dataStore.getLedGroup("turnRightLEDs"));
-        dataStore.getSignalControl().setFollowRoute(dataStore.getLedGroup("followRouteLEDs"));
+        dataStore.getSignalControl().setBlueBot(dataStore.getLedGroup("followRouteLEDs"));
         dataStore.getSignalControl().setForward(dataStore.getLedGroup("forward"));
         dataStore.getSignalControl().setReverse(dataStore.getLedGroup("reverse"));
-        dataStore.getSignalControl().setWarningSpeaker(dataStore.getWarningSpeaker());
+        dataStore.getSignalControl().blueBot();
+        dataStore.getSignalControl().boeBotOn();
     }
 
     /**

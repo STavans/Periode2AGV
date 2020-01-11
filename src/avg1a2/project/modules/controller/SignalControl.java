@@ -1,51 +1,43 @@
 package avg1a2.project.modules.controller;
 
-
-import avg1a2.project.hardware.Component;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
 
-//TO DO
-//
+
 public class SignalControl {
     private LedGroup turnLeftLEDs;
     private LedGroup turnRightLEDs;
-    private LedGroup followRoute;
+    private LedGroup blueBot;
+    private LedGroup remoteControl;
     private LedGroup idle;
     private LedGroup collision;
     private LedGroup forward;
     private LedGroup reverse;
     private State state;
-    private Component warningSpeaker;
 
     public SignalControl() {
-
     }
 
     public void update(){
         switch(state.getState()){
-//           TODO
-//            case "Collision":
-//                boeBotCollision();
-//                break;
-//            kijken of het knipperen van de IDLE leds tijdens een collision detection met een state switch opgelost kan worden?
             case "Idle":
-                //System.out.println("HALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 boeBotOn();
                 break;
-            case "driveFW":
+            case "Collision" :
+                boeBotCollision();
+                break;
+            case "DriveFW":
                 forward();
                 break;
-            case "driveBW":
+            case "DriveBW":
                 backward();
                 break;
-            case "turnL":
+            case "TurnL":
                 turnLeftLED();
                 break;
-            case "turnR":
+            case "TurnR":
                 turnRightLED();
                 break;
-
         }
     }
 
@@ -55,42 +47,38 @@ public class SignalControl {
 
     public void setState(String state){
         this.state.setState(state);
-
     }
 
+    public void blueBot(){
+        this.idle = this.blueBot;
+    }
 
-    public void followRoute(){
-        this.followRoute.on();
-
+    void remoteControl() {
+        this.idle = this.remoteControl;
     }
 
     public void boeBotOn() {
         this.idle.on();
     }
 
-    public void boeBotCollision() {
+    private void boeBotCollision() {
         this.collision.on();
-
     }
 
-    public void turnLeftLED() {
+    private void turnLeftLED() {
         this.turnLeftLEDs.on();
     }
 
-    public void turnRightLED() {
+    private void turnRightLED() {
         this.turnRightLEDs.on();
     }
 
-    public void forward(){
+    private void forward(){
         this.forward.on();
     }
 
-    public void backward(){
+    private void backward(){
         this.reverse.on();
-    }
-
-    public void setWarningSpeakerOn() {
-        this.warningSpeaker.update();
     }
 
     public void setTurnLeftLEDs(LedGroup turnLeftLEDs) {
@@ -101,21 +89,16 @@ public class SignalControl {
         this.turnRightLEDs = turnRightLEDs;
     }
 
-    public void setIdle(LedGroup idle) {
-        this.idle = idle;
-        idle.on();
+    public void setRemoteControl(LedGroup remoteControl) {
+        this.remoteControl = remoteControl;
     }
 
     public void setCollision(LedGroup collision) {
         this.collision = collision;
     }
 
-    public void setFollowRoute(LedGroup followRoute){
-        this.followRoute = followRoute;
-    }
-
-    public void setWarningSpeaker(Component warningSpeaker) {
-        this.warningSpeaker = warningSpeaker;
+    public void setBlueBot(LedGroup blueBot){
+        this.blueBot = blueBot;
     }
 
     public void setForward(LedGroup forward) {

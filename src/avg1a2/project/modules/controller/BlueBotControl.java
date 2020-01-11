@@ -10,11 +10,13 @@ import avg1a2.project.modules.irconversion.IROverridable;
 public class BlueBotControl implements BluetoothConversionCallback, IROverridable {
     private IRConversion irConversion;
     private RouteControl routeControl;
+    private SignalControl signalControl;
     private BluetoothConversion bluetoothConversion;
     private State programState;
 
-    public BlueBotControl(RouteControl routeControl) {
+    public BlueBotControl(RouteControl routeControl, SignalControl signalControl) {
         this.routeControl = routeControl;
+        this.signalControl = signalControl;
     }
 
     public void setIrConversion(IRConversion irConversion) {
@@ -48,8 +50,9 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
 
     @Override
     public void override() {
-        this.routeControl.stop();
+        this.routeControl.pause();
         this.programState.setState("Override");
+        this.signalControl.remoteControl();
     }
 
     @Override
