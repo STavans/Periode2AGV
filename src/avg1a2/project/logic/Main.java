@@ -9,8 +9,10 @@ public class Main {
         try {
             Program program = new Program();
             program.run();
+
         } catch (RuntimeException error) {
             System.out.println("The following error was encountered when running the program\n" + error);
+            error.printStackTrace();
         }
     }
 }
