@@ -28,6 +28,7 @@ class Program {
 
     /**
      * Main running loop, the controller to be called within this loop will change depending on the state of the program.
+     *the program starts with the bluetooth function
      * @throws RuntimeException If the program somehow enters an undefined state,
      *                          or if the states aren't defined properly, the loop will exit with an Illegal State error.
      */

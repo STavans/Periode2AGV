@@ -27,7 +27,7 @@ public class Speaker implements Component {
      * Call to sound a beep with the set parameters.
      */
     private void beep() {
-        BoeBot.freqOut(pin,frequency,time);
+        BoeBot.freqOut(this.pin,this.frequency,this.time);
     }
 
     /**
