@@ -39,71 +39,71 @@ public class RemoteControl implements IRConversionCallback {
      * Updates the controller, which also updates all of it's own updates.
      */
     public void run() {
-        irConversion.update();
-        motionControl.update();
+        this.irConversion.update();
+        this.motionControl.update();
     }
 
     /**
      * Makes the BoeBot go left diagonally,.
      */
     public void leftDiagonal() {
-        motionControl.setTurnDegrees(-45,50);
+        this.motionControl.setTurnDegrees(-45,50);
     }
 
     /**
      * Makes the BoeBot go forward.
      */
     public void forward() {
-        motionControl.setTargetSpeed(200); //maybe this function should instead if it is going backwards, now make it go forward at the same speed?
+        this.motionControl.setTargetSpeed(200);
     }
 
     /**
      * Makes to BoeBot go right diagonally.
      */
     public void rightDiagonal() {
-        motionControl.setTurnDegrees(45,50);
+        this.motionControl.setTurnDegrees(45,50);
     }
 
     /**
      * Makes the BoeBot turn left.
      */
     public void leftTurn() {
-        motionControl.setTurnDegrees(-90,50);
+        this.motionControl.setTurnDegrees(-90,50);
     }
 
-    /**-
+    /**
      * Makes the BoeBot stop.
      */
     public void emergencyBrake() {
-        motionControl.emergencyBrake();
+        this.motionControl.emergencyBrake();
     }
 
     /**
      * Makes the BoeBot turn right.
      */
     public void rightTurn() {
-        motionControl.setTurnDegrees(90,50);
+        this.motionControl.setTurnDegrees(90,50);
     }
 
     /**
      * Makes the BoeBot go left back diagonally.
      */
     public void leftBackDiagonal() {
-        motionControl.setTurnDegrees(-135,50);
+        this.motionControl.setTurnDegrees(-135,50);
     }
 
     /**
      * Makes the BoeBot go backwards.
      */
     public void reverse() {
-        motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
+        this.motionControl.setTargetSpeed(-200); //maybe this function should instead if it is going forward, now make it go backward at the same speed?
     }
 
     /**
      * Makes the BoeBot go back diagonally.
      */
     public void rightBackDiagonal() {
-        motionControl.setTurnDegrees(135,50);
+        this.motionControl.setTurnDegrees(135,50);
     }
 
     /**
@@ -119,45 +119,48 @@ public class RemoteControl implements IRConversionCallback {
      * Makes the BoeBot turn right infinitely.
      */
     public void infiniteRightTurn() {
-        motionControl.infRight();
+        this.motionControl.infRight();
     }
 
     /**
      * Makes the BoeBot turn left infinitely.
      */
     public void infiniteLeftTurn() {
-        motionControl.infLeft();
+        this.motionControl.infLeft();
     }
 
     /**
      * Makes the BoeBot turn left smoothly.
      */
     public void smoothTurnLeft() {
-        motionControl.smoothTurnLeft();
+        this.motionControl.smoothTurnLeft();
     }
 
     /**
      * Makes the BoeBot turn right smoothly.
      */
     public void smoothTurnRight() {
-        motionControl.smoothTurnRight();
+        this.motionControl.smoothTurnRight();
     }
 
     /**
      * Makes the BoeBot speed up slowly.
      */
     public void speedUp() {
-        motionControl.speedUp();
+        this.motionControl.speedUp();
     }
 
     /**
      * Makes the BoeBot slow down slowly.
      */
     public void slowDown() {
-        motionControl.slowDown();
+        this.motionControl.slowDown();
     }
 
+    /**
+     * Makes the Boebot stop immediately
+     */
     public void brake() {
-        motionControl.setTargetSpeed(0);
+        this.motionControl.setTargetSpeed(0);
     }
 }
