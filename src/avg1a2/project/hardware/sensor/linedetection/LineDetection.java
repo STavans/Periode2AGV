@@ -41,32 +41,32 @@ public class LineDetection implements Component {
      */
     @Override
     public void update() {
-        int dataLeftSensor = BoeBot.analogRead(leftSensor);
-        int dataMidSensor = BoeBot.analogRead(midSensor);
-        int dataFrontRightSensor = BoeBot.analogRead(frontRightSensor);
-        int dataBackRightSensor = BoeBot.analogRead(backRightSensor);
+        int dataLeftSensor = BoeBot.analogRead(this.leftSensor);
+        int dataMidSensor = BoeBot.analogRead(this.midSensor);
+        int dataFrontRightSensor = BoeBot.analogRead(this.frontRightSensor);
+        int dataBackRightSensor = BoeBot.analogRead(this.backRightSensor);
 
 //        System.out.println("Line sensors: " + dataLeftSensor + "\t" + dataMidSensor + "\t" + dataFrontRightSensor + "\t" + dataBackRightSensor);
 
-        if (dataMidSensor > threshold && dataBackRightSensor > threshold) {
-            callback.onCrossroads();
-            timer.mark();
+        if (dataMidSensor > this.threshold && dataBackRightSensor > this.threshold) {
+            this.callback.onCrossroads();
+            this.timer.mark();
         }
-        if (dataMidSensor > threshold) {
-            callback.goForward();
-            timer.mark();
+        if (dataMidSensor > this.threshold) {
+            this.callback.goForward();
+            this.timer.mark();
         }
-        if (dataLeftSensor > threshold && dataFrontRightSensor < threshold) {
-            callback.lineCorrectionLeft();
-            timer.mark();
+        if (dataLeftSensor > this.threshold && dataFrontRightSensor < this.threshold) {
+            this.callback.lineCorrectionLeft();
+            this.timer.mark();
         }
-        if (dataFrontRightSensor > threshold && dataLeftSensor < threshold) {
-            callback.lineCorrectionRight();
-            timer.mark();
+        if (dataFrontRightSensor > this.threshold && dataLeftSensor < this.threshold) {
+            this.callback.lineCorrectionRight();
+            this.timer.mark();
         }
-        if (dataFrontRightSensor < threshold && dataLeftSensor < threshold && dataMidSensor < threshold) {
-            if (timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
-                callback.onLineLost();
+        if (dataFrontRightSensor < this.threshold && dataLeftSensor < this.threshold && dataMidSensor < this.threshold) {
+            if (this.timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
+                this.callback.onLineLost();
             }
             //else {
             //    callback.goForward();

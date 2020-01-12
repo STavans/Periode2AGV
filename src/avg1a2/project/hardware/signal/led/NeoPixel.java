@@ -61,7 +61,7 @@ public class NeoPixel implements LED{
      * Turns the NeoPixel on;
      */
     public void on() {
-        BoeBot.rgbSet(pin,r,g,b);
+        BoeBot.rgbSet(this.pin,this.r,this.g,this.b);
         BoeBot.rgbShow();
         this.isOn = true;
     }
@@ -70,7 +70,7 @@ public class NeoPixel implements LED{
      * Turn the NeoPixel off;
      */
     public void off() {
-        BoeBot.rgbSet(pin,0,0,0);
+        BoeBot.rgbSet(this.pin,0,0,0);
         BoeBot.rgbShow();
         this.isOn = false;
     }
@@ -79,9 +79,9 @@ public class NeoPixel implements LED{
      * Checks if the led is ready to be updated, if so, toggles the state.
      */
     public void update() throws RuntimeException {
-        if (!(delay > 0)) {
+        if (!(this.delay > 0)) {
             throw new RuntimeException("Delay has not been set");
-        } else if (timer == null || timer.timeout()) {
+        } else if (this.timer == null || this.timer.timeout()) {
             toggle();
         }
     }
@@ -93,7 +93,7 @@ public class NeoPixel implements LED{
     private void setTimer(int delay) {
         if (delay > 0) {
             this.timer = new Timer(delay);
-            timer.mark();
+            this.timer.mark();
         }
     }
 
@@ -102,7 +102,7 @@ public class NeoPixel implements LED{
      * Sets the new timer in order for each toggle to be set to a different delay.
      */
     private void toggle() {
-        if (isOn) {
+        if (this.isOn) {
             off();
             setTimer(this.offset);
         } else {

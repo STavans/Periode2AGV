@@ -21,7 +21,7 @@ public class State {
      * @param state The State to add.
      */
     void addState(String state) {
-        states.add(state);
+        this.states.add(state);
     }
 
     /**
@@ -30,8 +30,8 @@ public class State {
      * @throws IllegalArgumentException Error message to indicate an error in the state name, or it hasn't been added.(Catches mostly typos)
      */
     public void setState(String state) throws IllegalArgumentException {
-        if (states.contains(state)) {
-            currentState = state;
+        if (this.states.contains(state)) {
+            this.currentState = state;
         } else {
             throw new IllegalArgumentException("The requested state has not been defined.");
         }
@@ -42,8 +42,8 @@ public class State {
      * @return The current state of this object.
      */
     public String getState() throws IllegalStateException {
-        if (currentState != null) {
-            return currentState;
+        if (this.currentState != null) {
+            return this.currentState;
         } else {
             throw new IllegalStateException("No State has been set");
         }
@@ -55,9 +55,9 @@ public class State {
      * @return true if state is active, false if it's not.
      */
     public Boolean ifState(String state) throws IllegalArgumentException {
-        if (!states.contains(state)) {
+        if (!this.states.contains(state)) {
             throw new IllegalArgumentException("The requested state has not been set.");
         }
-        return state.equals(currentState);
+        return state.equals(this.currentState);
     }
 }

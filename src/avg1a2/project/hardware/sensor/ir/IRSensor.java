@@ -30,7 +30,7 @@ public class IRSensor implements Component {
     private int[] scan(){
         int[] pulse = new int[12];
         for (int i = 0; i <12; i++) {
-            pulse[i] = BoeBot.pulseIn(pin,false,20000);
+            pulse[i] = BoeBot.pulseIn(this.pin,false,20000);
         }
         return pulse;
     }
