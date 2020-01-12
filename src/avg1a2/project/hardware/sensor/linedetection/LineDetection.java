@@ -46,7 +46,6 @@ public class LineDetection implements Component {
         int dataFrontRightSensor = BoeBot.analogRead(this.frontRightSensor);
         int dataBackRightSensor = BoeBot.analogRead(this.backRightSensor);
 
-//        System.out.println("Line sensors: " + dataLeftSensor + "\t" + dataMidSensor + "\t" + dataFrontRightSensor + "\t" + dataBackRightSensor);
 
         if (dataMidSensor > this.threshold && dataBackRightSensor > this.threshold) {
             this.callback.onCrossroads();
@@ -68,10 +67,6 @@ public class LineDetection implements Component {
             if (this.timer.timeout()) { //Timer to make sure the BoeBot has a chance to correct himself slightly.
                 this.callback.onLineLost();
             }
-            //else {
-            //    callback.goForward();
-            //}
-//            */ Gives problems with correction after right turn*/
         }
     }
 }
