@@ -40,46 +40,64 @@ public class CollisionDetection implements FrontUltraSonicCallback, BackUltraSon
      *This updates the ultrasonic sensor
      **/
     public void update() {
-        if (ultrasonicSensor == null) {
+        if (this.ultrasonicSensor == null) {
             throw new RuntimeException("Ultrasonic sensor has not been assigned");
         } else {
-            ultrasonicSensor.update();
+            this.ultrasonicSensor.update();
         }
 
-        if (backUltrasonicSensor == null) {
+        if (this.backUltrasonicSensor == null) {
             throw new RuntimeException("Back Ultrasonic sensor has not been assigned");
         } else {
-            backUltrasonicSensor.update();
+            this.backUltrasonicSensor.update();
         }
     }
 
+    /*
+     *This method is called upon when the backUltraSonic sensor detects an object from a farther distance than the backEmergencyUltraSonic
+     */
     @Override
     public void onBackUltraSonic() {
-        callback.onBackCollision();
+        this.callback.onBackCollision();
     }
 
+    /*
+     *This method is called upon when the backUltraSonic detects an object directly in front of it
+     */
     @Override
     public void onBackCloseUltraSonic() {
-        callback.onBackEmergencyCollision();
+        this.callback.onBackEmergencyCollision();
     }
 
+    /*
+     *This method is called upon once the backUltraSonic does NOT detect an object
+     */
     @Override
     public void onBackFarUltraSonic() {
-        callback.backCollisionDone();
+        this.callback.backCollisionDone();
     }
 
+    /*
+     *This method is called upon when the frontUltraSonic detects an object from a further distance than the frontEmergencyUltraSonic
+     */
     @Override
     public void onFrontUltraSonic() {
-        callback.onFrontCollision();
+        this.callback.onFrontCollision();
     }
 
+    /*
+     *This method is called upon once the frontUltraSonic detects an object directly in front of it
+     */
     @Override
     public void onFrontCloseUltraSonic() {
-        callback.onFrontEmergencyCollision();
+        this.callback.onFrontEmergencyCollision();
     }
 
+    /*
+     *This method is called upon once the frontUltraSonic does not detect an object
+     */
     @Override
     public void onFrontFarUltraSonic() {
-        callback.frontCollisionDone();
+        this.callback.frontCollisionDone();
     }
 }
