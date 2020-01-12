@@ -27,7 +27,7 @@ public class Route {
      * @throws IllegalStateException Throws error if the route is finished and a step is still trying to be added.
      */
     public void addStep(String step) throws IllegalArgumentException, IllegalStateException {
-        if (!complete) {
+        if (!this.complete) {
             if (step.equals("Left") || step.equals("Right") || step.equals("Forward") || step.equals("Stop")) {
                 this.steps.add(step);
             } else if (step.equals("End")) {
@@ -47,14 +47,14 @@ public class Route {
      * @throws IllegalStateException Throws and exception if the route has no end defined, has already finished, or if there is an error with the route itself in the arrayList.
      */
     public String nextStep() throws IllegalStateException {
-        if (!complete) {
+        if (!this.complete) {
             throw new IllegalStateException("The route does not have an endpoint defined!");
-        } else if (finished) {
+        } else if (this.finished) {
             throw new IllegalStateException("The route has already been finished.");
-        } else if (currentStep >= steps.size()) {
+        } else if (this.currentStep >= this.steps.size()) {
             throw new IllegalStateException("The requested step does not exist.");
         }
-        String step = steps.get(currentStep);
+        String step = this.steps.get(this.currentStep);
         if (step.equals("End")) {
             this.finished = true;
         } else {

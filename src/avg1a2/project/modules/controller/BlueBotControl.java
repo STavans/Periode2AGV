@@ -56,20 +56,20 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      * @throws RuntimeException Throws and error if a component is not set.
      */
     public void run() throws RuntimeException {
-        if (routeControl == null) {
+        if (this.routeControl == null) {
             throw new RuntimeException("Route Control has not been initialized");
         }
-        routeControl.run();
+        this.routeControl.run();
 
-        if (irConversion == null) {
+        if (this.irConversion == null) {
             throw new RuntimeException("IrConversion has not been initialized");
         }
-        irConversion.update();
+        this.irConversion.update();
 
         if (this.bluetoothConversion == null) {
             throw new RuntimeException("BluetoothConversion has not been initialized");
         }
-        bluetoothConversion.update();
+        this.bluetoothConversion.update();
     }
 
     /**
@@ -87,7 +87,7 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      */
     @Override
     public void startRoute() {
-        routeControl.start();
+        this.routeControl.start();
     }
 
     /**
@@ -95,7 +95,7 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      */
     @Override
     public void cancelRoute() {
-        routeControl.stop();
+        this.routeControl.stop();
     }
 
     /**
@@ -103,7 +103,7 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      */
     @Override
     public void resumeRoute() {
-        routeControl.resume();
+        this.routeControl.resume();
     }
 
     /**
@@ -111,7 +111,7 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      */
     @Override
     public void pauseRoute() {
-        routeControl.pause();
+        this.routeControl.pause();
     }
 
     /**
@@ -120,6 +120,6 @@ public class BlueBotControl implements BluetoothConversionCallback, IROverridabl
      */
     @Override
     public void newRoute(Route route) {
-        routeControl.setRoute(route);
+        this.routeControl.setRoute(route);
     }
 }
