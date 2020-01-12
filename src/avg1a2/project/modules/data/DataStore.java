@@ -7,7 +7,6 @@ import avg1a2.project.hardware.sensor.ir.IRSensor;
 import avg1a2.project.hardware.sensor.linedetection.LineDetection;
 import avg1a2.project.hardware.sensor.ultrasonic.BackUltraSonicSensor;
 import avg1a2.project.hardware.sensor.ultrasonic.FrontUltraSonicSensor;
-import avg1a2.project.hardware.signal.Speaker;
 import avg1a2.project.hardware.signal.led.LedGroup;
 import avg1a2.project.logic.State;
 import avg1a2.project.modules.bluetoothconversion.BluetoothConversion;
@@ -34,11 +33,10 @@ public class DataStore {
     private State routeState;
     private State signalState;
     private Component irSensor;
-    private Component ultrasonicSensor;
+    private Component frontUltraSonicSensor;
     private Component backUltraSonicSensor;
     private Component bluetoothSensor;
     private Component lineDetection;
-    private Component warningSpeaker;
     private HashMap<String, Route> routes;
     private HashMap<String, LedGroup> ledGroups;
     private Servo sLeft;
@@ -48,12 +46,13 @@ public class DataStore {
      * Constructor initiates the hashMap used for ledGroups.
      */
     public DataStore() {
-        ledGroups = new HashMap<>();
-        routes = new HashMap<>();
+        this.ledGroups = new HashMap<>();
+        this.routes = new HashMap<>();
     }
 
     /**
      * Sets the motionControl in the DataStore.
+     * @param motionControl The MotionControl which to add to the DataStore.
      */
     public void setMotionControl(MotionControl motionControl) {
         this.motionControl = motionControl;
@@ -65,7 +64,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public MotionControl getMotionControl() throws IllegalArgumentException {
-        if (motionControl == null) {
+        if (this.motionControl == null) {
             throw new IllegalArgumentException("Motion Control has not been initialized");
         } else {
             return this.motionControl;
@@ -74,6 +73,7 @@ public class DataStore {
 
     /**
      * Sets the RemoteControl in the DataStore.
+     * @param remoteControl The remoteControl which to add to the DataStore.
      */
     public void setRemoteControl(RemoteControl remoteControl) {
         this.remoteControl = remoteControl;
@@ -85,7 +85,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public RemoteControl getRemoteControl() throws IllegalArgumentException {
-        if (remoteControl == null) {
+        if (this.remoteControl == null) {
             throw new IllegalArgumentException("Remote Control has not been initialized");
         } else {
             return this.remoteControl;
@@ -94,6 +94,7 @@ public class DataStore {
 
     /**
      * Sets the BluetoothControl in the DataStore.
+     * @param blueBotControl The blueBotControl which to add to the DataStore.
      */
     public void setBlueBotControl(BlueBotControl blueBotControl) {
         this.blueBotControl = blueBotControl;
@@ -105,7 +106,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public BlueBotControl getBlueBotControl() throws IllegalArgumentException {
-        if (blueBotControl == null) {
+        if (this.blueBotControl == null) {
             throw new IllegalArgumentException("BlueBot Control has not been initialized");
         } else {
             return this.blueBotControl;
@@ -114,6 +115,7 @@ public class DataStore {
 
     /**
      * Sets the CollisionDetection in the DataStore.
+     * @param collisionDetection The collisionDetection which to add to the DataStore.
      */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
@@ -125,17 +127,26 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public CollisionDetection getCollisionDetection() throws IllegalArgumentException {
-        if (collisionDetection == null) {
+        if (this.collisionDetection == null) {
             throw new IllegalArgumentException("Collision Detection has not been initialized");
         } else {
             return this.collisionDetection;
         }
     }
 
+    /**
+     * Sets the SignalControl in the DataStore.
+     * @param signalControl The signalControl which to add to the DataStore.
+     */
     public void setSignalControl(SignalControl signalControl){
         this.signalControl = signalControl;
     }
 
+    /**
+     * Gets the signalControl from the DataStore.
+     * @return signalControl object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
     public SignalControl getSignalControl(){
         if(this.signalControl == null){
             throw new IllegalArgumentException("The signal controls have not been initialized");
@@ -144,10 +155,19 @@ public class DataStore {
         }
     }
 
+    /**
+     * Sets the routeControl in the DataStore.
+     * @param routeControl The routeControl which to add to the DataStore.
+     */
     public void setRouteControl(RouteControl routeControl){
         this.routeControl = routeControl;
     }
 
+    /**
+     * Gets the routeControl from the DataStore.
+     * @return routeControl object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
     public RouteControl getRouteControl(){
         if(this.routeControl == null){
             throw new IllegalArgumentException("The route controls have not been initialized");
@@ -157,19 +177,20 @@ public class DataStore {
     }
 
     /**
-     * Sets the IRConversion in the DataStore.
+     * Sets the irConversion in the DataStore.
+     * @param irConversion The irConversion which to add to the DataStore.
      */
     public void setIrConversion(IRConversion irConversion) {
         this.irConversion = irConversion;
     }
 
     /**
-     * Gets the IRConversion from the DataStore.
-     * @return IRConversion object.
+     * Gets the irConversion from the DataStore.
+     * @return irConversion object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public IRConversion getIrConversion() throws IllegalArgumentException {
-        if (irConversion == null) {
+        if (this.irConversion == null) {
             throw new IllegalArgumentException("Ir Conversion has not been initialized");
         } else {
             return this.irConversion;
@@ -177,19 +198,20 @@ public class DataStore {
     }
 
     /**
-     * Sets the BluetoothSensor in the DataStore.
+     * Sets the bluetoothConversion in the DataStore.
+     * @param bluetoothConversion The bluetoothConversion which to add to the DataStore.
      */
     public void setBluetoothConversion(BluetoothConversion bluetoothConversion) {
         this.bluetoothConversion = bluetoothConversion;
     }
 
     /**
-     * Gets the BluetoothSensor from the DataStore.
-     * @return BluetoothSensor object.
+     * Gets the BluetoothConversion from the DataStore.
+     * @return BluetoothConversion object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public BluetoothConversion getBluetoothConversion() throws IllegalArgumentException {
-        if (bluetoothConversion == null) {
+        if (this.bluetoothConversion == null) {
             throw new IllegalArgumentException("Bluetooth Conversion has not been initialized");
         } else {
             return this.bluetoothConversion;
@@ -198,6 +220,7 @@ public class DataStore {
 
     /**
      * Sets the programState in the DataStore.
+     * @param programState The State which to add to the DataStore.
      */
     public void newProgramState(State programState) {
         this.programState = programState;
@@ -209,7 +232,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public State getProgramState() throws IllegalArgumentException {
-        if (programState == null) {
+        if (this.programState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.programState;
@@ -218,6 +241,7 @@ public class DataStore {
 
     /**
      * Sets the motionState in the DataStore.
+     * @param motionState The State which to add to the DataStore.
      */
     public void newMotionState(State motionState) {
         this.motionState = motionState;
@@ -229,17 +253,26 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public State getMotionState() throws IllegalArgumentException {
-        if (motionState == null) {
+        if (this.motionState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.motionState;
         }
     }
 
+    /**
+     * Sets the signalState in the DataStore.
+     * @param signalState The State which to add to the DataStore.
+     */
     public void newSignalState(State signalState){
         this.signalState = signalState;
     }
 
+    /**
+     * Gets the signalState from the DataStore.
+     * @return signalState object.
+     * @throws IllegalArgumentException Exception if object is not set.
+     */
     public State getSignalState(){
         if(this.signalState == null){
             throw new IllegalArgumentException("SignalState has not been initialized");
@@ -250,6 +283,7 @@ public class DataStore {
 
     /**
      * Sets the routeState in the DataStore.
+     * @param routeState The State which to add to the DataStore.
      */
     public void newRouteState(State routeState) {
         this.routeState = routeState;
@@ -261,7 +295,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public State getRouteState() throws IllegalArgumentException {
-        if (routeState == null) {
+        if (this.routeState == null) {
             throw new IllegalArgumentException("State has not been initialized");
         } else {
             return this.routeState;
@@ -270,6 +304,7 @@ public class DataStore {
 
     /**
      * Sets the irSensor in the DataStore.
+     * @param irSensor The Sensor which to add to the DataStore.
      */
     public void setIrSensor(IRSensor irSensor) {
         this.irSensor = irSensor;
@@ -281,7 +316,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getIrSensor() throws IllegalArgumentException {
-        if (irSensor == null) {
+        if (this.irSensor == null) {
             throw new IllegalArgumentException("Ir Sensor has not been initialized");
         } else {
             return this.irSensor;
@@ -290,9 +325,10 @@ public class DataStore {
 
     /**
      * Sets the FrontUltraSonicSensor in the DataStore.
+     * @param frontUltraSonicSensor Sensor which to add to the DataStore.
      */
-    public void setUltrasonicSensor(FrontUltraSonicSensor ultrasonicSensor) {
-        this.ultrasonicSensor = ultrasonicSensor;
+    public void setUltrasonicSensor(FrontUltraSonicSensor frontUltraSonicSensor) {
+        this.frontUltraSonicSensor = frontUltraSonicSensor;
     }
 
     /**
@@ -301,28 +337,29 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getUltrasonicSensor() throws IllegalArgumentException {
-        if (ultrasonicSensor == null) {
-            throw new IllegalArgumentException("Ultrasonic Sensor has not been initialized");
+        if (this.frontUltraSonicSensor == null) {
+            throw new IllegalArgumentException("Front Ultrasonic Sensor has not been initialized");
         } else {
-            return this.ultrasonicSensor;
+            return this.frontUltraSonicSensor;
         }
     }
 
     /**
-     * Sets the FrontUltraSonicSensor in the DataStore.
+     * Sets the backUltraSonicSensor in the DataStore.
+     * @param backUltraSonicSensor Sensor which to add to the DataStore.
      */
     public void setBackUltrasonicSensor(BackUltraSonicSensor backUltraSonicSensor) {
         this.backUltraSonicSensor = backUltraSonicSensor;
     }
 
     /**
-     * Gets the FrontUltraSonicSensor from the DataStore.
-     * @return FrontUltraSonicSensor object.
+     * Gets the backUltraSonicSensor from the DataStore.
+     * @return backUltraSonicSensor object.
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getBackUltrasonicSensor() throws IllegalArgumentException {
-        if (backUltraSonicSensor == null) {
-            throw new IllegalArgumentException("Ultrasonic Sensor has not been initialized");
+        if (this.backUltraSonicSensor == null) {
+            throw new IllegalArgumentException("Back Ultrasonic Sensor has not been initialized");
         } else {
             return this.backUltraSonicSensor;
         }
@@ -330,6 +367,7 @@ public class DataStore {
 
     /**
      * Sets the BluetoothSensor in the DataStore.
+     * @param bluetoothSensor Sensor which to add to the DataStore.
      */
     public void setBluetoothSensor(BluetoothSensor bluetoothSensor) {
         this.bluetoothSensor = bluetoothSensor;
@@ -341,7 +379,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getBluetoothSensor() throws IllegalArgumentException {
-        if (bluetoothSensor == null) {
+        if (this.bluetoothSensor == null) {
             throw new IllegalArgumentException("Bluetooth Sensor has not been initialized");
         } else {
             return this.bluetoothSensor;
@@ -350,6 +388,7 @@ public class DataStore {
 
     /**
      * Sets the LineDetection in the DataStore.
+     * @param lineDetection LineDetection which to add to the DataStore.
      */
     public void setLineDetection(LineDetection lineDetection) {
         this.lineDetection = lineDetection;
@@ -361,30 +400,10 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Component getLineDetection() throws IllegalArgumentException {
-        if (lineDetection == null) {
+        if (this.lineDetection == null) {
             throw new IllegalArgumentException("Line detection has not been initialized");
         } else {
             return this.lineDetection;
-        }
-    }
-
-    /**
-     * Sets the warningSpeaker in the DataStore.
-     */
-    public void setWarningSpeaker(Speaker speaker) {
-        this.warningSpeaker = speaker;
-    }
-
-    /**
-     * Gets the speaker from the DataStore.
-     * @return speaker object.
-     * @throws IllegalArgumentException Exception if object is not set.
-     */
-    public Component getWarningSpeaker() throws IllegalArgumentException {
-        if (warningSpeaker == null) {
-            throw new IllegalArgumentException("WarningSpeaker has not been initialized");
-        } else {
-            return this.warningSpeaker;
         }
     }
 
@@ -395,8 +414,8 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public LedGroup getLedGroup(String ledGroup) {
-        if (ledGroups.containsKey(ledGroup)) {
-            return ledGroups.get(ledGroup);
+        if (this.ledGroups.containsKey(ledGroup)) {
+            return this.ledGroups.get(ledGroup);
         } else {
             throw new IllegalArgumentException("The LedGroup has not been added");
         }
@@ -408,7 +427,7 @@ public class DataStore {
      * @param ledGroup The LedGroup itself.
      */
     public void addLedGroup(String groupName, LedGroup ledGroup) {
-        ledGroups.put(groupName,ledGroup);
+        this.ledGroups.put(groupName,ledGroup);
     }
 
     /**
@@ -418,8 +437,8 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Route getRoute(String route) {
-        if (routes.containsKey(route)) {
-            return routes.get(route);
+        if (this.routes.containsKey(route)) {
+            return this.routes.get(route);
         } else {
             throw new IllegalArgumentException("The Route has not been added");
         }
@@ -431,11 +450,12 @@ public class DataStore {
      * @param route The route itself.
      */
     public void addRoute(String name, Route route) {
-        routes.put(name,route);
+        this.routes.put(name,route);
     }
 
     /**
      * Sets the left servo in the DataStore.
+     * @param sLeft Servo which to add to the DataStore.
      */
     public void setSLeft(Servo sLeft) {
         this.sLeft = sLeft;
@@ -447,7 +467,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Servo getSLeft() {
-        if (sLeft == null) {
+        if (this.sLeft == null) {
             throw new IllegalArgumentException("Left servo has not been initialized");
         } else {
             return this.sLeft;
@@ -456,6 +476,7 @@ public class DataStore {
 
     /**
      * Sets the right servo in the DataStore.
+     * @param sRight Servo which to add to the DataStore.
      */
     public void setSRight(Servo sRight) {
         this.sRight = sRight;
@@ -467,7 +488,7 @@ public class DataStore {
      * @throws IllegalArgumentException Exception if object is not set.
      */
     public Servo getSRight() {
-        if (sRight == null) {
+        if (this.sRight == null) {
             throw new IllegalArgumentException("Right servo has not been initialized");
         } else {
             return this.sRight;

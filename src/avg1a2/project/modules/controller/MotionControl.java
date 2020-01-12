@@ -1,6 +1,5 @@
 package avg1a2.project.modules.controller;
 
-import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
 import avg1a2.project.logic.State;
@@ -36,57 +35,69 @@ public class MotionControl implements CollisionDetectionCallback {
      * Updates the controller to check if any actions are still in progress and if so, to continue them.
      */
     public void update() {
-        collisionDetection.update();
+        this.collisionDetection.update();
         updateUpdatable();
         updateSignals();
-        signalControl.update();
+        this.signalControl.update();
     }
 
+    /**
+     * @params state  gets checked and depending on the state sends a signal to the signalControl,
+     * it checks this by looking at the currentSpeed and it checks if there has been a collision
+     */
     private void updateSignals() {
-        switch (state.getState()) {
+        switch (this.state.getState()) {
             case "Idle":
-                if (currentSpeed > 0) {
-                    signalControl.setState("DriveFW");
-                } else if (currentSpeed < 0) {
-                    signalControl.setState("DriveBW");
+                if (this.currentSpeed > 0) {
+                    this.signalControl.setState("DriveFW");
+                } else if (this.currentSpeed < 0) {
+                    this.signalControl.setState("DriveBW");
                 } else {
-                    signalControl.setState("Idle");
+                    this.signalControl.setState("Idle");
                 }
                 break;
             case "Accelerating":
-                if (currentSpeed > 0) {
-                    signalControl.setState("DriveFW");
+                if (this.currentSpeed > 0) {
+                    this.signalControl.setState("DriveFW");
                 } else if (currentSpeed < 0) {
-                    signalControl.setState("DriveBW");
+                    this.signalControl.setState("DriveBW");
                 } else {
-                    signalControl.setState("Idle");
+                    this.signalControl.setState("Idle");
                 }
                 break;
             case "FrontCollision":
-                signalControl.setState("Collision");
+                this.signalControl.setState("Collision");
                 break;
             case "BackCollision":
-                signalControl.setState("Collision");
+                this.signalControl.setState("Collision");
                 break;
             case "FullCollision":
-                signalControl.setState("Collision");
+                this.signalControl.setState("Collision");
                 break;
             case "Turning":
                 if (this.turningCount == 1) {
-                    signalControl.setState("TurnR");
+                    this.signalControl.setState("TurnR");
                 } else if (this.turningCount == -1) {
-                    signalControl.setState("TurnL");
+                    this.signalControl.setState("TurnL");
                 }
                 break;
         }
     }
 
+    /**
+     * This method is to update the following methods:
+     *
+     * @method turn, accelerateToSpeed and brake.
+     */
     private void updateUpdatable() {
         turn();
         accelerateToSpeed();
         brake();
     }
 
+    /**
+     * This method is to set the collision detection
+     */
     public void setCollisionDetection(CollisionDetection collisionDetection) {
         this.collisionDetection = collisionDetection;
     }
@@ -116,18 +127,19 @@ public class MotionControl implements CollisionDetectionCallback {
      * @param targetSpeed Target Speed for the BoeBot to reach.
      */
     void setTargetSpeed(int targetSpeed) {
-        if (state.ifState("Idle") || state.ifState("Accelerating")) {
+        if (this.state.ifState("Idle") || this.state.ifState("Accelerating")) {
             this.targetSpeed = targetSpeed;
-            state.setState("Accelerating");
+            this.state.setState("Accelerating");
         }
     }
 
     /**
      * Checks if the controller is idle using it's state.
+     *
      * @return True if the controller is idle, false if it's not.
      */
     boolean isIdle() {
-        return state.ifState("Idle");
+        return this.state.ifState("Idle");
     }
 
     /**
@@ -135,26 +147,28 @@ public class MotionControl implements CollisionDetectionCallback {
      */
     private void accelerateToSpeed() {
         if (this.state.ifState("Accelerating")) {
-            if (targetSpeed != currentSpeed) {
-                if (targetSpeed < currentSpeed) {
-                    setSpeedForward(currentSpeed - 10);
+            if (this.targetSpeed != this.currentSpeed) {
+                if (this.targetSpeed < this.currentSpeed) {
+                    setSpeedForward(this.currentSpeed - 10);
                 } else {
-                    setSpeedForward(currentSpeed + 10);
+                    setSpeedForward(this.currentSpeed + 10);
                 }
-            } else if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
-                setSpeedForward(currentSpeed);
+            } else if (((this.sLeft.getPulseWidth() - this.currentSpeed) != 1500) && ((this.sRight.getPulseWidth() + this.currentSpeed) != 1500)) {
+                setSpeedForward(this.currentSpeed);
             } else {
-                state.setState("Idle");
+                this.state.setState("Idle");
             }
         }
     }
 
     /**
      * Sets a new speed for the BoeBot.
+     * It also checks if the Boebot is already accelerating or idle, this is to avoid any malfunctions in the route/remote control
+     *
      * @param speed The new speed of the BoeBot.
      */
-    private void setSpeedForward(int speed){
-        if (state.ifState("Idle") || state.ifState("Accelerating")) {
+    private void setSpeedForward(int speed) {
+        if (this.state.ifState("Idle") || this.state.ifState("Accelerating")) {
             this.sLeft.update(1500 + speed);
             this.sRight.update(1500 - speed);
             this.currentSpeed = speed;
@@ -164,7 +178,7 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * Emergency brake for the BoeBot to come to a total standstill in case of emergency.
      */
-    void emergencyBrake(){
+    void emergencyBrake() {
         this.sLeft.update(1500);
         this.sRight.update(1500);
         this.currentSpeed = 0;
@@ -174,20 +188,21 @@ public class MotionControl implements CollisionDetectionCallback {
      * Function to check if the turnDegrees function needs to be ended.
      */
     private void turn() {
-        if (state.ifState("Turning") && timer != null && timer.timeout()) {
-            updateWheels(0,0);
-            setTurnDegrees(0,0);
+        if (this.state.ifState("Turning") && this.timer != null && this.timer.timeout()) {
+            updateWheels(0, 0);
+            setTurnDegrees(0, 0);
             setState("Idle");
         }
     }
 
     /**
      * Initiates the BoeBot to start turning.
-     * @param degrees The amount of degrees to turn.
+     *
+     * @param degrees   The amount of degrees to turn.
      * @param turnSpeed The speed at which to turn.
      */
     void setTurnDegrees(int degrees, int turnSpeed) {
-        if (state.ifState("Idle")) {
+        if (this.state.ifState("Idle")) {
             boolean reverse = false;
             int pulse;
             int turnDegrees = Math.abs(degrees);
@@ -204,7 +219,7 @@ public class MotionControl implements CollisionDetectionCallback {
                 this.turningCount = 1;
             }
             updateWheels(pulse, -pulse);
-            timer = new Timer(turnTime);
+            this.timer = new Timer(turnTime);
             setState("Turning");
         }
     }
@@ -212,20 +227,20 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * BoeBot turns left smoothly using a certain offset.
      */
-    void smoothTurnLeft(){
-        if (state.ifState("Idle")) {
-            sLeft.update(1575);
-            sRight.update(1350);
+    void smoothTurnLeft() {
+        if (this.state.ifState("Idle")) {
+            this.sLeft.update(1575);
+            this.sRight.update(1350);
         }
     }
 
     /**
      * BoeBot turns right smoothly using a certain offset.
      */
-    void smoothTurnRight(){
-        if (state.ifState("Idle")) {
-            sLeft.update(1750);
-            sRight.update(1425);
+    void smoothTurnRight() {
+        if (this.state.ifState("Idle")) {
+            this.sLeft.update(1750);
+            this.sRight.update(1425);
 
         }
     }
@@ -233,20 +248,20 @@ public class MotionControl implements CollisionDetectionCallback {
     /**
      * Makes the BoeBot turn right infinitely.
      */
-    void infRight(){
-        if (state.ifState("Idle")) {
-            sLeft.update(1500 + currentSpeed);
-            sRight.update(1500 + currentSpeed);
+    void infRight() {
+        if (this.state.ifState("Idle")) {
+            this.sLeft.update(1500 + this.currentSpeed);
+            this.sRight.update(1500 + this.currentSpeed);
         }
     }
 
     /**
      * Makes the BoeBot turn left infinitely.
      */
-    void infLeft(){
-        if (state.ifState("Idle")) {
-            sLeft.update(1500 - currentSpeed);
-            sRight.update(1500 - currentSpeed);
+    void infLeft() {
+        if (this.state.ifState("Idle")) {
+            this.sLeft.update(1500 - this.currentSpeed);
+            this.sRight.update(1500 - this.currentSpeed);
         }
     }
 
@@ -254,8 +269,8 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot speed up with an increase of 5.
      */
     void speedUp() {
-        if (state.ifState("Idle")) {
-            setSpeedForward(currentSpeed + 5);
+        if (this.state.ifState("Idle")) {
+            setSpeedForward(this.currentSpeed + 5);
         }
     }
 
@@ -263,82 +278,113 @@ public class MotionControl implements CollisionDetectionCallback {
      * Makes the BoeBot slow down with a decrease of 5.
      */
     void slowDown() {
-        if (state.ifState("Idle")) {
-            setSpeedForward(currentSpeed - 5);
+        if (this.state.ifState("Idle")) {
+            setSpeedForward(this.currentSpeed - 5);
         }
     }
 
+    /**
+     * This method is used when a collision has been detected, and the function of this method is to slowly stop the Boebot.
+     */
     private void brake() {
-        if (state.ifState("FrontCollision") || state.ifState("BackCollision") || state.ifState("FullCollision")) {
-            if (((sLeft.getPulseWidth() - currentSpeed) != 1500) && ((sRight.getPulseWidth() + currentSpeed) != 1500)) {
-                updateWheels(currentSpeed,currentSpeed);
-            } else if (currentSpeed != 0) {
-                updateWheels(currentSpeed - 5, currentSpeed - 5);
+        if (this.state.ifState("FrontCollision") || this.state.ifState("BackCollision") || this.state.ifState("FullCollision")) {
+            if (((this.sLeft.getPulseWidth() - this.currentSpeed) != 1500) && ((this.sRight.getPulseWidth() + this.currentSpeed) != 1500)) {
+                updateWheels(this.currentSpeed, this.currentSpeed);
+            } else if (this.currentSpeed != 0) {
+                updateWheels(this.currentSpeed - 5, this.currentSpeed - 5);
                 this.currentSpeed -= 5;
             }
         }
     }
 
+    /**
+     * This method keeps the servo's updated at all times
+     * It also has state checks to decrease the amount of bugs in the code
+     */
     void updateWheels(int speedLeft, int speedRight) {
-        if (state.ifState("Idle") || state.ifState("Turning") || state.ifState("FrontCollision") || state.ifState("BackCollision"))  {
+        if (this.state.ifState("Idle") || state.ifState("Turning") || state.ifState("FrontCollision") || state.ifState("BackCollision")) {
             this.sLeft.update(1500 + speedLeft);
             this.sRight.update(1500 - speedRight);
         }
     }
 
+    /**
+     * This method only is used once the frontUltraSonic detects an object
+     * The states are there to check if there is a full on collision or a front collision
+     */
     @Override
     public void onFrontCollision() {
-        if(!state.ifState("BackCollision") && !state.ifState("FullCollision")) {
-            state.setState("FrontCollision");
-        } else if (state.ifState("BackCollision")) {
-            state.setState("FullCollision");
+        if (!this.state.ifState("BackCollision") && !this.state.ifState("FullCollision")) {
+            this.state.setState("FrontCollision");
+        } else if (this.state.ifState("BackCollision")) {
+            this.state.setState("FullCollision");
         }
     }
 
+    /**
+     * This method checks if an object is directly in front of it and acts accordingly by using the method emergency break
+     * If there also is a backCollision then it sets it's state to fullCollision because it detects objects on either side
+     */
     @Override
     public void onFrontEmergencyCollision() {
-        if(!state.ifState("BackCollision") && !state.ifState("FullCollision")){
-            state.setState("FrontCollision");
-        } else if (state.ifState("BackCollision")) {
-            state.setState("FullCollision");
+        if (!this.state.ifState("BackCollision") && !this.state.ifState("FullCollision")) {
+            this.state.setState("FrontCollision");
+        } else if (this.state.ifState("BackCollision")) {
+            this.state.setState("FullCollision");
         }
         emergencyBrake();
     }
 
+    /**
+     * This method is called upon once the collisionDetection detects an object
+     * The states are used to differentiate between a full on collision or a back collision
+     */
     @Override
     public void onBackCollision() {
-        if(!state.ifState("FrontCollision") && !state.ifState("FullCollision")) {
-            state.setState("BackCollision");
-        } else if (state.ifState("FrontCollision")) {
-            state.setState("FullCollision");
+        if (!this.state.ifState("FrontCollision") && !this.state.ifState("FullCollision")) {
+            this.state.setState("BackCollision");
+        } else if (this.state.ifState("FrontCollision")) {
+            this.state.setState("FullCollision");
         }
     }
 
+    /**
+     * This method is called upon once the collisionDetection detects an object right in front of the backUltraSonic
+     * The states are there to differentiate between a full on collision and a backEmergencyCollision
+     */
     @Override
     public void onBackEmergencyCollision() {
-        if(!state.ifState("FrontCollision") && !state.ifState("FullCollision")) {
-            state.setState("BackCollision");
-        } else if (state.ifState("FrontCollision")) {
-            state.setState("FullCollision");
+        if (!this.state.ifState("FrontCollision") && !this.state.ifState("FullCollision")) {
+            this.state.setState("BackCollision");
+        } else if (this.state.ifState("FrontCollision")) {
+            this.state.setState("FullCollision");
         }
         emergencyBrake();
     }
 
+    /**
+     * This method is called upon once the collisionDetection doesn't detect an object in front of it anymore
+     * The states are used to differentiate between a full on collision and a back collision
+     */
     @Override
     public void frontCollisionDone() {
-        switch (state.getState()) {
-            case "FrontCollision" :
+        switch (this.state.getState()) {
+            case "FrontCollision":
                 setState("Idle");
                 break;
-            case "FullCollision" :
+            case "FullCollision":
                 setState("BackCollision");
                 break;
         }
     }
 
+    /**
+     * This method is called upon once the collisionDetection doesn't detect an object in front of it anymore
+     * The states are used to differentiate between a full on collision and a back collision
+     */
     @Override
     public void backCollisionDone() {
-        switch (state.getState()) {
+        switch (this.state.getState()) {
             case "BackCollision":
                 setState("Idle");
                 break;

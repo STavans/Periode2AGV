@@ -38,10 +38,10 @@ public class IRConversion implements IRCallback {
      * Updates the converted, allowing it to continuously scan for IR signals.
      */
     public void update() {
-        if (irSensor == null) {
+        if (this.irSensor == null) {
             throw new RuntimeException("IR sensor has not been set");
         } else {
-            irSensor.update();
+            this.irSensor.update();
         }
     }
 
@@ -54,94 +54,94 @@ public class IRConversion implements IRCallback {
     public void onSignal(int signal) {
         switch (signal) {
             case 0b10000000 :
-                if (programState.ifState("Override")) {
-                    callback.leftDiagonal();
+                if (this.programState.ifState("Override")) {
+                    this.callback.leftDiagonal();
                 }
                 break;
             case 0b10000001 :
-                if (programState.ifState("Override")) {
-                    callback.forward();
+                if (this.programState.ifState("Override")) {
+                    this.callback.forward();
                 }
                 break;
             case 0b10000010 :
-                if (programState.ifState("Override")) {
-                    callback.rightDiagonal();
+                if (this.programState.ifState("Override")) {
+                    this.callback.rightDiagonal();
                 }
                 break;
             case 0b10000011 :
-                if (programState.ifState("Override")) {
-                    callback.leftTurn();
+                if (this.programState.ifState("Override")) {
+                    this.callback.leftTurn();
                 }
                 break;
             case 0b10000100 :
-                if (programState.ifState("Override")) {
-                    callback.brake();
+                if (this.programState.ifState("Override")) {
+                    this.callback.brake();
                 }
                 break;
             case 0b10000101 :
-                if (programState.ifState("Override")) {
-                    callback.rightTurn();
+                if (this.programState.ifState("Override")) {
+                    this.callback.rightTurn();
                 }
                 break;
             case 0b10000110 :
-                if (programState.ifState("Override")) {
-                    callback.leftBackDiagonal();
+                if (this.programState.ifState("Override")) {
+                    this.callback.leftBackDiagonal();
                 }
                 break;
             case 0b10000111 :
-                if (programState.ifState("Override")) {
-                    callback.reverse();
+                if (this.programState.ifState("Override")) {
+                    this.callback.reverse();
                 }
                 break;
             case 0b10001000 :
-                if (programState.ifState("Override")) {
-                    callback.rightBackDiagonal();
+                if (this.programState.ifState("Override")) {
+                    this.callback.rightBackDiagonal();
                 }
                 break;
             case 0b10010101 :
-                if (timer == null || timer.timeout()) {
-                    if (programState.ifState("Override")) {
-                        callback.changeState();
-                        timer = new Timer(1000);
+                if (this.timer == null || this.timer.timeout()) {
+                    if (this.programState.ifState("Override")) {
+                        this.callback.changeState();
+                        this.timer = new Timer(1000);
                     } else {
-                        override.override();
-                        timer = new Timer(1000);
+                        this.override.override();
+                        this.timer = new Timer(1000);
                     }
                 }
                 break;
             case 0b10011010 :
-                if (programState.ifState("Override")) {
-                    callback.infiniteRightTurn();
+                if (this.programState.ifState("Override")) {
+                    this.callback.infiniteRightTurn();
                 }
                 break;
             case 0b10011011 :
-                if (programState.ifState("Override")) {
-                    callback.infiniteLeftTurn();
+                if (this.programState.ifState("Override")) {
+                    this.callback.infiniteLeftTurn();
                 }
                 break;
             case 0b10010011 :
-                if (programState.ifState("Override")) {
-                    callback.smoothTurnLeft();
+                if (this.programState.ifState("Override")) {
+                    this.callback.smoothTurnLeft();
                 }
                 break;
             case 0b10010010 :
-                if (programState.ifState("Override")) {
-                    callback.smoothTurnRight();
+                if (this.programState.ifState("Override")) {
+                    this.callback.smoothTurnRight();
                 }
                 break;
             case 0b10011110 :
-                if (programState.ifState("Override")) {
-                    callback.speedUp();
+                if (this.programState.ifState("Override")) {
+                    this.callback.speedUp();
                 }
                 break;
             case 0b10011111 :
-                if (programState.ifState("Override")) {
-                    callback.slowDown();
+                if (this.programState.ifState("Override")) {
+                    this.callback.slowDown();
                 }
                 break;
             case 0b10010001 :
-                if (programState.ifState("Override")) {
-                    callback.emergencyBrake();
+                if (this.programState.ifState("Override")) {
+                    this.callback.emergencyBrake();
                 }
                 break;
 
