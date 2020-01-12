@@ -33,10 +33,10 @@ public class BluetoothConversion implements BluetoothCallback {
      * @throws RuntimeException Gives an exception if the sensor is not set.
      */
     public void update() throws RuntimeException {
-        if (bluetoothSensor == null) {
+        if (this.bluetoothSensor == null) {
             throw new RuntimeException("Bluetooth Sensor has not been initialized");
         }
-        bluetoothSensor.update();
+        this.bluetoothSensor.update();
     }
 
     /**
@@ -45,32 +45,37 @@ public class BluetoothConversion implements BluetoothCallback {
      */
     @Override
     public void onSignal(String command) {
-        System.out.println("Got a bluetooth command: " + command);
         switch (command) {
             case "B" : //starts the route construction process.
-                route = new Route();
+                this.route = new Route();
                 break;
             case "w" : //adds forward step to route.
+                buildRoute(command);
+                break;
             case "d" : //adds right step to route.
+                buildRoute(command);
+                break;
             case "a" : //adds left step to route.
+                buildRoute(command);
+                break;
             case "s" : //adds stop step to route.
                 buildRoute(command);
                 break;
             case "e" : //ends the route construction process.
-                route.addStep("End");
-                callback.newRoute(route);
+                this.route.addStep("End");
+                this.callback.newRoute(this.route);
                 break;
             case "S" : //starts the route
-                callback.startRoute();
+                this.callback.startRoute();
                 break;
             case "C" : //cancels the route
-                callback.cancelRoute();
+                this.callback.cancelRoute();
                 break;
             case "R" : //resumes the route
-                callback.resumeRoute();
+                this.callback.resumeRoute();
                 break;
             case "P" : //pauses the route.
-                callback.pauseRoute();
+                this.callback.pauseRoute();
                 break;
         }
     }
@@ -82,16 +87,16 @@ public class BluetoothConversion implements BluetoothCallback {
     private void buildRoute(String step) {
         switch (step) {
             case "w":
-                route.addStep("Forward");
+                this.route.addStep("Forward");
                 break;
             case "a":
-                route.addStep("Left");
+                this.route.addStep("Left");
                 break;
             case "d":
-                route.addStep("Right");
+                this.route.addStep("Right");
                 break;
             case "s":
-                route.addStep("Stop");
+                this.route.addStep("Stop");
                 break;
         }
     }
