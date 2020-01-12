@@ -271,6 +271,10 @@ public class MotionControl implements CollisionDetectionCallback {
         }
     }
 
+    public void totalCollision(){
+        signalControl.boeBotCollision();
+    }
+
     @Override
     public void onFrontCollision() {
         if(!state.ifState("BackCollision")) {
@@ -304,6 +308,8 @@ public class MotionControl implements CollisionDetectionCallback {
     public void onBackEmergencyCollision() {
         if(!state.ifState("FrontCollision")) {
             state.setState("BackCollision");
+        } else {
+            totalCollision();
         }
         emergencyBrake();
         signalControl.boeBotCollision();
